@@ -3,8 +3,8 @@
 namespace Denpa\Levin\Section;
 
 use Denpa\Levin;
-use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Bytearray;
 
 class Reader
 {
@@ -29,9 +29,9 @@ class Reader
     public function read() : Section
     {
         $signatures = [
-            fread($this->fp, sizeof(Levin\uint32le())),
-            fread($this->fp, sizeof(Levin\uint32le())),
-            fread($this->fp, sizeof(Levin\ubyte())),
+            fread($this->fp, count(Levin\uint32le())),
+            fread($this->fp, count(Levin\uint32le())),
+            fread($this->fp, count(Levin\ubyte())),
         ];
 
         return $this->readSection();
@@ -42,7 +42,7 @@ class Reader
      */
     protected function readSection() : Section
     {
-        $section = new Section;
+        $section = new Section();
 
         $count = Levin\varint()->readFrom($this->fp)->toInt();
 
@@ -59,7 +59,7 @@ class Reader
      */
     protected function readName() : string
     {
-        $length = Levin\ubyte(fread($this->fp, sizeof(Levin\ubyte())));
+        $length = Levin\ubyte(fread($this->fp, count(Levin\ubyte())));
         $name = fread($this->fp, $length->toInt());
 
         return $name;
@@ -70,11 +70,11 @@ class Reader
      */
     protected function loadEntries() : BoostSerializable
     {
-        $type = Levin\ubyte(fread($this->fp, sizeof(Levin\ubyte())))->toInt();
+        $type = Levin\ubyte(fread($this->fp, count(Levin\ubyte())))->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             return $this->readArrayEntry($type);
-        } else if ($type == Section::SERIALIZE_TYPE_ARRAY) {
+        } elseif ($type == Section::SERIALIZE_TYPE_ARRAY) {
             return $this->readEntryArrayEntry($type);
         } else {
             return $this->readValue($type);
@@ -88,7 +88,7 @@ class Reader
      */
     protected function readEntryArrayEntry($type) : Bytearray
     {
-        $type = Levin\ubyte(fread($this->fp, sizeof(Levin\ubyte())))->toInt();
+        $type = Levin\ubyte(fread($this->fp, count(Levin\ubyte())))->toInt();
 
         if (($type & SERIALIZE_FLAG_ARRAY) != 0) {
             throw new \Exception('Incorrect array sequence');
@@ -125,25 +125,26 @@ class Reader
     {
         switch ($type) {
             case Section::SERIALIZE_TYPE_UINT64:
-                return Levin\uint64le(fread($this->fp, sizeof(Levin\uint64le())));
+                return Levin\uint64le(fread($this->fp, count(Levin\uint64le())));
             case Section::SERIALIZE_TYPE_INT64:
-                return Levin\int64le(fread($this->fp, sizeof(Levin\int64le())));
+                return Levin\int64le(fread($this->fp, count(Levin\int64le())));
             case Section::SERIALIZE_TYPE_UINT32:
-                return Levin\uint32le(fread($this->fp, sizeof(Levin\uint32le())));
+                return Levin\uint32le(fread($this->fp, count(Levin\uint32le())));
             case Section::SERIALIZE_TYPE_INT32:
-                return Levin\int32le(fread($this->fp, sizeof(Levin\int32le())));
+                return Levin\int32le(fread($this->fp, count(Levin\int32le())));
             case Section::SERIALIZE_TYPE_UINT16:
-                return Levin\uint16le(fread($this->fp, sizeof(Levin\uint16le())));
+                return Levin\uint16le(fread($this->fp, count(Levin\uint16le())));
             case Section::SERIALIZE_TYPE_INT16:
-                return Levin\int16le(fread($this->fp, sizeof(Levin\int16le())));
+                return Levin\int16le(fread($this->fp, count(Levin\int16le())));
             case Section::SERIALIZE_TYPE_UINT8:
-                return Levin\uint8le(fread($this->fp, sizeof(Levin\uint8le())));
+                return Levin\uint8le(fread($this->fp, count(Levin\uint8le())));
             case Section::SERIALIZE_TYPE_INT8:
-                return Levin\int8le(fread($this->fp, sizeof(Levin\int8le())));
+                return Levin\int8le(fread($this->fp, count(Levin\int8le())));
             case Section::SERIALIZE_TYPE_OBJECT:
                 return $this->readSection();
             case Section::SERIALIZE_TYPE_STRING:
                 $length = Levin\varint()->readFrom($this->fp)->toInt();
+
                 return Levin\bytestring(fread($this->fp, $length));
             default:
                 throw new \Exception("Cannot unserialize unknown type [$type]");

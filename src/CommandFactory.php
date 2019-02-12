@@ -51,7 +51,7 @@ class CommandFactory
             throw new \Exception("Unknown command [$command]");
         }
 
-        return new $this->commands[$command];
+        return new $this->commands[$command]();
     }
 
     /**
@@ -116,7 +116,7 @@ class CommandFactory
     protected function registerCommands()
     {
         foreach ($this->handlers as $handler) {
-            $this->commands[(new $handler)->getCommandCode()] = $handler;
+            $this->commands[(new $handler())->getCommandCode()] = $handler;
         }
     }
 }

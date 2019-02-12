@@ -15,8 +15,8 @@ class uByte extends Type implements BoostSerializable
     /**
      * @return \Denpa\Levin\Types\uByte
      */
-    public function getSerializeType() : uByte
+    public function getSerializeType() : self
     {
-        return new uByte(self::SERIALIZE_TYPE_UINT8);
+        return new self(self::SERIALIZE_TYPE_UINT8);
     }
 }

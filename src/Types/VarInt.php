@@ -7,17 +7,17 @@ class VarInt extends Type
     /**
      * @var int
      */
-    const PORTABLE_RAW_SIZE_MARK_MASK  = 0x03;
+    const PORTABLE_RAW_SIZE_MARK_MASK = 0x03;
 
     /**
      * @var int
      */
-    const PORTABLE_RAW_SIZE_MARK_BYTE  = 0x00;
+    const PORTABLE_RAW_SIZE_MARK_BYTE = 0x00;
 
     /**
      * @var int
      */
-    const PORTABLE_RAW_SIZE_MARK_WORD  = 0x01;
+    const PORTABLE_RAW_SIZE_MARK_WORD = 0x01;
 
     /**
      * @var int
@@ -60,7 +60,7 @@ class VarInt extends Type
      */
     public function readFrom($fp) : self
     {
-        $first = new uByte(fread($fp, sizeof(new uByte(0))));
+        $first = new uByte(fread($fp, count(new uByte(0))));
 
         $mask = $first->toInt() & self::PORTABLE_RAW_SIZE_MARK_MASK;
 

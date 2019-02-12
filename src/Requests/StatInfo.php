@@ -2,7 +2,6 @@
 
 namespace Denpa\Levin\Requests;
 
-use Denpa\Levin;
 use Denpa\Levin\Command;
 use Denpa\Levin\Section\Section;
 
@@ -13,7 +12,7 @@ class StatInfo extends Command implements RequestInterface
      */
     public function request() : Section
     {
-        return new Section;
+        return new Section();
     }
 
     /**
@@ -21,7 +20,7 @@ class StatInfo extends Command implements RequestInterface
      */
     public function response() : Section
     {
-        return new Section;
+        return new Section();
     }
 
     /**

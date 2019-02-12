@@ -24,17 +24,17 @@ interface SectionInterface
     /**
      * @var int
      */
-    const PORTABLE_RAW_SIZE_MARK_MASK  = 0x03;
+    const PORTABLE_RAW_SIZE_MARK_MASK = 0x03;
 
     /**
      * @var int
      */
-    const PORTABLE_RAW_SIZE_MARK_BYTE  = 0x00;
+    const PORTABLE_RAW_SIZE_MARK_BYTE = 0x00;
 
     /**
      * @var int
      */
-    const PORTABLE_RAW_SIZE_MARK_WORD  = 0x01;
+    const PORTABLE_RAW_SIZE_MARK_WORD = 0x01;
 
     /**
      * @var int
