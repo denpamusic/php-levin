@@ -10,7 +10,7 @@ use IteratorAggregate;
 class Bytearray implements
     BoostSerializable,
     ArrayAccess,
-                            Countable,
+    Countable,
     IteratorAggregate,
     TypeInterface
 {

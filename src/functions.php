@@ -78,7 +78,7 @@ if (!function_exists('uint8le')) {
 
 if (!function_exists('int8le')) {
     /**
-     * @var int|string
+     * @param int|string
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
@@ -102,7 +102,7 @@ if (!function_exists('uint16le')) {
 
 if (!function_exists('int16le')) {
     /**
-     * @var int|string
+     * @param int|string
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */

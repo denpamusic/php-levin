@@ -17,9 +17,9 @@ class Section implements
     SectionInterface,
     ArrayAccess,
     IteratorAggregate,
-                         Countable,
+    Countable,
     BoostSerializable,
-                         BufferInterface
+    BufferInterface
 {
     /**
      * @var array
