@@ -28,7 +28,6 @@ if (!function_exists('bytearray')) {
     }
 }
 
-
 if (!function_exists('boolean')) {
     /**
      * @param bool $bool
@@ -79,7 +78,7 @@ if (!function_exists('uint8le')) {
 
 if (!function_exists('int8le')) {
     /**
-     * @var int|string $int
+     * @var int|string
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
@@ -103,7 +102,7 @@ if (!function_exists('uint16le')) {
 
 if (!function_exists('int16le')) {
     /**
-     * @var int|string $int
+     * @var int|string
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
@@ -170,6 +169,7 @@ if (!function_exists('camel_case')) {
     function camel_case(string $string) : string
     {
         $string = str_replace('_', ' ', $string);
+
         return str_replace(' ', '', ucwords(strtolower($string)));
     }
 }

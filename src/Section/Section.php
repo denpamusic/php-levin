@@ -2,19 +2,23 @@
 
 namespace Denpa\Levin\Section;
 
-use Denpa\Levin;
-use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use IteratorAggregate;
+use Countable;
+use Denpa\Levin;
 use Denpa\Levin\BufferInterface;
-use Denpa\Levin\Types\uByte;
+use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
-use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\uByte;
+use IteratorAggregate;
 
-class Section implements SectionInterface, ArrayAccess, IteratorAggregate,
-                         Countable, BoostSerializable,
+class Section implements
+    SectionInterface,
+    ArrayAccess,
+    IteratorAggregate,
+                         Countable,
+    BoostSerializable,
                          BufferInterface
 {
     /**
@@ -44,7 +48,7 @@ class Section implements SectionInterface, ArrayAccess, IteratorAggregate,
     }
 
     /**
-     * @param string $key
+     * @param string                           $key
      * @param \Denpa\Levin\Types\TypeInterface $value
      *
      * @return self
@@ -138,7 +142,7 @@ class Section implements SectionInterface, ArrayAccess, IteratorAggregate,
      */
     public function toBinary() : string
     {
-        $result  = implode('', $this->signatures);
+        $result = implode('', $this->signatures);
         $result .= Levin\varint(count($this));
         $result .= $this->serialize();
 
@@ -190,8 +194,8 @@ class Section implements SectionInterface, ArrayAccess, IteratorAggregate,
             $result .= $key;
             $result .= $item->getSerializeType();
 
-            if ($item instanceof Bytestring || $item instanceof Section) {
-                $size = $item instanceof Section ?
+            if ($item instanceof Bytestring || $item instanceof self) {
+                $size = $item instanceof self ?
                     count($item) : $item->getByteSize();
                 $result .= Levin\varint($size);
             }

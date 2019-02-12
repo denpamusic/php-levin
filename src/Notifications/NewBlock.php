@@ -2,7 +2,6 @@
 
 namespace Denpa\Levin\Notifications;
 
-use Denpa\Levin;
 use Denpa\Levin\Command;
 use Denpa\Levin\Section\Section;
 
@@ -13,7 +12,7 @@ class NewBlock extends Command implements NotificationInterface
      */
     public function request() : Section
     {
-        return new Section;
+        return new Section();
     }
 
     /**

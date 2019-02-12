@@ -2,11 +2,11 @@
 
 namespace Denpa\Levin;
 
+use Denpa\Levin\Section\Reader;
+use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\uInt32;
 use Denpa\Levin\Types\uInt64;
-use Denpa\Levin\Section\Reader;
-use Denpa\Levin\Section\Section;
 
 class Bucket implements BucketInterface
 {
@@ -64,7 +64,7 @@ class Bucket implements BucketInterface
 
         $params = $params + $defaults;
 
-        foreach($params as $key => $value) {
+        foreach ($params as $key => $value) {
             $mutator = 'set'.camel_case($key);
             if (method_exists($this, $mutator)) {
                 $this->$mutator($value);
@@ -84,6 +84,7 @@ class Bucket implements BucketInterface
 
         if ($this->signature != uint64le(self::LEVIN_SIGNATURE)) {
             $signature = $this->signature->toHex();
+
             throw new \Exception("Packet signature mismatch [$signature]");
         }
 
@@ -101,6 +102,7 @@ class Bucket implements BucketInterface
 
         if ($this->cb->toInt() > self::LEVIN_DEFAULT_MAX_PACKET_SIZE) {
             $maxsize = self::LEVIN_DEFAULT_MAX_PACKET_SIZE;
+
             throw new \Exception("Packet is too large [> $maxsize]");
         }
 
@@ -281,7 +283,7 @@ class Bucket implements BucketInterface
      */
     public static function request() : CommandFactory
     {
-        $bucket = new Bucket([
+        $bucket = new self([
             'return_data' => true,
             'return_code' => 0,
             'flags'       => uint32le(self::LEVIN_PACKET_REQUEST),
@@ -295,7 +297,7 @@ class Bucket implements BucketInterface
      */
     public static function response() : CommandFactory
     {
-        $bucket = new Bucket([
+        $bucket = new self([
             'return_data' => false,
             'return_code' => 0,
             'flags'       => uint32le(self::LEVIN_PACKET_RESPONSE),
@@ -311,18 +313,18 @@ class Bucket implements BucketInterface
      */
     public static function readFrom($fp)
     {
-        if(feof($fp)) {
-            return null;
+        if (feof($fp)) {
+            return;
         }
 
-        $bucket = new Bucket([
-            'signature'        => fread($fp, sizeof(uint64le())),
-            'cb'               => fread($fp, sizeof(uint64le())),
-            'return_data'      => fread($fp, sizeof(boolean())),
-            'command'          => fread($fp, sizeof(uint32le())),
-            'return_code'      => fread($fp, sizeof(int32le())),
-            'flags'            => fread($fp, sizeof(uint32le())),
-            'protocol_version' => fread($fp, sizeof(uint32le())),
+        $bucket = new self([
+            'signature'        => fread($fp, count(uint64le())),
+            'cb'               => fread($fp, count(uint64le())),
+            'return_data'      => fread($fp, count(boolean())),
+            'command'          => fread($fp, count(uint32le())),
+            'return_code'      => fread($fp, count(int32le())),
+            'flags'            => fread($fp, count(uint32le())),
+            'protocol_version' => fread($fp, count(uint32le())),
         ]);
 
         $section = (new Reader($fp))->read();

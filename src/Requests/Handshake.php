@@ -34,7 +34,7 @@ class Handshake extends Command implements RequestInterface
      */
     public function response() : Section
     {
-        return new Section;
+        return new Section();
     }
 
     /**

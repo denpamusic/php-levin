@@ -3,7 +3,6 @@
 namespace Denpa\Levin;
 
 use Denpa\Levin\Types\uInt32;
-use Denpa\Levin\Section\Section;
 
 interface CommandInterface
 {

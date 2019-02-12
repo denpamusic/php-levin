@@ -7,22 +7,22 @@ interface BoostSerializable
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_INT64  = 1;
+    const SERIALIZE_TYPE_INT64 = 1;
 
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_INT32  = 2;
+    const SERIALIZE_TYPE_INT32 = 2;
 
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_INT16  = 3;
+    const SERIALIZE_TYPE_INT16 = 3;
 
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_INT8   = 4;
+    const SERIALIZE_TYPE_INT8 = 4;
 
     /**
      * @var int
@@ -42,7 +42,7 @@ interface BoostSerializable
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_UINT8  = 8;
+    const SERIALIZE_TYPE_UINT8 = 8;
 
     /**
      * @var int
@@ -57,7 +57,7 @@ interface BoostSerializable
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_BOOL   = 11;
+    const SERIALIZE_TYPE_BOOL = 11;
 
     /**
      * @var int
@@ -67,12 +67,12 @@ interface BoostSerializable
     /**
      * @var int
      */
-    const SERIALIZE_TYPE_ARRAY  = 13;
+    const SERIALIZE_TYPE_ARRAY = 13;
 
     /**
      * @var int
      */
-    const SERIALIZE_FLAG_ARRAY  = 0x80;
+    const SERIALIZE_FLAG_ARRAY = 0x80;
 
     /**
      * @return \Denpa\Levin\Types\uByte

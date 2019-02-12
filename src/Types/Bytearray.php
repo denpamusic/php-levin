@@ -2,13 +2,17 @@
 
 namespace Denpa\Levin\Types;
 
-use Countable;
 use ArrayAccess;
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
 
-class Bytearray implements  BoostSerializable, ArrayAccess,
-                            Countable, IteratorAggregate, TypeInterface
+class Bytearray implements
+    BoostSerializable,
+    ArrayAccess,
+                            Countable,
+    IteratorAggregate,
+    TypeInterface
 {
     /**
      * @param array $entries

@@ -9,22 +9,22 @@ interface BucketInterface
     /**
      * @var int
      */
-    const LEVIN_SIGNATURE               = 0x0101010101012101;
+    const LEVIN_SIGNATURE = 0x0101010101012101;
 
     /**
      * @var int
      */
-    const LEVIN_PROTOCOL_VER_1          = 1;
+    const LEVIN_PROTOCOL_VER_1 = 1;
 
     /**
      * @var int
      */
-    const LEVIN_PACKET_REQUEST          = 1;
+    const LEVIN_PACKET_REQUEST = 1;
 
     /**
      * @var int
      */
-    const LEVIN_PACKET_RESPONSE         = 2;
+    const LEVIN_PACKET_RESPONSE = 2;
 
     /**
      * @var int
