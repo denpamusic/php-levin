@@ -13,10 +13,22 @@ class Bytestring extends Type implements BoostSerializable
     }
 
     /**
-     * @return \Denpa\Levin\Types\uByte
+     * @return \Denpa\Levin\Types\Ubyte
      */
-    public function getSerializeType() : uByte
+    public function getSerializeType() : Ubyte
     {
-        return new uByte(self::SERIALIZE_TYPE_STRING);
+        return new Ubyte(self::SERIALIZE_TYPE_STRING);
+    }
+
+    /**
+     * @param resource $socket
+     *
+     * @return \Levin\Types\Type
+     */
+    public function readFrom($socket) : Type
+    {
+        $length = (new Varint(0))->readFrom($socket)->toInt();
+
+        return new self(fread($socket, $length));
     }
 }

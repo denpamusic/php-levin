@@ -3,9 +3,9 @@
 namespace Denpa\Levin\Types;
 
 use ArrayAccess;
-use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Denpa\Levin\Traits\Arrayable;
 
 class Bytearray implements
     BoostSerializable,
@@ -14,6 +14,8 @@ class Bytearray implements
     IteratorAggregate,
     TypeInterface
 {
+    use Arrayable;
+
     /**
      * @param array $entries
      *
@@ -65,71 +67,10 @@ class Bytearray implements
     }
 
     /**
-     * @return \Denpa\Levin\Types\uByte
+     * @return \Denpa\Levin\Types\Ubyte
      */
-    public function getSerializeType() : uByte
+    public function getSerializeType() : Ubyte
     {
-        return new uByte(self::SERIALIZE_TYPE_ARRAY);
-    }
-
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     *
-     * @return void
-     */
-    public function offsetSet($offset, $value) : void
-    {
-        if (is_null($offset)) {
-            $this->entries[] = $value;
-        } else {
-            $this->entries[$offset] = $value;
-        }
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset) : bool
-    {
-        return isset($this->entries[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return void
-     */
-    public function offsetUnset($offset) : void
-    {
-        unset($this->entries[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return $this->entries[$offset] ?? null;
-    }
-
-    /**
-     * @return int
-     */
-    public function count() : int
-    {
-        return count($this->entries);
-    }
-
-    /**
-     * @return \ArrayIterator
-     */
-    public function getIterator() : ArrayIterator
-    {
-        return new ArrayIterator($this->entries);
+        return new Ubyte(self::SERIALIZE_TYPE_ARRAY);
     }
 }

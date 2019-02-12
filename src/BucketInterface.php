@@ -42,16 +42,16 @@ interface BucketInterface
     public function payload() : ?Section;
 
     /**
-     * @param resource $fp
+     * @param resource $socket
      *
      * @return void
      */
-    public function writeTo($fp) : void;
+    public function writeTo($socket) : void;
 
     /**
-     * @param resource $fp
+     * @param resource $socket
      *
      * @return mixed
      */
-    public static function readFrom($fp);
+    public static function readFrom($socket);
 }

@@ -5,25 +5,25 @@ namespace Denpa\Levin;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Int32;
-use Denpa\Levin\Types\uInt32;
-use Denpa\Levin\Types\uInt64;
+use Denpa\Levin\Types\Uint32;
+use Denpa\Levin\Types\Uint64;
 
 class Bucket implements BucketInterface
 {
     /**
-     * @var \Denpa\Levin\Types\uInt64
+     * @var \Denpa\Levin\Types\Uint64
      */
     protected $signature;
 
     /**
-     * @var \Denpa\Levin\Types\uInt64|null
+     * @var \Denpa\Levin\Types\Uint64|null
      */
     protected $cb;
 
     /**
-     * @var \Denpa\Levin\Types\uInt32
+     * @var \Denpa\Levin\Types\Uint32
      */
-    protected $return_data;
+    protected $returnData;
 
     /**
      * @var \Denpa\Levin\CommandInterface
@@ -33,22 +33,22 @@ class Bucket implements BucketInterface
     /**
      * @var \Denpa\Levin\Types\Int32
      */
-    protected $return_code;
+    protected $returnCode;
 
     /**
-     * @var \Denpa\Levin\Types\uInt32
+     * @var \Denpa\Levin\Types\Uint32
      */
     protected $flags;
 
     /**
-     * @var \Denpa\Levin\Types\uInt32
+     * @var \Denpa\Levin\Types\Uint32
      */
-    protected $protocol_version;
+    protected $protocolVersion;
 
     /**
      * @var \Denpa\Levin\Section|null
      */
-    protected $payload_section = null;
+    protected $payloadSection = null;
 
     /**
      * @return void
@@ -79,7 +79,7 @@ class Bucket implements BucketInterface
      */
     public function setSignature($signature) : self
     {
-        $this->signature = $signature instanceof uInt64 ?
+        $this->signature = $signature instanceof Uint64 ?
             $signature : uint64le($signature);
 
         if ($this->signature != uint64le(self::LEVIN_SIGNATURE)) {
@@ -98,7 +98,7 @@ class Bucket implements BucketInterface
      */
     public function setCb($cb) : self
     {
-        $this->cb = $cb instanceof uInt64 ? $cb : uint64le($cb);
+        $this->cb = $cb instanceof Uint64 ? $cb : uint64le($cb);
 
         if ($this->cb->toInt() > self::LEVIN_DEFAULT_MAX_PACKET_SIZE) {
             $maxsize = self::LEVIN_DEFAULT_MAX_PACKET_SIZE;
@@ -110,22 +110,22 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return \Denpa\Levin\Types\uInt64
+     * @return \Denpa\Levin\Types\Uint64
      */
-    public function getCb() : uInt64
+    public function getCb() : Uint64
     {
         return $this->cb;
     }
 
     /**
-     * @param mixed $return_data
+     * @param mixed $returnData
      *
      * @return self
      */
-    public function setReturnData($return_data) : self
+    public function setReturnData($returnData) : self
     {
-        $this->return_data = $return_data instanceof Boolean ?
-            $return_data : boolean($return_data);
+        $this->returnData = $returnData instanceof Boolean ?
+            $returnData : boolean($returnData);
 
         return $this;
     }
@@ -137,7 +137,7 @@ class Bucket implements BucketInterface
      */
     public function setCommand($command) : self
     {
-        $command = $command instanceof uInt32 ?
+        $command = $command instanceof Uint32 ?
             $command : uint32le($command);
 
         $this->command = (new CommandFactory($this))->getCommand($command->toInt());
@@ -170,14 +170,14 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param mixed $return_code
+     * @param mixed $returnCode
      *
      * @return self
      */
-    public function setReturnCode($return_code = 0) : self
+    public function setReturnCode($returnCode = 0) : self
     {
-        $this->return_code = $return_code instanceof Int32 ?
-            $return_code : int32le($return_code);
+        $this->returnCode = $returnCode instanceof Int32 ?
+            $returnCode : int32le($returnCode);
 
         return $this;
     }
@@ -189,20 +189,20 @@ class Bucket implements BucketInterface
      */
     public function setFlags($flags) : self
     {
-        $this->flags = $flags instanceof uInt32 ? $flags : uint32le($flags);
+        $this->flags = $flags instanceof Uint32 ? $flags : uint32le($flags);
 
         return $this;
     }
 
     /**
-     * @param mixed $protocol_version
+     * @param mixed $protocolVersion
      *
      * @return self
      */
-    public function setProtocolVersion($protocol_version) : self
+    public function setProtocolVersion($protocolVersion) : self
     {
-        $this->protocol_version = $protocol_version instanceof uInt32 ?
-            $protocol_version : uint32le($protocol_version);
+        $this->protocolVersion = $protocolVersion instanceof Uint32 ?
+            $protocolVersion : uint32le($protocolVersion);
 
         return $this;
     }
@@ -228,11 +228,11 @@ class Bucket implements BucketInterface
         $head = [
             $this->signature,
             $this->cb,
-            $this->return_data,
+            $this->returnData,
             $this->command->getCommand(),
-            $this->return_code,
+            $this->returnCode,
             $this->flags,
-            $this->protocol_version,
+            $this->protocolVersion,
         ];
 
         return implode('', array_map(function ($item) {
@@ -265,16 +265,16 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param resource $fp
+     * @param resource $socket
      *
      * @return void
      */
-    public function writeTo($fp) : void
+    public function writeTo($socket) : void
     {
-        fwrite($fp, $this->head());
+        fwrite($socket, $this->head());
 
         if (!is_null($this->payload_section)) {
-            fwrite($fp, $this->payload()->toBinary());
+            fwrite($socket, $this->payload()->toBinary());
         }
     }
 
@@ -307,27 +307,27 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param resource $fp
+     * @param resource $socket
      *
      * @return mixed
      */
-    public static function readFrom($fp)
+    public static function readFrom($socket)
     {
-        if (feof($fp)) {
+        if (feof($socket)) {
             return;
         }
 
         $bucket = new self([
-            'signature'        => fread($fp, count(uint64le())),
-            'cb'               => fread($fp, count(uint64le())),
-            'return_data'      => fread($fp, count(boolean())),
-            'command'          => fread($fp, count(uint32le())),
-            'return_code'      => fread($fp, count(int32le())),
-            'flags'            => fread($fp, count(uint32le())),
-            'protocol_version' => fread($fp, count(uint32le())),
+            'signature'        => fread($socket, count(uint64le())),
+            'cb'               => fread($socket, count(uint64le())),
+            'return_data'      => fread($socket, count(boolean())),
+            'command'          => fread($socket, count(uint32le())),
+            'return_code'      => fread($socket, count(int32le())),
+            'flags'            => fread($socket, count(uint32le())),
+            'protocol_version' => fread($socket, count(uint32le())),
         ]);
 
-        $section = (new Reader($fp))->read();
+        $section = (new Reader($socket))->read();
 
         return $bucket->setPayloadSection($section);
     }

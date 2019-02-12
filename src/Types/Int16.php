@@ -13,10 +13,10 @@ class Int16 extends SignedInt implements BoostSerializable
     }
 
     /**
-     * @return \Denpa\Levin\Types\uByte
+     * @return \Denpa\Levin\Types\Ubyte
      */
-    public function getSerializeType() : uByte
+    public function getSerializeType() : Ubyte
     {
-        return new uByte(self::SERIALIZE_TYPE_INT16);
+        return new Ubyte(self::SERIALIZE_TYPE_INT16);
     }
 }

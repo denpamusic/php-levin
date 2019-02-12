@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Types\uInt32;
+use Denpa\Levin\Types\Uint32;
 
 abstract class Command implements CommandInterface
 {
@@ -42,11 +42,11 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * @return \Denpa\Levin\Types\uInt32
+     * @return \Denpa\Levin\Types\Uint32
      */
-    public function getCommand() : uInt32
+    public function getCommand() : Uint32
     {
-        return new uInt32($this->getCommandCode(), uInt32::LE);
+        return new Uint32($this->getCommandCode(), Uint32::LE);
     }
 
     /**

@@ -2,14 +2,14 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Types\uInt32;
+use Denpa\Levin\Types\Uint32;
 
 interface CommandInterface
 {
     /**
-     * @return \Denpa\Levin\Types\uInt32
+     * @return \Denpa\Levin\Types\Uint32
      */
-    public function getCommand() : uInt32;
+    public function getCommand() : Uint32;
 
     /**
      * @return int

@@ -3,14 +3,14 @@
 namespace Denpa\Levin\Section;
 
 use ArrayAccess;
-use ArrayIterator;
 use Countable;
 use Denpa\Levin;
 use Denpa\Levin\BufferInterface;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
-use Denpa\Levin\Types\uByte;
+use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Traits\Arrayable;
 use IteratorAggregate;
 
 class Section implements
@@ -21,6 +21,8 @@ class Section implements
     BoostSerializable,
     BufferInterface
 {
+    use Arrayable;
+
     /**
      * @var array
      */
@@ -61,51 +63,6 @@ class Section implements
     }
 
     /**
-     * @param mixed $offset
-     * @param mixed $value
-     *
-     * @return void
-     */
-    public function offsetSet($offset, $value) : void
-    {
-        if (is_null($offset)) {
-            $this->entries[] = $value;
-        } else {
-            $this->entries[$offset] = $value;
-        }
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset) : bool
-    {
-        return isset($this->entries[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return void
-     */
-    public function offsetUnset($offset) : void
-    {
-        unset($this->entries[$offset]);
-    }
-
-    /**
-     * @param mixed $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return $this->entries[$offset] ?? null;
-    }
-
-    /**
      * @return int
      */
     public function count() : int
@@ -114,19 +71,11 @@ class Section implements
     }
 
     /**
-     * @return \ArrayIterator
+     * @return \Denpa\Levin\Types\Ubyte
      */
-    public function getIterator() : ArrayIterator
+    public function getSerializeType() : Ubyte
     {
-        return new ArrayIterator($this->entries);
-    }
-
-    /**
-     * @return \Denpa\Levin\Types\uByte
-     */
-    public function getSerializeType() : uByte
-    {
-        return new uByte(self::SERIALIZE_TYPE_OBJECT);
+        return new Ubyte(self::SERIALIZE_TYPE_OBJECT);
     }
 
     /**
@@ -173,6 +122,9 @@ class Section implements
         return strlen($this->serialize());
     }
 
+    /**
+     * @return array
+     */
     public function getEntries() : array
     {
         return $this->entries;

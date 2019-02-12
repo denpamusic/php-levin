@@ -10,13 +10,13 @@ $fp = fsockopen($ip, $port);
 if ($fp) {
     Bucket::request()->handshake()->writeTo($fp);
 
-    while($bucket = Bucket::readFrom($fp)) {
+    while ($bucket = Bucket::readFrom($fp)) {
         if ($bucket->getCommand() instanceof SupportFlags) {
             // respond to support flags request
             Bucket::response()->supportflags()->writeTo($fp);
         }
 
-        var_dump($bucket);
+        var_dump($bucket->payload());
     }
 
     fclose($fp);

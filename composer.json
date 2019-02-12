@@ -1,7 +1,7 @@
 {
     "name": "denpa/php-levin",
     "type": "library",
-    "description": "Levin in PHP",
+    "description": "Pure PHP implementation of monero's Levin protocol.",
     "keywords": ["monero","levin","p2p","network"],
     "homepage": "https://github.com/denpamusic/php-levin",
     "license": "MIT",

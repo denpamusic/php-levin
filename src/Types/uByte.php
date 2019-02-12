@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin\Types;
 
-class uByte extends Type implements BoostSerializable
+class Ubyte extends Type implements BoostSerializable
 {
     /**
      * @return string
@@ -13,7 +13,7 @@ class uByte extends Type implements BoostSerializable
     }
 
     /**
-     * @return \Denpa\Levin\Types\uByte
+     * @return \Denpa\Levin\Types\Ubyte
      */
     public function getSerializeType() : self
     {

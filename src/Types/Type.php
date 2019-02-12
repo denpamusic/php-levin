@@ -90,6 +90,24 @@ abstract class Type implements TypeInterface, Countable
     }
 
     /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param resource $socket
+     *
+     * @return self
+     */
+    public function readFrom($socket)
+    {
+        return new static(fread($socket, count($this)));
+    }
+
+    /**
      * @return string
      */
     abstract protected function getTypeCode() : string;

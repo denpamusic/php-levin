@@ -3,24 +3,49 @@
 namespace Denpa\Levin\Section;
 
 use Denpa\Levin;
-use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Int8;
+use Denpa\Levin\Types\Int16;
+use Denpa\Levin\Types\Int32;
+use Denpa\Levin\Types\Int64;
+use Denpa\Levin\Types\Uint8;
+use Denpa\Levin\Types\Uint16;
+use Denpa\Levin\Types\Uint32;
+use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Bytearray;
+use Denpa\Levin\Types\Bytestring;
+use Denpa\Levin\Types\BoostSerializable;
 
 class Reader
 {
     /**
      * @var resourse
      */
-    protected $fp;
+    protected $socket;
 
     /**
-     * @param resourse $fp
+     * @var array
+     */
+    protected $types = [
+        Section::SERIALIZE_TYPE_UINT64 => Uint64::class,
+        Section::SERIALIZE_TYPE_INT64  => Int64::class,
+        Section::SERIALIZE_TYPE_UINT32 => Uint32::class,
+        Section::SERIALIZE_TYPE_INT32  => Int32::class,
+        Section::SERIALIZE_TYPE_UINT16 => Uint16::class,
+        Section::SERIALIZE_TYPE_INT16  => Int16::class,
+        Section::SERIALIZE_TYPE_UINT8  => Uint8::class,
+        Section::SERIALIZE_TYPE_INT8   => Int8::class,
+        Section::SERIALIZE_TYPE_OBJECT => Section::class,
+        Section::SERIALIZE_TYPE_STRING => Bytestring::class,
+    ];
+
+    /**
+     * @param resourse $socket
      *
      * @return void
      */
-    public function __construct($fp)
+    public function __construct($socket)
     {
-        $this->fp = $fp;
+        $this->socket = $socket;
     }
 
     /**
@@ -29,10 +54,18 @@ class Reader
     public function read() : Section
     {
         $signatures = [
-            fread($this->fp, count(Levin\uint32le())),
-            fread($this->fp, count(Levin\uint32le())),
-            fread($this->fp, count(Levin\ubyte())),
+            Levin\uint32le()->readFrom($this->socket),
+            Levin\uint32le()->readFrom($this->socket),
+            Levin\ubyte()->readFrom($this->socket),
         ];
+
+        foreach ((new Section())->getSignatures() as $key => $signature) {
+            if ($signatures[$key]->toHex() != $signature->toHex()) {
+                throw new \Exception(
+                    "Section signature mismatch [0x{$signature->toHex()}]"
+                );
+            }
+        }
 
         return $this->readSection();
     }
@@ -44,7 +77,7 @@ class Reader
     {
         $section = new Section();
 
-        $count = Levin\varint()->readFrom($this->fp)->toInt();
+        $count = Levin\varint()->readFrom($this->socket)->toInt();
 
         while ($count > 0) {
             $section[$this->readName()] = $this->loadEntries();
@@ -59,8 +92,8 @@ class Reader
      */
     protected function readName() : string
     {
-        $length = Levin\ubyte(fread($this->fp, count(Levin\ubyte())));
-        $name = fread($this->fp, $length->toInt());
+        $length = Levin\ubyte()->readFrom($this->socket);
+        $name = fread($this->socket, $length->toInt());
 
         return $name;
     }
@@ -70,15 +103,17 @@ class Reader
      */
     protected function loadEntries() : BoostSerializable
     {
-        $type = Levin\ubyte(fread($this->fp, count(Levin\ubyte())))->toInt();
+        $type = Levin\ubyte()->readFrom($this->socket)->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             return $this->readArrayEntry($type);
-        } elseif ($type == Section::SERIALIZE_TYPE_ARRAY) {
-            return $this->readEntryArrayEntry($type);
-        } else {
-            return $this->readValue($type);
         }
+
+        if ($type == Section::SERIALIZE_TYPE_ARRAY) {
+            return $this->readEntryArrayEntry($type);
+        }
+
+        return $this->readValue($type);
     }
 
     /**
@@ -88,13 +123,13 @@ class Reader
      */
     protected function readEntryArrayEntry($type) : Bytearray
     {
-        $type = Levin\ubyte(fread($this->fp, count(Levin\ubyte())))->toInt();
+        $type = Levin\ubyte()->readFrom($this->socket)->toInt();
 
         if (($type & SERIALIZE_FLAG_ARRAY) != 0) {
             throw new \Exception('Incorrect array sequence');
         }
 
-        return readArrayEntry($type);
+        return $this->readArrayEntry($type);
     }
 
     /**
@@ -106,7 +141,7 @@ class Reader
     {
         $result = [];
         $type &= ~Section::SERIALIZE_FLAG_ARRAY;
-        $size = Levin\varint()->readFrom($this->fp)->toInt();
+        $size = Levin\varint()->readFrom($this->socket)->toInt();
 
         while ($size > 0) {
             $result[] = $this->readValue($type);
@@ -123,31 +158,14 @@ class Reader
      */
     protected function readValue(int $type) : BoostSerializable
     {
-        switch ($type) {
-            case Section::SERIALIZE_TYPE_UINT64:
-                return Levin\uint64le(fread($this->fp, count(Levin\uint64le())));
-            case Section::SERIALIZE_TYPE_INT64:
-                return Levin\int64le(fread($this->fp, count(Levin\int64le())));
-            case Section::SERIALIZE_TYPE_UINT32:
-                return Levin\uint32le(fread($this->fp, count(Levin\uint32le())));
-            case Section::SERIALIZE_TYPE_INT32:
-                return Levin\int32le(fread($this->fp, count(Levin\int32le())));
-            case Section::SERIALIZE_TYPE_UINT16:
-                return Levin\uint16le(fread($this->fp, count(Levin\uint16le())));
-            case Section::SERIALIZE_TYPE_INT16:
-                return Levin\int16le(fread($this->fp, count(Levin\int16le())));
-            case Section::SERIALIZE_TYPE_UINT8:
-                return Levin\uint8le(fread($this->fp, count(Levin\uint8le())));
-            case Section::SERIALIZE_TYPE_INT8:
-                return Levin\int8le(fread($this->fp, count(Levin\int8le())));
-            case Section::SERIALIZE_TYPE_OBJECT:
-                return $this->readSection();
-            case Section::SERIALIZE_TYPE_STRING:
-                $length = Levin\varint()->readFrom($this->fp)->toInt();
-
-                return Levin\bytestring(fread($this->fp, $length));
-            default:
-                throw new \Exception("Cannot unserialize unknown type [$type]");
+        if (!array_key_exists($type, $this->types)) {
+            throw new \Exception("Cannot unserialize unknown type [$type]");
         }
+
+        if ($this->types[$type] == Section::class) {
+            return $this->readSection();
+        }
+
+        return (new $this->types[$type](null))->readFrom($this->socket);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin\Types;
 
-class VarInt extends Type
+class Varint extends Type
 {
     /**
      * @var int
@@ -36,31 +36,31 @@ class VarInt extends Type
     {
         switch (true) {
             case $this->value <= 63:
-                $value = new uByte(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_BYTE);
+                $value = new Ubyte(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_BYTE);
                 break;
             case $this->value <= 16383:
-                $value = new uInt16(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_WORD, Type::LE);
+                $value = new Uint16(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_WORD, Type::LE);
                 break;
             case $this->value <= 1073741823:
-                $value = new uInt32(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_DWORD, Type::LE);
+                $value = new Uint32(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_DWORD, Type::LE);
                 break;
             case $this->value >= 4611686018427387903:
                 throw new \Exception('VarInt is too large [> 4611686018427387903]');
             default:
-                $value = new uInt64(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_INT64, Type::LE);
+                $value = new Uint64(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_INT64, Type::LE);
         }
 
         return $value->toBinary();
     }
 
     /**
-     * @param resourse $fp
+     * @param resourse $socket
      *
-     * @return self
+     * @return \Levin\Types\Type
      */
-    public function readFrom($fp) : self
+    public function readFrom($socket) : Type
     {
-        $first = new uByte(fread($fp, count(new uByte(0))));
+        $first = new Ubyte(fread($socket, count(new Ubyte(0))));
 
         $mask = $first->toInt() & self::PORTABLE_RAW_SIZE_MARK_MASK;
 
@@ -69,13 +69,13 @@ class VarInt extends Type
                 $int = $first->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_WORD:
-                $int = (new uInt16($first.fread($fp, 1), Type::LE))->toInt();
+                $int = (new Uint16($first.fread($socket, 1), Type::LE))->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_DWORD:
-                $int = (new uInt32($first.fread($fp, 3), Type::LE))->toInt();
+                $int = (new Uint32($first.fread($socket, 3), Type::LE))->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_INT64:
-                $int = (new uInt64($first.fread($fp, 7), Type::LE))->toInt();
+                $int = (new Uint64($first.fread($socket, 7), Type::LE))->toInt();
                 break;
             default:
                 throw new \Exception("Incorrect VarInt mask [$mask]");

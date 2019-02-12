@@ -48,7 +48,7 @@ if (!function_exists('varint')) {
      */
     function varint($int = 0) : TypeInterface
     {
-        return new Types\VarInt($int);
+        return new Types\Varint($int);
     }
 }
 
@@ -60,7 +60,7 @@ if (!function_exists('ubyte')) {
      */
     function ubyte($int = 0) : TypeInterface
     {
-        return new Types\uByte($int);
+        return new Types\Ubyte($int);
     }
 }
 
@@ -72,7 +72,7 @@ if (!function_exists('uint8le')) {
      */
     function uint8le($int = 0) : TypeInterface
     {
-        return new Types\uInt8($int, TypeInterface::LE);
+        return new Types\Uint8($int, TypeInterface::LE);
     }
 }
 
@@ -96,7 +96,7 @@ if (!function_exists('uint16le')) {
      */
     function uint16le($int = 0) : TypeInterface
     {
-        return new Types\uInt16($int, TypeInterface::LE);
+        return new Types\Uint16($int, TypeInterface::LE);
     }
 }
 
@@ -120,7 +120,7 @@ if (!function_exists('uint32le')) {
      */
     function uint32le($int = 0) : TypeInterface
     {
-        return new Types\uInt32($int, TypeInterface::LE);
+        return new Types\Uint32($int, TypeInterface::LE);
     }
 }
 
@@ -144,7 +144,7 @@ if (!function_exists('uint64le')) {
      */
     function uint64le($int = 0) : TypeInterface
     {
-        return new Types\uInt64($int, TypeInterface::LE);
+        return new Types\Uint64($int, TypeInterface::LE);
     }
 }
 
