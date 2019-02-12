@@ -1,0 +1,26 @@
+{
+    "name": "denpa/php-levin",
+    "type": "library",
+    "description": "Levin in PHP",
+    "keywords": ["monero","levin","p2p","network"],
+    "homepage": "https://github.com/denpamusic/php-levin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denis Paavilainen",
+            "email": "denpa@netfleet.space",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Denpa\\Levin\\": "src"
+        },
+        "files" : [
+            "src/functions.php"
+        ]
+    }
+}
