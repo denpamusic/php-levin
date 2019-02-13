@@ -32,16 +32,6 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * @param array $args
-     *
-     * @return void
-     */
-    public function setArgs(array $args) : void
-    {
-        $this->args = $args;
-    }
-
-    /**
      * @return \Denpa\Levin\Types\Uint32
      */
     public function getCommand() : Uint32

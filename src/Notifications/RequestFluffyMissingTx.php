@@ -20,6 +20,6 @@ class RequestFluffyMissingTx extends Command implements NotificationInterface
      */
     public function getCommandCode() : int
     {
-        return self::BC_COMMANDS_POOL_BASE + 6;
+        return self::BC_COMMANDS_POOL_BASE + 9;
     }
 }
