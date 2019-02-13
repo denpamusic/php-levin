@@ -57,9 +57,9 @@ class Reader
     public function read() : Section
     {
         $signatures = [
-            $this->connection->read(new uInt32()),
-            $this->connection->read(new uInt32()),
-            $this->connection->read(new uByte()),
+            $this->connection->read(new Uint32()),
+            $this->connection->read(new Uint32()),
+            $this->connection->read(new Ubyte()),
         ];
 
         foreach ((new Section())->getSignatures() as $key => $signature) {
@@ -95,7 +95,7 @@ class Reader
      */
     protected function readName() : string
     {
-        $length = $this->connection->read(new uByte());
+        $length = $this->connection->read(new Ubyte());
 
         return $this->connection->readBytes($length->toInt());
     }
@@ -105,7 +105,7 @@ class Reader
      */
     protected function loadEntries() : BoostSerializable
     {
-        $type = $this->connection->read(new uByte())->toInt();
+        $type = $this->connection->read(new Ubyte())->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             return $this->readArrayEntry($type);
@@ -125,7 +125,7 @@ class Reader
      */
     protected function readEntryArrayEntry($type) : Bytearray
     {
-        $type = $this->connection->read(new uByte())->toInt();
+        $type = $this->connection->read(new Ubyte())->toInt();
 
         if (($type & SERIALIZE_FLAG_ARRAY) != 0) {
             throw new \Exception('Incorrect array sequence');

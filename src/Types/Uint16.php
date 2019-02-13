@@ -2,14 +2,14 @@
 
 namespace Denpa\Levin\Types;
 
-class uInt32 extends Type implements BoostSerializable
+class Uint16 extends Type implements BoostSerializable
 {
     /**
      * @return string
      */
     protected function getTypeCode() : string
     {
-        return $this->isBigEndian() ? 'N' : 'V';
+        return $this->isBigEndian() ? 'n' : 'v';
     }
 
     /**
@@ -17,6 +17,6 @@ class uInt32 extends Type implements BoostSerializable
      */
     public function getSerializeType() : Ubyte
     {
-        return new Ubyte(self::SERIALIZE_TYPE_UINT32);
+        return new Ubyte(self::SERIALIZE_TYPE_UINT16);
     }
 }

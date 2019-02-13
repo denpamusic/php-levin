@@ -285,7 +285,7 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param Connection $connection
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return mixed
      */
