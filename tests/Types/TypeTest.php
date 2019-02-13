@@ -2,9 +2,9 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use UnexpectedValueException;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Type;
+use UnexpectedValueException;
 
 class TypeTest extends TestCase
 {

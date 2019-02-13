@@ -2,9 +2,8 @@
 
 namespace Denpa\Levin\Tests;
 
-use Denpa\Levin\Types\Uint16;
-use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
+use Denpa\Levin\Types\Uint16;
 
 class SignatureMismatchExceptionTest extends TestCase
 {
