@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin\Types;
 
-class Ubyte extends Type implements BoostSerializable
+class uByte extends Type implements BoostSerializable
 {
     /**
      * @return string

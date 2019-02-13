@@ -3,7 +3,6 @@
 namespace Denpa\Levin\Types;
 
 use Countable;
-use Denpa\Levin\Connection;
 
 abstract class Type implements TypeInterface, Countable
 {

@@ -6,11 +6,11 @@ use ArrayAccess;
 use Countable;
 use Denpa\Levin;
 use Denpa\Levin\BufferInterface;
+use Denpa\Levin\Traits\Arrayable;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
 use Denpa\Levin\Types\Ubyte;
-use Denpa\Levin\Traits\Arrayable;
 use IteratorAggregate;
 
 class Section implements

@@ -4,8 +4,8 @@ namespace Denpa\Levin\Types;
 
 use ArrayAccess;
 use Countable;
-use IteratorAggregate;
 use Denpa\Levin\Traits\Arrayable;
+use IteratorAggregate;
 
 class Bytearray implements
     BoostSerializable,

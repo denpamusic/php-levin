@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin\Types;
 
-class Uint64 extends Type implements BoostSerializable
+class uInt64 extends Type implements BoostSerializable
 {
     /**
      * @return string

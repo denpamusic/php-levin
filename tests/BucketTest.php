@@ -3,16 +3,16 @@
 namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
+use Denpa\Levin\CommandFactory;
+use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Requests\Handshake;
+use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin\Section\Section;
+use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Types\Boolean;
-use Denpa\Levin\CommandFactory;
-use Denpa\Levin\CommandInterface;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Requests\Handshake;
-use Denpa\Levin\Requests\RequestInterface;
 
 class BucketTest extends TestCase
 {
@@ -26,13 +26,13 @@ class BucketTest extends TestCase
         $this->bucket = new FakeBucket();
 
         $this->headBytemap = [
-            'signature'        => count(new Uint64),
-            'cb'               => count(new Uint64),
-            'returnData'       => count(new Boolean),
-            'command'          => count(new Uint32),
-            'returnCode'       => count(new Int32),
-            'flags'            => count(new Uint32),
-            'protocolVersion'  => count(new Uint32),
+            'signature'        => count(new Uint64()),
+            'cb'               => count(new Uint64()),
+            'returnData'       => count(new Boolean()),
+            'command'          => count(new Uint32()),
+            'returnCode'       => count(new Int32()),
+            'flags'            => count(new Uint32()),
+            'protocolVersion'  => count(new Uint32()),
         ];
     }
 
@@ -156,7 +156,7 @@ class BucketTest extends TestCase
      */
     public function testFill() : void
     {
-        $handshake = new Handshake;
+        $handshake = new Handshake();
         $this->bucket->fill($handshake);
         $this->assertSame($handshake->getCommandCode(), $this->bucket->command->getCommandCode());
         $this->assertSame($handshake->request()['network_id'], $this->bucket->command->request()['network_id']);
@@ -240,7 +240,7 @@ class BucketTest extends TestCase
      */
     public function testHead() : void
     {
-        $handshake = new Handshake;
+        $handshake = new Handshake();
         $this->bucket->fill($handshake);
 
         $offset = 0;
@@ -259,7 +259,7 @@ class BucketTest extends TestCase
      */
     public function testPayload() : void
     {
-        $handshake = new Handshake;
+        $handshake = new Handshake();
         $this->bucket->fill($handshake);
         $this->assertSame($handshake->request()['network_id'], $this->bucket->payload()['network_id']);
     }
@@ -269,7 +269,7 @@ class BucketTest extends TestCase
      */
     public function testSerialize() : void
     {
-        $handshake = new Handshake;
+        $handshake = new Handshake();
         $this->bucket->fill($handshake);
         $this->assertEquals([$this->bucket->head(), $this->bucket->payload()], $this->bucket->serialize());
     }
@@ -299,7 +299,7 @@ class BucketTest extends TestCase
      */
     public function testWrite() : void
     {
-        $handshake = new Handshake;
+        $handshake = new Handshake();
         $this->bucket->fill($handshake);
 
         $connection = $this->createMock(Connection::class);
