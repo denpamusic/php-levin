@@ -13,6 +13,11 @@ abstract class Type implements TypeInterface, Countable
     protected $endianness;
 
     /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
      * @param mixed $value
      * @param int   $endianness
      *

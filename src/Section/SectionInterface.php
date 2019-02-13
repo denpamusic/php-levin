@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin\Section;
 
-use Denpa\Levin\Types\TypeInterface;
+use Denpa\Levin\Types\BoostSerializable;
 
 interface SectionInterface
 {
@@ -48,9 +48,9 @@ interface SectionInterface
 
     /**
      * @param string $key
-     * @param \Denpa\Levin\Types\TypeInterface
+     * @param \Denpa\Levin\Types\BoostSerializable
      *
      * @return self
      */
-    public function add(string $key, TypeInterface $value);
+    public function add(string $key, BoostSerializable $value);
 }

@@ -17,6 +17,6 @@ class Int64 extends SignedInt implements BoostSerializable
      */
     public function getSerializeType() : Ubyte
     {
-        return new Ubyte(self::SERIALIZE_TYPE_UINT64);
+        return new Ubyte(self::SERIALIZE_TYPE_INT64);
     }
 }

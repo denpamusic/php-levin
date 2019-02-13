@@ -9,7 +9,6 @@ use Denpa\Levin\BufferInterface;
 use Denpa\Levin\Traits\Arrayable;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
-use Denpa\Levin\Types\TypeInterface;
 use Denpa\Levin\Types\Ubyte;
 use IteratorAggregate;
 use UnexpectedValueException;
@@ -51,12 +50,12 @@ class Section implements
     }
 
     /**
-     * @param string                           $key
-     * @param \Denpa\Levin\Types\TypeInterface $value
+     * @param string                               $key
+     * @param \Denpa\Levin\Types\BoostSerializable $value
      *
      * @return self
      */
-    public function add(string $key, TypeInterface $value) : self
+    public function add(string $key, BoostSerializable $value) : self
     {
         $this->entries[$key] = $value;
 
@@ -142,9 +141,7 @@ class Section implements
             $result .= $item->getSerializeType();
 
             if ($item instanceof Bytestring || $item instanceof self) {
-                $size = $item instanceof self ?
-                    count($item) : $item->getByteSize();
-                $result .= Levin\varint($size);
+                $result .= Levin\varint(count($item));
             }
 
             $result .= $item;

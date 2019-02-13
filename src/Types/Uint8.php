@@ -17,6 +17,6 @@ class Uint8 extends Type implements BoostSerializable
      */
     public function getSerializeType() : Ubyte
     {
-        return new Ubyte(self::SERIALIZE_TYPE_INT8);
+        return new Ubyte(self::SERIALIZE_TYPE_UINT8);
     }
 }
