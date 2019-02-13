@@ -2,11 +2,14 @@
 
 namespace Denpa\Levin;
 
+use Denpa\Levin\Connection;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
+use Denpa\Levin\Types\Boolean;
+use Denpa\Levin\Types\TypeInterface;
 
 class Bucket implements BucketInterface
 {
@@ -57,9 +60,12 @@ class Bucket implements BucketInterface
     {
         // set some defaults
         $defaults = [
-            'signature'        => uint64le(self::LEVIN_SIGNATURE),
-            'protocol_version' => uint32le(self::LEVIN_PROTOCOL_VER_1),
-            'cb'               => uint64le(0),
+            'signature'        => self::LEVIN_SIGNATURE,
+            'cb'               => 0,
+            'return_data'      => true,
+            'return_code'      => 0,
+            'protocol_version' => self::LEVIN_PROTOCOL_VER_1,
+            'flags'            => self::LEVIN_PACKET_REQUEST,
         ];
 
         $params = $params + $defaults;
@@ -146,9 +152,9 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return \Denpa\Levin\CommandInterface
+     * @return \Denpa\Levin\CommandInterface|null
      */
-    public function getCommand() : CommandInterface
+    public function getCommand() : ?CommandInterface
     {
         return $this->command;
     }
@@ -215,7 +221,7 @@ class Bucket implements BucketInterface
     public function setPayloadSection(Section $section) : self
     {
         $this->setCb($section->getByteSize());
-        $this->payload_section = $section;
+        $this->payloadSection = $section;
 
         return $this;
     }
@@ -226,18 +232,28 @@ class Bucket implements BucketInterface
     public function head() : string
     {
         $head = [
-            $this->signature,
-            $this->cb,
-            $this->returnData,
-            $this->command->getCommand(),
-            $this->returnCode,
-            $this->flags,
-            $this->protocolVersion,
+            'signature'        => $this->signature,
+            'cb'               => $this->cb,
+            'return_data'      => $this->returnData,
+            'command'          => $this->command,
+            'return_code'      => $this->returnCode,
+            'flags'            => $this->flags,
+            'protocol_version' => $this->protocolVersion,
         ];
 
-        return implode('', array_map(function ($item) {
-            return $item->toBinary();
-        }, $head));
+        array_walk($head, function (&$item, $key) {
+            if (is_null($item)) {
+                throw new \Exception("Value for [$key] must be set");
+            }
+
+            if ($item instanceof CommandInterface) {
+                $item = $item->getCommand();
+            }
+
+            $item = $item->toBinary();
+        });
+
+        return implode('', $head);
     }
 
     /**
@@ -245,15 +261,7 @@ class Bucket implements BucketInterface
      */
     public function payload() : ?Section
     {
-        return $this->payload_section;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString() : string
-    {
-        return $this->serialize();
+        return $this->payloadSection;
     }
 
     /**
@@ -265,17 +273,46 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param resource $socket
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return void
      */
-    public function writeTo($socket) : void
+    public function write(Connection $connection) : void
     {
-        fwrite($socket, $this->head());
+        $connection->write($this->head());
 
-        if (!is_null($this->payload_section)) {
-            fwrite($socket, $this->payload()->toBinary());
+        if (!is_null($this->payloadSection)) {
+            $connection->write($this->payload()->toBinary());
         }
+    }
+
+    /**
+     * @param Connection $connection
+     *
+     * @return mixed
+     */
+    public function read(Connection $connection)
+    {
+        if ($connection->eof()) {
+            return;
+        }
+
+        $bucket = new static([
+            'signature'        => $connection->read(uint64le()),
+            'cb'               => $connection->read(uint64le()),
+            'return_data'      => $connection->read(boolean()),
+            'command'          => $connection->read(uint32le()),
+            'return_code'      => $connection->read(int32le()),
+            'flags'            => $connection->read(uint32le()),
+            'protocol_version' => $connection->read(uint32le()),
+        ]);
+
+        if ($bucket->getCb()->toInt() > 0) {
+            $section = (new Reader($connection))->read();
+            $bucket->setPayloadSection($section);
+        }
+
+        return $bucket;
     }
 
     /**
@@ -283,10 +320,10 @@ class Bucket implements BucketInterface
      */
     public static function request() : CommandFactory
     {
-        $bucket = new self([
+        $bucket = new static([
             'return_data' => true,
             'return_code' => 0,
-            'flags'       => uint32le(self::LEVIN_PACKET_REQUEST),
+            'flags'       => self::LEVIN_PACKET_REQUEST,
         ]);
 
         return new CommandFactory($bucket);
@@ -297,38 +334,12 @@ class Bucket implements BucketInterface
      */
     public static function response() : CommandFactory
     {
-        $bucket = new self([
+        $bucket = new static([
             'return_data' => false,
             'return_code' => 0,
-            'flags'       => uint32le(self::LEVIN_PACKET_RESPONSE),
+            'flags'       => self::LEVIN_PACKET_RESPONSE,
         ]);
 
         return new CommandFactory($bucket);
-    }
-
-    /**
-     * @param resource $socket
-     *
-     * @return mixed
-     */
-    public static function readFrom($socket)
-    {
-        if (feof($socket)) {
-            return;
-        }
-
-        $bucket = new self([
-            'signature'        => fread($socket, count(uint64le())),
-            'cb'               => fread($socket, count(uint64le())),
-            'return_data'      => fread($socket, count(boolean())),
-            'command'          => fread($socket, count(uint32le())),
-            'return_code'      => fread($socket, count(int32le())),
-            'flags'            => fread($socket, count(uint32le())),
-            'protocol_version' => fread($socket, count(uint32le())),
-        ]);
-
-        $section = (new Reader($socket))->read();
-
-        return $bucket->setPayloadSection($section);
     }
 }

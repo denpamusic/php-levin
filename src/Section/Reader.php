@@ -3,6 +3,7 @@
 namespace Denpa\Levin\Section;
 
 use Denpa\Levin;
+use Denpa\Levin\Connection;
 use Denpa\Levin\Types\Int8;
 use Denpa\Levin\Types\Int16;
 use Denpa\Levin\Types\Int32;
@@ -11,6 +12,8 @@ use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Uint16;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
+use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Varint;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\BoostSerializable;
@@ -18,9 +21,9 @@ use Denpa\Levin\Types\BoostSerializable;
 class Reader
 {
     /**
-     * @var resourse
+     * @var \Denpa\Levin\Connection
      */
-    protected $socket;
+    protected $connection;
 
     /**
      * @var array
@@ -39,13 +42,13 @@ class Reader
     ];
 
     /**
-     * @param resourse $socket
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return void
      */
-    public function __construct($socket)
+    public function __construct(Connection $connection)
     {
-        $this->socket = $socket;
+        $this->connection = $connection;
     }
 
     /**
@@ -54,9 +57,9 @@ class Reader
     public function read() : Section
     {
         $signatures = [
-            Levin\uint32le()->readFrom($this->socket),
-            Levin\uint32le()->readFrom($this->socket),
-            Levin\ubyte()->readFrom($this->socket),
+            $this->connection->read(new uInt32()),
+            $this->connection->read(new uInt32()),
+            $this->connection->read(new uByte()),
         ];
 
         foreach ((new Section())->getSignatures() as $key => $signature) {
@@ -77,7 +80,7 @@ class Reader
     {
         $section = new Section();
 
-        $count = Levin\varint()->readFrom($this->socket)->toInt();
+        $count = $this->connection->read(new Varint)->toInt();
 
         while ($count > 0) {
             $section[$this->readName()] = $this->loadEntries();
@@ -92,10 +95,8 @@ class Reader
      */
     protected function readName() : string
     {
-        $length = Levin\ubyte()->readFrom($this->socket);
-        $name = fread($this->socket, $length->toInt());
-
-        return $name;
+        $length = $this->connection->read(new uByte);
+        return $this->connection->readBytes($length->toInt());
     }
 
     /**
@@ -103,7 +104,7 @@ class Reader
      */
     protected function loadEntries() : BoostSerializable
     {
-        $type = Levin\ubyte()->readFrom($this->socket)->toInt();
+        $type = $this->connection->read(new uByte)->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             return $this->readArrayEntry($type);
@@ -123,7 +124,7 @@ class Reader
      */
     protected function readEntryArrayEntry($type) : Bytearray
     {
-        $type = Levin\ubyte()->readFrom($this->socket)->toInt();
+        $type = $this->connection->read(new uByte)->toInt();
 
         if (($type & SERIALIZE_FLAG_ARRAY) != 0) {
             throw new \Exception('Incorrect array sequence');
@@ -141,11 +142,11 @@ class Reader
     {
         $result = [];
         $type &= ~Section::SERIALIZE_FLAG_ARRAY;
-        $size = Levin\varint()->readFrom($this->socket)->toInt();
+        $count = $this->connection->read(new Varint)->toInt();
 
-        while ($size > 0) {
+        while ($count > 0) {
             $result[] = $this->readValue($type);
-            $size--;
+            $count--;
         }
 
         return Levin\bytearray($result);
@@ -166,6 +167,6 @@ class Reader
             return $this->readSection();
         }
 
-        return (new $this->types[$type](null))->readFrom($this->socket);
+        return $this->connection->read(new $this->types[$type]);
     }
 }

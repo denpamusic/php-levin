@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin;
 
+use Denpa\Levin\Connection;
 use Denpa\Levin\Section\Section;
 
 interface BucketInterface
@@ -42,16 +43,16 @@ interface BucketInterface
     public function payload() : ?Section;
 
     /**
-     * @param resource $socket
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return void
      */
-    public function writeTo($socket) : void;
+    public function write(Connection $connection) : void;
 
     /**
-     * @param resource $socket
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return mixed
      */
-    public static function readFrom($socket);
+    public function read(Connection $connection);
 }

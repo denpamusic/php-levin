@@ -63,14 +63,6 @@ class Section implements
     }
 
     /**
-     * @return int
-     */
-    public function count() : int
-    {
-        return count($this->entries);
-    }
-
-    /**
      * @return \Denpa\Levin\Types\Ubyte
      */
     public function getSerializeType() : Ubyte

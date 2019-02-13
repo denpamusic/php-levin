@@ -3,6 +3,7 @@
 namespace Denpa\Levin\Types;
 
 use Countable;
+use Denpa\Levin\Connection;
 
 abstract class Type implements TypeInterface, Countable
 {
@@ -17,7 +18,7 @@ abstract class Type implements TypeInterface, Countable
      *
      * @return void
      */
-    public function __construct($value, int $endianness = self::BE)
+    public function __construct($value = null, int $endianness = self::BE)
     {
         $this->endianness = $endianness;
         $this->value = $value;
@@ -95,16 +96,6 @@ abstract class Type implements TypeInterface, Countable
     public function getValue()
     {
         return $this->value;
-    }
-
-    /**
-     * @param resource $socket
-     *
-     * @return self
-     */
-    public function readFrom($socket)
-    {
-        return new static(fread($socket, count($this)));
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Denpa\Levin\Types;
 
+use Denpa\Levin\Connection;
+
 class Varint extends Type
 {
     /**
@@ -54,13 +56,13 @@ class Varint extends Type
     }
 
     /**
-     * @param resourse $socket
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return \Levin\Types\Type
      */
-    public function readFrom($socket) : Type
+    public function read(Connection $connection) : Type
     {
-        $first = new Ubyte(fread($socket, count(new Ubyte(0))));
+        $first = $connection->read(new Ubyte());
 
         $mask = $first->toInt() & self::PORTABLE_RAW_SIZE_MARK_MASK;
 
@@ -69,13 +71,13 @@ class Varint extends Type
                 $int = $first->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_WORD:
-                $int = (new Uint16($first.fread($socket, 1), Type::LE))->toInt();
+                $int = (new Uint16($first.$connection->readBytes(1), Type::LE))->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_DWORD:
-                $int = (new Uint32($first.fread($socket, 3), Type::LE))->toInt();
+                $int = (new Uint32($first.$connection->readBytes(1), Type::LE))->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_INT64:
-                $int = (new Uint64($first.fread($socket, 7), Type::LE))->toInt();
+                $int = (new Uint64($first.$connection->readBytes(1), Type::LE))->toInt();
                 break;
             default:
                 throw new \Exception("Incorrect VarInt mask [$mask]");

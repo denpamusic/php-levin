@@ -2,6 +2,8 @@
 
 namespace Denpa\Levin\Types;
 
+use Denpa\Levin\Connection;
+
 class Bytestring extends Type implements BoostSerializable
 {
     /**
@@ -21,14 +23,14 @@ class Bytestring extends Type implements BoostSerializable
     }
 
     /**
-     * @param resource $socket
+     * @param \Denpa\Levin\Connection $connection
      *
      * @return \Levin\Types\Type
      */
-    public function readFrom($socket) : Type
+    public function read(Connection $connection) : Type
     {
-        $length = (new Varint(0))->readFrom($socket)->toInt();
+        $length = $connection->read(new Varint())->toInt();
 
-        return new self(fread($socket, $length));
+        return new self($connection->readBytes($length));
     }
 }

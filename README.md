@@ -3,23 +3,19 @@
 
 ```php
 use Denpa\Levin\Bucket;
+use Denpa\Levin\Connection;
 use Denpa\Levin\Requests\SupportFlags;
 
-$fp = fsockopen($ip, $port);
+$connection = new Connection($ip, $port);
+$connection->write(Bucket::request()->handshake());
 
-if ($fp) {
-    Bucket::request()->handshake()->writeTo($fp);
-
-    while ($bucket = Bucket::readFrom($fp)) {
-        if ($bucket->getCommand() instanceof SupportFlags) {
-            // respond to support flags request
-            Bucket::response()->supportflags()->writeTo($fp);
-        }
-
-        var_dump($bucket->payload());
+while ($bucket = $connection->read(new Bucket())) {
+    if ($bucket->getCommand() instanceof SupportFlags) {
+        // respond to support flags request
+        Bucket::response()->supportflags()->writeTo($fp);
     }
 
-    fclose($fp);
+    var_dump($bucket->payload());
 }
 ```
 
