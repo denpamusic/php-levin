@@ -13,6 +13,7 @@ use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
+use Denpa\Levin\Exceptions\SignatureMismatch;
 
 class BucketTest extends TestCase
 {
@@ -62,8 +63,8 @@ class BucketTest extends TestCase
      */
     public function testSetSignatureWithMismatch() : void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Packet signature mismatch [0000000000000000]');
+        $this->expectException(SignatureMismatch::class);
+        $this->expectExceptionMessage('Packet signature mismatch');
         $this->bucket->setSignature(0x0);
     }
 
@@ -321,6 +322,10 @@ class BucketTest extends TestCase
     {
         $connection = $this->createMock(Connection::class);
 
+        $connection->expects($this->once())
+            ->method('eof')
+            ->willReturn(false);
+
         $connection->expects($this->exactly(7))
             ->method('read')
             ->withConsecutive(
@@ -343,6 +348,22 @@ class BucketTest extends TestCase
             );
 
         $this->bucket->read($connection);
+    }
+
+    /**
+     * @return void
+     */
+    public function testReadEof() : void
+    {
+        $connection = $this->createMock(Connection::class);
+
+        $connection->expects($this->once())
+            ->method('eof')
+            ->willReturn(true);
+
+        $bucket = $this->bucket->read($connection);
+
+        $this->isNull($bucket);
     }
 }
 

@@ -2,12 +2,15 @@
 
 namespace Denpa\Levin;
 
+use LengthException;
+use UnexpectedValueException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
+use Denpa\Levin\Exceptions\SignatureMismatch;
 
 class Bucket implements BucketInterface
 {
@@ -87,9 +90,7 @@ class Bucket implements BucketInterface
             $signature : uint64le($signature);
 
         if ($this->signature != uint64le(self::LEVIN_SIGNATURE)) {
-            $signature = $this->signature->toHex();
-
-            throw new \Exception("Packet signature mismatch [$signature]");
+            throw new SignatureMismatch($this->signature, "Packet signature mismatch");
         }
 
         return $this;
@@ -107,7 +108,7 @@ class Bucket implements BucketInterface
         if ($this->cb->toInt() > self::LEVIN_DEFAULT_MAX_PACKET_SIZE) {
             $maxsize = self::LEVIN_DEFAULT_MAX_PACKET_SIZE;
 
-            throw new \Exception("Packet is too large [> $maxsize]");
+            throw new LengthException("Packet is too large [> $maxsize]");
         }
 
         return $this;
@@ -241,7 +242,7 @@ class Bucket implements BucketInterface
 
         array_walk($head, function (&$item, $key) {
             if (is_null($item)) {
-                throw new \Exception("Value for [$key] must be set");
+                throw new UnexpectedValueException("Value for [$key] must be set");
             }
 
             if ($item instanceof CommandInterface) {

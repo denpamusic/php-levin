@@ -17,6 +17,7 @@ use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
+use UnexpectedValueException;
 
 class Reader
 {
@@ -64,9 +65,7 @@ class Reader
 
         foreach ((new Section())->getSignatures() as $key => $signature) {
             if ($signatures[$key]->toHex() != $signature->toHex()) {
-                throw new \Exception(
-                    "Section signature mismatch [0x{$signature->toHex()}]"
-                );
+                throw new SignatureMismatch($signature, 'Section signature mismatch');
             }
         }
 
@@ -128,7 +127,7 @@ class Reader
         $type = $this->connection->read(new Ubyte())->toInt();
 
         if (($type & SERIALIZE_FLAG_ARRAY) != 0) {
-            throw new \Exception('Incorrect array sequence');
+            throw new UnexpectedValueException('Incorrect array sequence');
         }
 
         return $this->readArrayEntry($type);
@@ -161,7 +160,9 @@ class Reader
     protected function readValue(int $type) : BoostSerializable
     {
         if (!array_key_exists($type, $this->types)) {
-            throw new \Exception("Cannot unserialize unknown type [$type]");
+            throw new UnexpectedValueException(
+                "Cannot unserialize unknown type [$type]"
+            );
         }
 
         if ($this->types[$type] == Section::class) {

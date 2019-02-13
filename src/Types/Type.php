@@ -3,6 +3,7 @@
 namespace Denpa\Levin\Types;
 
 use Countable;
+use UnexpectedValueException;
 
 abstract class Type implements TypeInterface, Countable
 {
@@ -26,7 +27,9 @@ abstract class Type implements TypeInterface, Countable
             $unpacked = @unpack($this->getTypeCode(), $this->value);
 
             if ($unpacked === false) {
-                throw new \Exception('Failed to unpack binary data');
+                throw new UnexpectedValueException(
+                    'Failed to unpack binary data'
+                );
             }
 
             $this->value = $unpacked[1];

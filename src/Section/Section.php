@@ -11,6 +11,7 @@ use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
 use Denpa\Levin\Types\Ubyte;
+use UnexpectedValueException;
 use IteratorAggregate;
 
 class Section implements
@@ -131,7 +132,9 @@ class Section implements
 
         foreach ($this->entries as $key => $item) {
             if (!$item instanceof BoostSerializable) {
-                throw new \Exception("Cannot serialize unserializable item [$key]");
+                throw new UnexpectedValueException(
+                    "Cannot serialize unserializable item [$key]"
+                );
             }
 
             $result .= Levin\ubyte(strlen($key));

@@ -3,6 +3,7 @@
 namespace Denpa\Levin\Types;
 
 use Denpa\Levin\Connection;
+use UnexpectedValueException;
 
 class Varint extends Type
 {
@@ -47,7 +48,7 @@ class Varint extends Type
                 $value = new Uint32(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_DWORD, Type::LE);
                 break;
             case $this->value >= 4611686018427387903:
-                throw new \Exception('VarInt is too large [> 4611686018427387903]');
+                throw new UnexpectedValueException('VarInt is too large [> 4611686018427387903]');
             default:
                 $value = new Uint64(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_INT64, Type::LE);
         }
@@ -80,7 +81,7 @@ class Varint extends Type
                 $int = (new Uint64($first.$connection->readBytes(1), Type::LE))->toInt();
                 break;
             default:
-                throw new \Exception("Incorrect VarInt mask [$mask]");
+                throw new UnexpectedValueException("Incorrect VarInt mask [$mask]");
         }
 
         $this->value = $int >> 2;

@@ -3,6 +3,7 @@
 namespace Denpa\Levin;
 
 use Denpa\Levin\Types\TypeInterface;
+use Denpa\Levin\Exception\ConnectionException;
 
 class Connection
 {
@@ -24,10 +25,10 @@ class Connection
      */
     public function __construct(string $host, $port, int $timeout = 5)
     {
-        $this->socket = fsockopen($host, $port, $errno, $errstr, $timeout);
+        $this->socket = @fsockopen($host, $port, $errno, $errstr, $timeout);
 
         if (!$this->socket) {
-            throw new \Exception($errstr, $errno);
+            throw new ConnectionException($errstr, $errno);
         }
 
         $this->open = true;
