@@ -2,10 +2,10 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Notifications\ResponseChainEntry;
 use Denpa\Levin\Notifications\NotificationInterface;
+use Denpa\Levin\Notifications\ResponseChainEntry;
+use Denpa\Levin\Section\Section;
+use Denpa\Levin\Tests\TestCase;
 
 class ResponseChainEntryTest extends TestCase
 {

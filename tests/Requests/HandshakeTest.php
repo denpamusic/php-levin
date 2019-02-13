@@ -2,13 +2,13 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Section\Section;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin\Section\Section;
+use Denpa\Levin\Tests\TestCase;
+use Denpa\Levin\Types\Uint64;
 
-class NewBlockTest extends TestCase
+class HandshakeTest extends TestCase
 {
     /**
      * @return void

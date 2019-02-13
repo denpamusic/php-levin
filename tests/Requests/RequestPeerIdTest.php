@@ -2,10 +2,10 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Requests\RequestPeerId;
 use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin\Requests\RequestPeerId;
+use Denpa\Levin\Section\Section;
+use Denpa\Levin\Tests\TestCase;
 
 class RequestPeerIdTest extends TestCase
 {
