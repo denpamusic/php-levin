@@ -11,8 +11,8 @@ use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
 use Denpa\Levin\Types\Ubyte;
-use UnexpectedValueException;
 use IteratorAggregate;
+use UnexpectedValueException;
 
 class Section implements
     SectionInterface,

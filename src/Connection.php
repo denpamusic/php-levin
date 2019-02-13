@@ -2,8 +2,8 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Types\TypeInterface;
 use Denpa\Levin\Exception\ConnectionException;
+use Denpa\Levin\Types\TypeInterface;
 
 class Connection
 {

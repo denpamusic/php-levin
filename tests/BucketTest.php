@@ -6,6 +6,7 @@ use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandFactory;
 use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Exceptions\SignatureMismatch;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
@@ -13,7 +14,6 @@ use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Exceptions\SignatureMismatch;
 
 class BucketTest extends TestCase
 {

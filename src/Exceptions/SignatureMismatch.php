@@ -2,8 +2,8 @@
 
 namespace Denpa\Levin\Exceptions;
 
-use Exception;
 use Denpa\Levin\Types\TypeInterface;
+use Exception;
 
 class SignatureMismatch extends Exception
 {

@@ -2,15 +2,15 @@
 
 namespace Denpa\Levin;
 
-use LengthException;
-use UnexpectedValueException;
+use Denpa\Levin\Exceptions\SignatureMismatch;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Exceptions\SignatureMismatch;
+use LengthException;
+use UnexpectedValueException;
 
 class Bucket implements BucketInterface
 {
@@ -90,7 +90,7 @@ class Bucket implements BucketInterface
             $signature : uint64le($signature);
 
         if ($this->signature != uint64le(self::LEVIN_SIGNATURE)) {
-            throw new SignatureMismatch($this->signature, "Packet signature mismatch");
+            throw new SignatureMismatch($this->signature, 'Packet signature mismatch');
         }
 
         return $this;
