@@ -2,8 +2,8 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Tests\TestCase;
+use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\BoostSerializable;
 
 class BooleanTest extends TestCase

@@ -4,7 +4,6 @@ namespace Denpa\Levin\Tests\Types;
 
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\SignedInt;
-use Denpa\Levin\Types\BoostSerializable;
 
 class SignedIntTest extends TestCase
 {

@@ -2,17 +2,16 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use UnexpectedValueException;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Ubyte;
 use Denpa\Levin\Types\Varint;
-use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Types\BoostSerializable;
+use UnexpectedValueException;
 
 class VarintTest extends TestCase
 {
     /**
-     * @param int $int
+     * @param int    $int
      * @param string $expected
      *
      * @return void
@@ -49,8 +48,7 @@ class VarintTest extends TestCase
         int $second,
         string $bytes,
         int $expected
-    ) : void
-    {
+    ) : void {
         $connection = $this->createMock(Connection::class);
 
         $connection->expects($this->once())

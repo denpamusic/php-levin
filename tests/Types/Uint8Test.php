@@ -2,9 +2,9 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Uint8;
 
 class Uint8Test extends TestCase
 {

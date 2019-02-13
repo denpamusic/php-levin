@@ -2,9 +2,9 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Uint32;
 
 class Uint32Test extends TestCase
 {
