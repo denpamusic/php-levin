@@ -12,7 +12,7 @@ $connection->write(Bucket::request()->handshake());
 while ($bucket = $connection->read(new Bucket())) {
     if ($bucket->getCommand() instanceof SupportFlags) {
         // respond to support flags request
-        Bucket::response()->supportflags()->writeTo($fp);
+        $connection->write(Bucket::response()->supportflags());
     }
 
     var_dump($bucket->payload());
