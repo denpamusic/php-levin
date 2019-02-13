@@ -31,9 +31,9 @@ abstract class Type implements TypeInterface, Countable
         if (is_string($this->value)) {
             $unpacked = @unpack($this->getTypeCode(), $this->value);
 
-            if ($unpacked === false) {
+            if ($unpacked === false || !isset($unpacked[1])) {
                 throw new UnexpectedValueException(
-                    'Failed to unpack binary data'
+                    "Failed to unpack binary data [{$this->value}]"
                 );
             }
 

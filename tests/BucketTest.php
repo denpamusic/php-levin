@@ -6,7 +6,7 @@ use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandFactory;
 use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
-use Denpa\Levin\Exceptions\SignatureMismatch;
+use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
@@ -63,7 +63,7 @@ class BucketTest extends TestCase
      */
     public function testSetSignatureWithMismatch() : void
     {
-        $this->expectException(SignatureMismatch::class);
+        $this->expectException(SignatureMismatchException::class);
         $this->expectExceptionMessage('Packet signature mismatch');
         $this->bucket->setSignature(0x0);
     }

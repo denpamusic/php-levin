@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Exceptions\SignatureMismatch;
+use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
@@ -90,7 +90,7 @@ class Bucket implements BucketInterface
             $signature : uint64le($signature);
 
         if ($this->signature != uint64le(self::LEVIN_SIGNATURE)) {
-            throw new SignatureMismatch($this->signature, 'Packet signature mismatch');
+            throw new SignatureMismatchException($this->signature, 'Packet signature mismatch');
         }
 
         return $this;

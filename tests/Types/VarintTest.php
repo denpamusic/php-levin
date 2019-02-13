@@ -5,6 +5,7 @@ namespace Denpa\Levin\Tests\Types;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Varint;
 use UnexpectedValueException;
 
@@ -45,7 +46,7 @@ class VarintTest extends TestCase
      */
     public function testRead(
         int $first,
-        int $second,
+        ?int $second = null,
         string $bytes,
         int $expected
     ) : void {
@@ -56,10 +57,12 @@ class VarintTest extends TestCase
             ->with($this->isInstanceOf(Ubyte::class))
             ->willReturn(new Ubyte($first));
 
-        $connection->expects($this->once())
-            ->method('readBytes')
-            ->with($this->equalTo($second))
-            ->willReturn($bytes);
+        if (!is_null($second)) {
+            $connection->expects($this->once())
+                ->method('readBytes')
+                ->with($this->equalTo($second))
+                ->willReturn($bytes);
+        }
 
         $varint = (new VarInt())->read($connection);
         $this->assertEquals($expected, $varint->toInt());
@@ -71,9 +74,10 @@ class VarintTest extends TestCase
     public function bytesProvider() : array
     {
         return [
-            [1, 1, "\xff", 16320],
-            [2, 3, "\xff\xff\xff", 1073741760],
-            [3, 7, "\x00\x00\x00\x00\x00\x00\x01", 18014398509481984],
+            [0x00, null, "", 0],
+            [0x01, 1, "\xff", 16320],
+            [0x02, 3, "\xff\xff\xff", 1073741760],
+            [0x03, 7, "\x00\x00\x00\x00\x00\x00\x01", 18014398509481984],
         ];
     }
 

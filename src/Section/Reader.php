@@ -65,7 +65,7 @@ class Reader
 
         foreach ((new Section())->getSignatures() as $key => $signature) {
             if ($signatures[$key]->toHex() != $signature->toHex()) {
-                throw new SignatureMismatch($signature, 'Section signature mismatch');
+                throw new SignatureMismatchException($signature, 'Section signature mismatch');
             }
         }
 
