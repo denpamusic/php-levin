@@ -76,6 +76,7 @@ class Connection
     {
         if (method_exists($object, 'write')) {
             $object->write($this);
+
             return;
         }
 

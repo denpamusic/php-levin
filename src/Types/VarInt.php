@@ -4,7 +4,7 @@ namespace Denpa\Levin\Types;
 
 use Denpa\Levin\Connection;
 
-class Varint extends Type
+class VarInt extends Type
 {
     /**
      * @var int

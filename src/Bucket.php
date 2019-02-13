@@ -2,14 +2,12 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Connection;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
+use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Types\Boolean;
-use Denpa\Levin\Types\TypeInterface;
 
 class Bucket implements BucketInterface
 {
