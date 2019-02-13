@@ -3,8 +3,8 @@
 namespace Denpa\Levin\Tests\Types;
 
 use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Bytearray;
 
 class BytearrayTest extends TestCase
 {

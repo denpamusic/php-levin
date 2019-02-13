@@ -2,13 +2,12 @@
 
 namespace Denpa\Levin\Tests\Section;
 
+use Denpa\Levin\Section\Section;
+use Denpa\Levin\Tests\TestCase;
+use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Ubyte;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Varint;
-use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Types\Bytestring;
-use Denpa\Levin\Types\BoostSerializable;
 
 class SectionTest extends TestCase
 {
@@ -56,7 +55,7 @@ class SectionTest extends TestCase
     }
 
     /**
-     * also covers serialize()
+     * also covers serialize().
      *
      * @return void
      */

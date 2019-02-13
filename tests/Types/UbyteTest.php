@@ -2,9 +2,9 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use Denpa\Levin\Types\Ubyte;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Ubyte;
 
 class UbyteTest extends TestCase
 {

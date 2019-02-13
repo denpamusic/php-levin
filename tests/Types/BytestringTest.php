@@ -4,9 +4,9 @@ namespace Denpa\Levin\Tests\Types;
 
 use Denpa\Levin\Connection;
 use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Types\Varint;
-use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\BoostSerializable;
+use Denpa\Levin\Types\Bytestring;
+use Denpa\Levin\Types\Varint;
 
 class BytestringTest extends TestCase
 {
@@ -15,7 +15,7 @@ class BytestringTest extends TestCase
      */
     public function testGetSerializeType() : void
     {
-        $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_STRING, (new Bytestring)->getSerializeType()->toInt());
+        $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_STRING, (new Bytestring())->getSerializeType()->toInt());
     }
 
     /**
@@ -43,7 +43,7 @@ class BytestringTest extends TestCase
             ->with($this->equalTo(3))
             ->willReturn('foo');
 
-        $bytestring = (new Bytestring)->read($connection);
+        $bytestring = (new Bytestring())->read($connection);
 
         $this->assertEquals('foo', $bytestring->getValue());
     }
