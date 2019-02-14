@@ -6,8 +6,8 @@ use ArrayAccess;
 use Countable;
 use Denpa\Levin\Section;
 use Denpa\Levin\Traits\Arrayable;
-use IteratorAggregate;
 use InvalidArgumentException;
+use IteratorAggregate;
 
 class Bytearray implements
     BoostSerializable,

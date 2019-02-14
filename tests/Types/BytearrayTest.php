@@ -5,8 +5,8 @@ namespace Denpa\Levin\Tests\Types;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
-use Denpa\Levin\Types\uByte;
 use Denpa\Levin\Types\Bytestring;
+use Denpa\Levin\Types\uByte;
 use InvalidArgumentException;
 
 class BytearrayTest extends TestCase
