@@ -3,13 +3,13 @@
 namespace Denpa\Levin\Tests\Section;
 
 use Denpa\Levin\Connection;
-use Denpa\Levin\Types\Ubyte;
-use Denpa\Levin\Types\Uint32;
-use Denpa\Levin\Types\Varint;
+use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Exceptions\SignatureMismatchException;
+use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Uint32;
+use Denpa\Levin\Types\Varint;
 
 class ReaderTest extends TestCase
 {
@@ -20,7 +20,7 @@ class ReaderTest extends TestCase
     {
         parent::setUp();
 
-        $this->signatures = (new Section)->getSignatures();
+        $this->signatures = (new Section())->getSignatures();
         $this->connection = $this->createMock(Connection::class);
         $this->reader = new FakeReader($this->connection);
     }

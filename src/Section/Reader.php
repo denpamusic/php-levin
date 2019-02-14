@@ -4,6 +4,7 @@ namespace Denpa\Levin\Section;
 
 use Denpa\Levin;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
@@ -17,7 +18,6 @@ use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
-use Denpa\Levin\Exceptions\SignatureMismatchException;
 use UnexpectedValueException;
 
 class Reader
