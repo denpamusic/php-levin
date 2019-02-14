@@ -3,7 +3,6 @@
 namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
-use Denpa\Levin\CommandFactory;
 use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
