@@ -4,14 +4,14 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandFactory;
-use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Requests\Handshake;
-use Denpa\Levin\Requests\TimedSync;
-use Denpa\Levin\Requests\Ping;
-use Denpa\Levin\Requests\StatInfo;
 use Denpa\Levin\Requests\NetworkState;
+use Denpa\Levin\Requests\Ping;
+use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Requests\RequestPeerId;
+use Denpa\Levin\Requests\StatInfo;
 use Denpa\Levin\Requests\SupportFlags;
+use Denpa\Levin\Requests\TimedSync;
 use UnexpectedValueException;
 
 class CommandFactoryTest extends TestCase
