@@ -106,6 +106,30 @@ abstract class Type implements TypeInterface, Countable
     }
 
     /**
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public function or($value) : self
+    {
+        $this->value |= $value instanceof self ? $value->toInt() : $value;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public function and($value) : self
+    {
+        $this->value &= $value instanceof self ? $value->toInt() : $value;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     abstract protected function getTypeCode() : string;

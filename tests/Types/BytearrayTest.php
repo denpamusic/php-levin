@@ -5,6 +5,9 @@ namespace Denpa\Levin\Tests\Types;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
+use Denpa\Levin\Types\uByte;
+use Denpa\Levin\Types\Bytestring;
+use InvalidArgumentException;
 
 class BytearrayTest extends TestCase
 {
@@ -16,7 +19,61 @@ class BytearrayTest extends TestCase
         parent::setUp();
 
         $this->bytearray = new Bytearray();
-        $this->bytearray['foo'] = 'bar';
+        $this->bytearray[] = new Bytestring('bar');
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateWithIllegalType() : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array entries must be serializable');
+        $bytearray = new Bytearray(['fail']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateWithMultipleTypes() : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array entries must be of the same type');
+
+        $bytearray = new Bytearray([
+            new Bytestring('fail'),
+            new uByte(1),
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function offsetSet() : void
+    {
+        $this->bytearray->offsetSet(null, new Bytestring('test'));
+        $this->assertEquals('test', $this->bytearray[1]->getValue());
+    }
+
+    /**
+     * @return void
+     */
+    public function testOffsetSetWithIllegalType() : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array entries must be serializable');
+        $this->bytearray->offsetSet(null, 'fail');
+    }
+
+    /**
+     * @return void
+     */
+    public function testOffsetSetWithMultipleTypes() : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array entries must be of the same type');
+
+        $this->bytearray->offsetSet(null, new uByte(1));
     }
 
     /**
@@ -48,7 +105,7 @@ class BytearrayTest extends TestCase
      */
     public function testToBinary() : void
     {
-        $this->assertEquals('bar', $this->bytearray->toBinary());
+        $this->assertEquals("\x04\x0c\x62\x61\x72", $this->bytearray->toBinary());
     }
 
     /**
@@ -64,6 +121,21 @@ class BytearrayTest extends TestCase
      */
     public function testGetSerializeType() : void
     {
-        $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_ARRAY, $this->bytearray->getSerializeType()->toInt());
+        $type = $this
+            ->bytearray
+            ->getSerializeType()
+            ->and(~BoostSerializable::SERIALIZE_FLAG_ARRAY);
+
+        $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_STRING, $type->toInt());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetSerializeTypeWithEmptyArray() : void
+    {
+        $type = (new Bytearray([]))->getSerializeType();
+
+        $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_ARRAY, $type->toInt());
     }
 }

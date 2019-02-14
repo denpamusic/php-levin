@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Requests;
 
+use Denpa\Levin;
 use Denpa\Levin\Command;
 use Denpa\Levin\Section\Section;
 
@@ -12,7 +13,14 @@ class TimedSync extends Command implements RequestInterface
      */
     public function request() : Section
     {
-        return new Section();
+        return new Section([
+            'payload_data' => new Section([
+                'cumulative_difficulty' => Levin\uint64le(1),
+                'current_height'        => Levin\uint64le(1),
+                'top_id'                => Levin\bytestring($this->genesis),
+                'top_version'           => Levin\ubyte(1),
+            ]),
+        ]);
     }
 
     /**
@@ -21,6 +29,16 @@ class TimedSync extends Command implements RequestInterface
     public function response() : Section
     {
         return new Section();
+    }
+
+    /**
+     * @return array
+     */
+    protected function defaultVars() : array
+    {
+        return [
+            'genesis' => hex2bin('418015bb9ae982a1975da7d79277c2705727a56894ba0fb246adaabb1f4632e3'),
+        ];
     }
 
     /**

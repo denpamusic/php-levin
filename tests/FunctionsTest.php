@@ -32,7 +32,9 @@ class FunctionsTest extends TestCase
      */
     public function testBytearray()
     {
-        $this->assertInstanceOf(Bytearray::class, Levin\bytearray(['test']));
+        $this->assertInstanceOf(Bytearray::class, Levin\bytearray([
+            Levin\uint16le(1),
+        ]));
     }
 
     /**

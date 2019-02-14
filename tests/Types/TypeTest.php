@@ -121,4 +121,22 @@ class TypeTest extends TestCase
     {
         $this->assertEquals(1, $this->type->getValue());
     }
+
+    /**
+     * @return void
+     */
+    public function testOr() : void
+    {
+        $type = $this->getMockForAbstractClass(Type::class, [10, Type::BE]);
+        $this->assertEquals(10 | 8, $type->or(8)->toInt());
+    }
+
+    /**
+     * @return void
+     */
+    public function testAnd() : void
+    {
+        $type = $this->getMockForAbstractClass(Type::class, [10, Type::BE]);
+        $this->assertEquals(10 & 8, $type->and(8)->toInt());
+    }
 }

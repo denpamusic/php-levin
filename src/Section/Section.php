@@ -129,8 +129,8 @@ class Section implements
     {
         $result = '';
 
-        foreach ($this->entries as $key => $item) {
-            if (!$item instanceof BoostSerializable) {
+        foreach ($this->entries as $key => $entry) {
+            if (!$entry instanceof BoostSerializable) {
                 throw new UnexpectedValueException(
                     "Cannot serialize unserializable item [$key]"
                 );
@@ -138,13 +138,13 @@ class Section implements
 
             $result .= Levin\ubyte(strlen($key));
             $result .= $key;
-            $result .= $item->getSerializeType();
+            $result .= $entry->getSerializeType();
 
-            if ($item instanceof Bytestring || $item instanceof self) {
-                $result .= Levin\varint(count($item));
+            if ($entry instanceof Bytestring || $entry instanceof self) {
+                $result .= Levin\varint(count($entry));
             }
 
-            $result .= $item;
+            $result .= $entry;
         }
 
         return $result;

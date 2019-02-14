@@ -112,18 +112,16 @@ class Reader
         }
 
         if ($type == Section::SERIALIZE_TYPE_ARRAY) {
-            return $this->readEntryArrayEntry($type);
+            return $this->readEntryArrayEntry();
         }
 
         return $this->readValue($type);
     }
 
     /**
-     * @param int $type
-     *
      * @return \Denpa\Levin\Types\Bytearray
      */
-    protected function readEntryArrayEntry($type) : Bytearray
+    protected function readEntryArrayEntry() : Bytearray
     {
         $type = $this->connection->read(new Ubyte())->toInt();
 
