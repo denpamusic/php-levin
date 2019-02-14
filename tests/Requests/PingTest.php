@@ -3,11 +3,11 @@
 namespace Denpa\Levin\Tests\Requests;
 
 use Denpa\Levin;
-use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Requests\Ping;
 use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
+use Denpa\Levin\Types\Uint64;
 
 class PingTest extends TestCase
 {
