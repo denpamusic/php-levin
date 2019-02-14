@@ -173,3 +173,19 @@ if (!function_exists('camel_case')) {
         return str_replace(' ', '', ucwords(strtolower($string)));
     }
 }
+
+if (!function_exists('peer_id')) {
+    /**
+     * @return \Denpa\Levin\Types\Uint64
+     */
+    function peer_id() : Types\Uint64
+    {
+        static $peerId = null;
+
+        if (is_null($peerId)) {
+            $peerId = new Types\Uint64(random_bytes(8), TypeInterface::LE);
+        }
+
+        return $peerId;
+    }
+}

@@ -78,10 +78,9 @@ class Varint extends Type
                 $int = (new Uint32($first.$connection->readBytes(3), Type::LE))->toInt();
                 break;
             case self::PORTABLE_RAW_SIZE_MARK_INT64:
+            default:
                 $int = (new Uint64($first.$connection->readBytes(7), Type::LE))->toInt();
                 break;
-            default:
-                throw new UnexpectedValueException("Incorrect VarInt mask [$mask]");
         }
 
         $this->value = $int >> 2;

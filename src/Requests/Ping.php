@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Requests;
 
+use Denpa\Levin;
 use Denpa\Levin\Command;
 use Denpa\Levin\Section\Section;
 
@@ -20,7 +21,19 @@ class Ping extends Command implements RequestInterface
      */
     public function response() : Section
     {
-        return new Section();
+        return new Section([
+            'my_id' => $this->my_id,
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function defaultVars() : array
+    {
+        return [
+            'my_id' => Levin\peer_id(),
+        ];
     }
 
     /**

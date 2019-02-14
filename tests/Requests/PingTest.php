@@ -2,6 +2,8 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
+use Denpa\Levin;
+use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Requests\Ping;
 use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
@@ -23,6 +25,8 @@ class PingTest extends TestCase
     public function testResponse() : void
     {
         $this->assertInstanceOf(Section::class, (new Ping())->response());
+        $this->assertInstanceOf(Uint64::class, (new Ping())->response()['my_id']);
+        $this->assertEquals(Levin\peer_id(), (new Ping())->response()['my_id']);
     }
 
     /**
@@ -31,5 +35,13 @@ class PingTest extends TestCase
     public function testGetCommandCode() : void
     {
         $this->assertEquals((new Ping())->getCommandCode(), RequestInterface::P2P_COMMANDS_POOL_BASE + 3);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertEquals(Levin\peer_id(), (new Ping())->my_id);
     }
 }

@@ -14,7 +14,7 @@ class SignedIntTest extends TestCase
     {
         $signedint = $this->getMockForAbstractClass(SignedInt::class);
 
-        $this->assertInternalType('int', $signedint->machineEndianness());
+        $this->assertIsInt($signedint->machineEndianness());
     }
 
     /**

@@ -63,8 +63,16 @@ class VarintTest extends TestCase
                 ->willReturn($bytes);
         }
 
-        $varint = (new VarInt())->read($connection);
+        $varint = (new Varint())->read($connection);
         $this->assertEquals($expected, $varint->toInt());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetTypeCode() : void
+    {
+        $this->assertEquals((new FakeVarInt())->getTypeCode(), '');
     }
 
     /**
@@ -91,5 +99,13 @@ class VarintTest extends TestCase
             [1073741822, 'faffffff'],
             [1073741825, '0700000001000000'],
         ];
+    }
+}
+
+class FakeVarInt extends Varint
+{
+    public function getTypeCode() : string
+    {
+        return parent::getTypeCode();
     }
 }

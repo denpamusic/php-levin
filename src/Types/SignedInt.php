@@ -17,13 +17,9 @@ abstract class SignedInt extends Type
      */
     public function toBinary() : string
     {
-        switch ($this->machineEndianness()) {
-            case self::BE:
-                return $this->isBigEndian() ?
-                    parent::toBinary() : strrev(parent::toBinary());
-            case self::LE:
-                return !$this->isBigEndian() ?
-                    parent::toBinary() : strrev(parent::toBinary());
-        }
+        $endian = $this->machineEndianness() == self::BE ?
+            $this->isBigEndian() : !$this->isBigEndian();
+
+        return $endian ? parent::toBinary() : strrev(parent::toBinary());
     }
 }

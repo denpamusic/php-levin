@@ -2,10 +2,12 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
+use Denpa\Levin;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
+use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 
 class HandshakeTest extends TestCase
@@ -15,9 +17,10 @@ class HandshakeTest extends TestCase
      */
     public function testRequest() : void
     {
-        $handshake = new Handshake();
-        $this->assertInstanceOf(Section::class, $handshake->request());
-        $this->assertInstanceOf(Uint64::class, $handshake->request()['node_data']['local_time']);
+        $this->assertInstanceOf(Section::class, (new Handshake())->request());
+        $this->assertInstanceOf(Uint64::class, (new Handshake())->request()['node_data']['local_time']);
+        $this->assertEquals(new Uint32(0, Uint32::LE), (new Handshake())->request()['node_data']['my_port']);
+        $this->assertEquals(Levin\peer_id(), (new Handshake())->request()['node_data']['peer_id']);
     }
 
     /**
@@ -41,8 +44,9 @@ class HandshakeTest extends TestCase
      */
     public function testVars() : void
     {
-        $handshake = new Handshake();
-        $this->assertEquals($handshake->network_id, hex2bin('1230f171610441611731008216a1a110'));
-        $this->assertEquals($handshake->genesis, hex2bin('418015bb9ae982a1975da7d79277c2705727a56894ba0fb246adaabb1f4632e3'));
+        $this->assertEquals(0, (new Handshake())->my_port);
+        $this->assertEquals(Levin\peer_id(), (new Handshake())->peer_id);
+        $this->assertEquals(hex2bin('1230f171610441611731008216a1a110'), (new Handshake())->network_id);
+        $this->assertEquals(hex2bin('418015bb9ae982a1975da7d79277c2705727a56894ba0fb246adaabb1f4632e3'), (new Handshake())->genesis);
     }
 }

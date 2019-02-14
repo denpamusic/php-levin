@@ -138,4 +138,13 @@ class FunctionsTest extends TestCase
     {
         $this->assertEquals('TestCamelcase', Levin\camel_case('teSt_cAMElcase'));
     }
+
+    /**
+     * @return void
+     */
+    public function testPeerId()
+    {
+        $this->assertInstanceOf(Uint64::class, Levin\peer_id());
+        $this->assertEquals(Levin\peer_id()->toHex(), Levin\peer_id()->toHex());
+    }
 }
