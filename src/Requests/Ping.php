@@ -22,7 +22,8 @@ class Ping extends Command implements RequestInterface
     public function response() : Section
     {
         return new Section([
-            'my_id' => $this->my_id,
+            'status'  => Levin\bytestring('OK'),
+            'peer_id' => $this->peer_id,
         ]);
     }
 
@@ -32,7 +33,7 @@ class Ping extends Command implements RequestInterface
     protected function defaultVars() : array
     {
         return [
-            'my_id' => Levin\peer_id(),
+            'peer_id' => Levin\peer_id(),
         ];
     }
 

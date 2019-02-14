@@ -14,6 +14,7 @@ use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
+use UnexpectedValueException;
 
 class BucketTest extends TestCase
 {
@@ -253,6 +254,16 @@ class BucketTest extends TestCase
             $this->assertEquals($item->toBinary(), substr($head, $offset, $size));
             $offset += $size;
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function testHeadWithNotAllValuesSet() : void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('Value for [command] must be set');
+        $this->bucket->head();
     }
 
     /**

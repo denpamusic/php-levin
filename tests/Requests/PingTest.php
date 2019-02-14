@@ -25,8 +25,9 @@ class PingTest extends TestCase
     public function testResponse() : void
     {
         $this->assertInstanceOf(Section::class, (new Ping())->response());
-        $this->assertInstanceOf(Uint64::class, (new Ping())->response()['my_id']);
-        $this->assertEquals(Levin\peer_id(), (new Ping())->response()['my_id']);
+        $this->assertInstanceOf(Uint64::class, (new Ping())->response()['peer_id']);
+        $this->assertEquals(Levin\peer_id(), (new Ping())->response()['peer_id']);
+        $this->assertEquals('OK', (new Ping())->response()['status']->getValue());
     }
 
     /**
@@ -42,6 +43,6 @@ class PingTest extends TestCase
      */
     public function testVars() : void
     {
-        $this->assertEquals(Levin\peer_id(), (new Ping())->my_id);
+        $this->assertEquals(Levin\peer_id(), (new Ping())->peer_id);
     }
 }
