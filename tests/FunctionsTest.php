@@ -65,10 +65,28 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
+    public function testUint8()
+    {
+        $this->assertInstanceOf(Uint8::class, Levin\uint8(1));
+        $this->assertTrue(Levin\uint8(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
     public function testUint8le()
     {
         $this->assertInstanceOf(Uint8::class, Levin\uint8le(1));
         $this->assertFalse(Levin\uint8le(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
+    public function testInt8()
+    {
+        $this->assertInstanceOf(Int8::class, Levin\int8(1));
+        $this->assertTrue(Levin\int8(1)->isBigEndian());
     }
 
     /**
@@ -83,10 +101,28 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
+    public function testUint16()
+    {
+        $this->assertInstanceOf(Uint16::class, Levin\uint16(1));
+        $this->assertTrue(Levin\uint16(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
     public function testUint16le()
     {
         $this->assertInstanceOf(Uint16::class, Levin\uint16le(1));
         $this->assertFalse(Levin\uint16le(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
+    public function testInt16()
+    {
+        $this->assertInstanceOf(Int16::class, Levin\int16(1));
+        $this->assertTrue(Levin\int16(1)->isBigEndian());
     }
 
     /**
@@ -101,10 +137,28 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
+    public function testUint32()
+    {
+        $this->assertInstanceOf(Uint32::class, Levin\uint32(1));
+        $this->assertTrue(Levin\uint32(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
     public function testUint32le()
     {
         $this->assertInstanceOf(Uint32::class, Levin\uint32le(1));
         $this->assertFalse(Levin\uint32le(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
+    public function testInt32()
+    {
+        $this->assertInstanceOf(Int32::class, Levin\int32(1));
+        $this->assertTrue(Levin\int32(1)->isBigEndian());
     }
 
     /**
@@ -119,10 +173,28 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
+    public function testUint64()
+    {
+        $this->assertInstanceOf(Uint64::class, Levin\uint64(1));
+        $this->assertTrue(Levin\uint64(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
     public function testUint64le()
     {
         $this->assertInstanceOf(Uint64::class, Levin\uint64le(1));
         $this->assertFalse(Levin\uint64le(1)->isBigEndian());
+    }
+
+    /**
+     * @return void
+     */
+    public function testInt64()
+    {
+        $this->assertInstanceOf(Int64::class, Levin\int64(1));
+        $this->assertTrue(Levin\int64(1)->isBigEndian());
     }
 
     /**
@@ -140,6 +212,9 @@ class FunctionsTest extends TestCase
     public function testSection()
     {
         $this->assertInstanceOf(Section::class, Levin\section());
+
+        $uint16 = Levin\uint16(1);
+        $this->assertEquals($uint16, Levin\Section(['foo' => $uint16])['foo']);
     }
 
     /**
