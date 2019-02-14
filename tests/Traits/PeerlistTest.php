@@ -2,10 +2,9 @@
 
 namespace Denpa\Levin\Tests\Traits;
 
-use ArrayIterator;
 use Denpa\Levin;
-use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Section\Section;
+use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Traits\Peerlist;
 
 class PeerlistTest extends TestCase

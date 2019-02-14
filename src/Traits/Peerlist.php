@@ -2,10 +2,9 @@
 
 namespace Denpa\Levin\Traits;
 
-use ArrayIterator;
 use Denpa\Levin;
-use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Section\Section;
+use Denpa\Levin\Types\Uint64;
 
 trait Peerlist
 {
