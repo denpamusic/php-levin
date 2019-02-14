@@ -78,6 +78,14 @@ class Bucket implements BucketInterface
             }
         }
     }
+    
+    /**
+     * @return bool
+     */
+    public function isRequest() : bool
+    {
+        return $this->flags->toInt() == self::LEVIN_PACKET_REQUEST;
+    }
 
     /**
      * @param mixed $signature
@@ -165,8 +173,7 @@ class Bucket implements BucketInterface
      */
     public function fill(CommandInterface $command) : self
     {
-        $method = ($this->flags->toInt() == self::LEVIN_PACKET_REQUEST) ?
-            'request' : 'response';
+        $method = $this->isRequest() ? 'request' : 'response';
 
         $this->command = $command;
         $this->setPayloadSection($command->$method());
