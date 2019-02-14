@@ -15,7 +15,7 @@ class CommandFactory
         Requests\Ping::class,
         Requests\StatInfo::class,
         Requests\NetworkState::class,
-        Requests\RequestPeerId::class,
+        Requests\PeerId::class,
         Requests\SupportFlags::class,
 
         Notifications\NewBlock::class,
@@ -99,9 +99,9 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\Bucket
      */
-    public function requestpeerid(array $args = []) : Bucket
+    public function peerid(array $args = []) : Bucket
     {
-        return $this->bucket->fill(new Requests\RequestPeerId($args));
+        return $this->bucket->fill(new Requests\PeerId($args));
     }
 
     /**

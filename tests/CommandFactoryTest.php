@@ -8,7 +8,7 @@ use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\NetworkState;
 use Denpa\Levin\Requests\Ping;
 use Denpa\Levin\Requests\RequestInterface;
-use Denpa\Levin\Requests\RequestPeerId;
+use Denpa\Levin\Requests\PeerId;
 use Denpa\Levin\Requests\StatInfo;
 use Denpa\Levin\Requests\SupportFlags;
 use Denpa\Levin\Requests\TimedSync;
@@ -88,7 +88,7 @@ class CommandFactoryTest extends TestCase
             ['ping',          Ping::class],
             ['statinfo',      StatInfo::class],
             ['networkstate',  NetworkState::class],
-            ['requestpeerid', RequestPeerId::class],
+            ['peerid',        PeerId::class],
             ['supportflags',  SupportFlags::class],
         ];
     }

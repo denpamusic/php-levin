@@ -6,7 +6,7 @@ use Denpa\Levin;
 use Denpa\Levin\Command;
 use Denpa\Levin\Section\Section;
 
-class RequestPeerId extends Command implements RequestInterface
+class PeerId extends Command implements RequestInterface
 {
     /**
      * @return \Denpa\Levin\Section\Section
