@@ -11,7 +11,7 @@ class Bytestring extends Type implements BoostSerializable
      */
     protected function getTypeCode() : string
     {
-        return 'A*';
+        return 'a*';
     }
 
     /**

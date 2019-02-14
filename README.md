@@ -35,8 +35,8 @@ while ($bucket = $connection->read(new Bucket())) {
 ## Command Support
 | command      | link                                                                                  | request | response |
 |--------------|---------------------------------------------------------------------------------------|---------|----------|
-| Handshake    | [p2p_protocol_defs.h#L177](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L177) | ✅       | ❌        |
-| TimedSync    | [p2p_protocol_defs.h#L239](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L239) | ✅       | ❌        |
+| Handshake    | [p2p_protocol_defs.h#L177](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L177) | ✅       | ✅        |
+| TimedSync    | [p2p_protocol_defs.h#L239](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L239) | ✅       | ✅        |
 | Ping         | [p2p_protocol_defs.h#L297](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L297) | ✅       | ✅        |
 | StatInfo     | [p2p_protocol_defs.h#L348](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L348) | ❌       | ❌        |
 | NetworkState | [p2p_protocol_defs.h#L382](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L382) | ❌       | ❌        |

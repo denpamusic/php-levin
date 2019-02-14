@@ -3,6 +3,7 @@
 namespace Denpa\Levin\Tests;
 
 use Denpa\Levin;
+use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
@@ -136,6 +137,14 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
+    public function testSection()
+    {
+        $this->assertInstanceOf(Section::class, Levin\section());
+    }
+
+    /**
+     * @return void
+     */
     public function testCamelCase()
     {
         $this->assertEquals('TestCamelcase', Levin\camel_case('teSt_cAMElcase'));
@@ -148,5 +157,10 @@ class FunctionsTest extends TestCase
     {
         $this->assertInstanceOf(Uint64::class, Levin\peer_id());
         $this->assertEquals(Levin\peer_id()->toHex(), Levin\peer_id()->toHex());
+        $this->assertEquals('beef', substr(Levin\peer_id('beef')->toHex(), 0, 4));
+        $this->assertEquals(Levin\peer_id('beef')->toHex(), Levin\peer_id('beef')->toHex());
+
+        // prefix overflow
+        $this->assertEquals('feeddeabbeefcafe', Levin\peer_id('feeddeabbeefcafef00d')->toHex());
     }
 }
