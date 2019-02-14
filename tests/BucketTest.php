@@ -291,9 +291,11 @@ class BucketTest extends TestCase
      */
     public function testRequest() : void
     {
-        $request = FakeBucket::request();
-        $this->assertInstanceOf(CommandFactory::class, $request);
-        $this->assertEquals($request->handshake()->flags->toInt(), Bucket::LEVIN_PACKET_REQUEST);
+        $handshake = new Handshake();
+        $request = FakeBucket::request($handshake);
+        $this->assertInstanceOf(FakeBucket::class, $request);
+        $this->assertEquals(Bucket::LEVIN_PACKET_REQUEST, $request->flags->toInt());
+        $this->assertEquals($handshake, $request->getCommand());
     }
 
     /**
@@ -301,9 +303,11 @@ class BucketTest extends TestCase
      */
     public function testResponse() : void
     {
-        $response = FakeBucket::response();
-        $this->assertInstanceOf(CommandFactory::class, $response);
-        $this->assertEquals($response->handshake()->flags->toInt(), Bucket::LEVIN_PACKET_RESPONSE);
+        $handshake = new Handshake();
+        $response = FakeBucket::response($handshake);
+        $this->assertInstanceOf(FakeBucket::class, $response);
+        $this->assertEquals(Bucket::LEVIN_PACKET_RESPONSE, $response->flags->toInt());
+        $this->assertEquals($handshake, $response->getCommand());
     }
 
     /**

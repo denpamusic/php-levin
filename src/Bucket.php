@@ -288,12 +288,12 @@ class Bucket implements BucketInterface
     /**
      * @param \Denpa\Levin\Connection $connection
      *
-     * @return mixed
+     * @return self|null
      */
-    public function read(Connection $connection)
+    public function read(Connection $connection) : ?self
     {
         if ($connection->eof()) {
-            return;
+            return null;
         }
 
         $bucket = new static([
@@ -315,9 +315,11 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return \Denpa\Levin\CommandFactory
+     * @param \Denpa\Levin\CommandInterface $command
+     *
+     * @return self
      */
-    public static function request() : CommandFactory
+    public static function request(CommandInterface $command) : self
     {
         $bucket = new static([
             'return_data' => true,
@@ -325,13 +327,15 @@ class Bucket implements BucketInterface
             'flags'       => self::LEVIN_PACKET_REQUEST,
         ]);
 
-        return new CommandFactory($bucket);
+        return $bucket->fill($command);
     }
 
     /**
-     * @return \Denpa\Levin\CommandFactory
+     * @param \Denpa\Levin\CommandInterface $command
+     *
+     * @return self
      */
-    public static function response() : CommandFactory
+    public static function response(CommandInterface $command) : self
     {
         $bucket = new static([
             'return_data' => false,
@@ -339,6 +343,6 @@ class Bucket implements BucketInterface
             'flags'       => self::LEVIN_PACKET_RESPONSE,
         ]);
 
-        return new CommandFactory($bucket);
+        return $bucket->fill($command);
     }
 }

@@ -34,20 +34,21 @@
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Requests\Ping;
+use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\SupportFlags;
 
 $connection = new Connection($ip, $port);
-$connection->write(Bucket::request()->handshake());
+$connection->write(Bucket::request(new Handshake()));
 
 while ($bucket = $connection->read(new Bucket())) {
     if ($bucket->getCommand() instanceof SupportFlags) {
         // respond to support flags request
-        $connection->write(Bucket::response()->supportflags());
+        $connection->write(Bucket::response(new SupportFlags()));
     }
 
     if ($bucket->getCommand() instanceof Ping) {
         // respond to ping request
-        $connection->write(Bucket::response()->ping());
+        $connection->write(Bucket::response(new Ping()));
     }
 
     var_dump($bucket->payload());
@@ -66,8 +67,14 @@ Loosely based on [py-levin](https://github.com/xmrdsc/py-levin).
 
 ## Donations
 If you like this project, you can donate using one of the following addresses:
-BTC: 3L6dqSBNgdpZan78KJtzoXEk9DN3sgEQJu  
-Monero: 458j3EKczYFEE1Gku9ENUgTj4KUtHbqP9hT82vFRdZHiBRfbVFDUE7QArtAB63cNZiKMgBgwrD4k1Wtac8ZgoKx2GUHFpo2  
-Safex: Safex61BqfGVucrCo71xPxhQi4L1oMaRYUHwBKMuHVy8UTR1HkBjhJx4WafkLvhSwUeshkonyDjvYFiBrRDeEcrL5k6JLALD85L2T
+
+BTC:
+3L6dqSBNgdpZan78KJtzoXEk9DN3sgEQJu
+
+Monero:
+458j3EKczYFEE1Gku9ENUgTj4KUtHbqP9hT82vFRdZHiBRfbVFDUE7QArtAB63cNZiKMgBgwrD4k1Wtac8ZgoKx2GUHFpo2
+
+Safex:
+Safex61BqfGVucrCo71xPxhQi4L1oMaRYUHwBKMuHVy8UTR1HkBjhJx4WafkLvhSwUeshkonyDjvYFiBrRDeEcrL5k6JLALD85L2T
 
 ❤Thanks for your support!❤
