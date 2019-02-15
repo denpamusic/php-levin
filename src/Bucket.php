@@ -78,7 +78,7 @@ class Bucket implements BucketInterface
             }
         }
     }
-    
+
     /**
      * @return bool
      */
