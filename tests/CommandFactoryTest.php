@@ -56,13 +56,7 @@ class CommandFactoryTest extends TestCase
      */
     public function testCommandHelpers(string $helper, string $handler) : void
     {
-        $this->bucket
-            ->expects($this->once())
-            ->method('fill')
-            ->with($this->isInstanceOf($handler))
-            ->willReturnSelf();
-
-        $this->assertInstanceOf(Bucket::class, $this->commandFactory->$helper());
+        $this->assertInstanceOf($handler, $this->commandFactory->$helper());
     }
 
     /**

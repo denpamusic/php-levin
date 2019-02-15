@@ -269,6 +269,49 @@ if (!function_exists('section')) {
     }
 }
 
+if (!function_exists('request')) {
+    /**
+     * @param string $command
+     * @param array  $args
+     *
+     * @return \Denpa\Levin\Bucket
+     */
+    function request(string $command, array $args = []) : Bucket
+    {
+        return (new Bucket())->request((new CommandFactory())->$command($args));
+    }
+}
+
+if (!function_exists('response')) {
+    /**
+     * @param string $command
+     * @param array  $args
+     *
+     * @return \Denpa\Levin\Bucket
+     */
+    function response(string $command, array $args = []) : Bucket
+    {
+        return (new Bucket())->response((new CommandFactory())->$command($args));
+    }
+}
+
+if (!function_exists('connection')) {
+    /**
+     * @param string $ip
+     * @param mixed  $port
+     * @param array  $args
+     *
+     * @return \Denpa\Levin\ConnectionInterface
+     */
+    function connection(string $ip, $port, array $args = []) : Connection
+    {
+        $connection = new Connection($ip, $port);
+        $connection->write(request('handshake', $args));
+
+        return $connection;
+    }
+}
+
 if (!function_exists('camel_case')) {
     /**
      * @param string $string

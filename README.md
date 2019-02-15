@@ -8,28 +8,20 @@
 
 ## Example
 ```php
+use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
-use Denpa\Levin\Requests\Ping;
-use Denpa\Levin\Requests\Handshake;
-use Denpa\Levin\Requests\SupportFlags;
 
-$connection = new Connection($ip, $port);
-$connection->write(Bucket::request(new Handshake(['network_id' => 'somenetwork'])));
+$connection = Levin\connection($ip, $port, ['network_id' => 'somenetwork']);
 
-while ($bucket = $connection->read(new Bucket())) {
-    if ($bucket->getCommand() instanceof SupportFlags) {
-        // respond to support flags request
-        $connection->write(Bucket::response(new SupportFlags()));
-    }
-
-    if ($bucket->getCommand() instanceof Ping) {
-        // respond to ping request
-        $connection->write(Bucket::response(new Ping()));
+$connection->listen(function (Bucket $bucket, Connection $connection))
+    if ($bucket->is('supportflags') || $bucket->is('timedsync')) {
+        // respond to supportflags and timedsync commands to keep connection open
+        $connection->write($bucket->response());
     }
 
     var_dump($bucket->payload());
-}
+});
 ```
 
 ## Command Support

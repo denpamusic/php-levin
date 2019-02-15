@@ -34,14 +34,11 @@ class CommandFactory
     protected $commands = [];
 
     /**
-     * @param \Denpa\Levin\Bucket $bucket
-     *
      * @return void
      */
-    public function __construct(Bucket $bucket)
+    public function __construct()
     {
         $this->registerCommands();
-        $this->bucket = $bucket;
     }
 
     /**
@@ -57,65 +54,65 @@ class CommandFactory
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function handshake(array $args = []) : Bucket
+    public function handshake(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\Handshake($args));
+        return new Requests\Handshake($args);
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function timedsync(array $args = []) : Bucket
+    public function timedsync(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\TimedSync($args));
+        return new Requests\TimedSync($args);
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function ping(array $args = []) : Bucket
+    public function ping(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\Ping($args));
+        return new Requests\Ping($args);
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function statinfo(array $args = []) : Bucket
+    public function statinfo(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\StatInfo($args));
+        return new Requests\StatInfo($args);
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function networkstate(array $args = []) : Bucket
+    public function networkstate(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\NetworkState($args));
+        return new Requests\NetworkState($args);
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function peerid(array $args = []) : Bucket
+    public function peerid(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\PeerId($args));
+        return new Requests\PeerId($args);
     }
 
     /**
-     * @return \Denpa\Levin\Bucket
+     * @return \Denpa\Levin\CommandInterface
      */
-    public function supportflags(array $args = []) : Bucket
+    public function supportflags(array $args = []) : CommandInterface
     {
-        return $this->bucket->fill(new Requests\SupportFlags($args));
+        return new Requests\SupportFlags($args);
     }
 
     /**
      * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands() : void
     {
         foreach ($this->handlers as $handler) {
             $this->commands[(new $handler())->getCommandCode()] = $handler;

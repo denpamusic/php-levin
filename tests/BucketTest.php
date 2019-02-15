@@ -40,21 +40,32 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetSignature() : void
+    public function testIsRequest() : void
     {
-        $this->bucket->setSignature(Bucket::LEVIN_SIGNATURE);
-        $this->assertInstanceOf(Uint64::class, $this->bucket->signature);
-        $this->assertSame(Bucket::LEVIN_SIGNATURE, $this->bucket->signature->toInt());
+        $handshake = new Handshake();
+        $this->assertSame(Bucket::LEVIN_PACKET_REQUEST, (new FakeBucket)->request($handshake)->flags->toInt());
+        $this->assertSame(Bucket::LEVIN_PACKET_RESPONSE, (new FakeBucket)->response($handshake)->flags->toInt());
     }
 
     /**
      * @return void
      */
-    public function testIsRequest() : void
+    public function testIs() : void
     {
         $handshake = new Handshake();
-        $this->assertSame(Bucket::LEVIN_PACKET_REQUEST, FakeBucket::request($handshake)->flags->toInt());
-        $this->assertSame(Bucket::LEVIN_PACKET_RESPONSE, FakeBucket::response($handshake)->flags->toInt());
+        $bucket = (new FakeBucket())->fill($handshake);
+        $this->assertTrue($bucket->is('handshake'));
+        $this->assertFalse($bucket->is('ping'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetSignature() : void
+    {
+        $this->bucket->setSignature(Bucket::LEVIN_SIGNATURE);
+        $this->assertInstanceOf(Uint64::class, $this->bucket->signature);
+        $this->assertSame(Bucket::LEVIN_SIGNATURE, $this->bucket->signature->toInt());
     }
 
     /**
@@ -288,20 +299,10 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSerialize() : void
-    {
-        $handshake = new Handshake();
-        $this->bucket->fill($handshake);
-        $this->assertEquals([$this->bucket->head(), $this->bucket->payload()], $this->bucket->serialize());
-    }
-
-    /**
-     * @return void
-     */
     public function testRequest() : void
     {
         $handshake = new Handshake();
-        $request = FakeBucket::request($handshake);
+        $request = (new FakeBucket())->request($handshake);
         $this->assertInstanceOf(FakeBucket::class, $request);
         $this->assertEquals(Bucket::LEVIN_PACKET_REQUEST, $request->flags->toInt());
         $this->assertEquals($handshake, $request->getCommand());
@@ -313,7 +314,7 @@ class BucketTest extends TestCase
     public function testResponse() : void
     {
         $handshake = new Handshake();
-        $response = FakeBucket::response($handshake);
+        $response = (new FakeBucket())->response($handshake);
         $this->assertInstanceOf(FakeBucket::class, $response);
         $this->assertEquals(Bucket::LEVIN_PACKET_RESPONSE, $response->flags->toInt());
         $this->assertEquals($handshake, $response->getCommand());

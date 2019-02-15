@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Exception\ConnectionException;
+use Denpa\Levin\Exceptions\ConnectionException;
 use Denpa\Levin\Types\TypeInterface;
 
 class Connection
@@ -25,13 +25,31 @@ class Connection
      */
     public function __construct(string $host, $port, int $timeout = 5)
     {
-        $this->socket = @fsockopen($host, $port, $errno, $errstr, $timeout);
+        $this->socket = @fsockopen($host, (int)$port, $errno, $errstr, $timeout);
 
         if (!$this->socket) {
             throw new ConnectionException($errstr, $errno);
         }
 
         $this->open = true;
+    }
+
+    /**
+     * @param callable $callback
+     *
+     * @return void
+     */
+    public function listen(callable $callback) : void
+    {
+        if (!$this->isOpen()) {
+            return;
+        }
+
+        while ($bucket = $this->read()) {
+            if ($callback($bucket, $this) === false) {
+                break;
+            }
+        }
     }
 
     /**
@@ -47,8 +65,12 @@ class Connection
      *
      * @return mixed
      */
-    public function read($object)
+    public function read($object = null)
     {
+        if (is_null($object)) {
+            $object = new Bucket();
+        }
+
         if (method_exists($object, 'read')) {
             return $object->read($this);
         }

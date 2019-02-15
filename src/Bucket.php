@@ -88,6 +88,17 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * @param string $command
+     *
+     * @return bool
+     */
+    public function is(string $command) : bool
+    {
+        $handler = get_class((new CommandFactory())->$command());
+        return $this->command instanceof $handler;
+    }
+
+    /**
      * @param mixed $signature
      *
      * @return self
@@ -153,7 +164,7 @@ class Bucket implements BucketInterface
         $command = $command instanceof Uint32 ?
             $command : uint32le($command);
 
-        $this->command = (new CommandFactory($this))->getCommand($command->toInt());
+        $this->command = (new CommandFactory())->getCommand($command->toInt());
 
         return $this;
     }
@@ -271,14 +282,6 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return array
-     */
-    public function serialize() : array
-    {
-        return [$this->head(), $this->payload()];
-    }
-
-    /**
      * @param \Denpa\Levin\Connection $connection
      *
      * @return void
@@ -322,34 +325,38 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param \Denpa\Levin\CommandInterface $command
+     * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
      */
-    public static function request(CommandInterface $command) : self
+    public function request(?CommandInterface $command = null) : self
     {
-        $bucket = new static([
-            'return_data' => true,
-            'return_code' => 0,
-            'flags'       => self::LEVIN_PACKET_REQUEST,
-        ]);
+        $this->setReturnData(true);
+        $this->setReturnCode(0);
+        $this->setFlags(self::LEVIN_PACKET_REQUEST);
 
-        return $bucket->fill($command);
+        if (!is_null($command)) {
+            $this->fill($command);
+        }
+
+        return $this;
     }
 
     /**
-     * @param \Denpa\Levin\CommandInterface $command
+     * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
      */
-    public static function response(CommandInterface $command) : self
+    public function response(?CommandInterface $command = null) : self
     {
-        $bucket = new static([
-            'return_data' => false,
-            'return_code' => 0,
-            'flags'       => self::LEVIN_PACKET_RESPONSE,
-        ]);
+        $this->setReturnData(false);
+        $this->setReturnCode(0);
+        $this->setFlags(self::LEVIN_PACKET_RESPONSE);
 
-        return $bucket->fill($command);
+        if (!is_null($command)) {
+            $this->fill($command);
+        }
+
+        return $this;
     }
 }
