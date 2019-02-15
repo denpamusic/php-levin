@@ -25,7 +25,7 @@ class Connection
      */
     public function __construct(string $host, $port, int $timeout = 5)
     {
-        $this->socket = @fsockopen($host, (int)$port, $errno, $errstr, $timeout);
+        $this->socket = @fsockopen($host, (int) $port, $errno, $errstr, $timeout);
 
         if (!$this->socket) {
             throw new ConnectionException($errstr, $errno);

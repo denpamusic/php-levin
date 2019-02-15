@@ -4,7 +4,6 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
-use Denpa\Levin\Connection;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Bytearray;

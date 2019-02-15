@@ -3,7 +3,6 @@
 namespace Denpa\Levin\Traits;
 
 use Denpa\Levin;
-use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Uint64;
 
 trait Peerlist

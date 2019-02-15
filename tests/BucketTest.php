@@ -43,8 +43,8 @@ class BucketTest extends TestCase
     public function testIsRequest() : void
     {
         $handshake = new Handshake();
-        $this->assertSame(Bucket::LEVIN_PACKET_REQUEST, (new FakeBucket)->request($handshake)->flags->toInt());
-        $this->assertSame(Bucket::LEVIN_PACKET_RESPONSE, (new FakeBucket)->response($handshake)->flags->toInt());
+        $this->assertSame(Bucket::LEVIN_PACKET_REQUEST, (new FakeBucket())->request($handshake)->flags->toInt());
+        $this->assertSame(Bucket::LEVIN_PACKET_RESPONSE, (new FakeBucket())->response($handshake)->flags->toInt());
     }
 
     /**

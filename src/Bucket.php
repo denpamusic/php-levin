@@ -95,6 +95,7 @@ class Bucket implements BucketInterface
     public function is(string $command) : bool
     {
         $handler = get_class((new CommandFactory())->$command());
+
         return $this->command instanceof $handler;
     }
 
