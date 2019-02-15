@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Notifications;
 
+use Denpa\Levin;
 use Denpa\Levin\Command;
 use Denpa\Levin\Section\Section;
 
@@ -12,7 +13,7 @@ class ResponseChainEntry extends Command implements NotificationInterface
      */
     public function request() : Section
     {
-        return new Section();
+        return Levin\section();
     }
 
     /**

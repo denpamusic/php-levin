@@ -18,7 +18,7 @@ class SupportFlags extends Command implements RequestInterface
      */
     public function request() : Section
     {
-        return new Section();
+        return Levin\section();
     }
 
     /**
@@ -26,7 +26,7 @@ class SupportFlags extends Command implements RequestInterface
      */
     public function response() : Section
     {
-        return new Section([
+        return Levin\section([
             'support_flags' => Levin\ubyte(self::P2P_SUPPORT_FLAG_FLUFFY_BLOCKS),
         ]);
     }

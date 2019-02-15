@@ -25,9 +25,9 @@ trait Peerlist
                 $peer['id'] : Levin\uint64le($peer['id']);
 
             $peerList[] = Levin\int64le($peer['last_seen']);
-            $peerListNew[] = new Section([
-                'adr' => new Section([
-                    'addr' => new Section([
+            $peerListNew[] = Levin\section([
+                'adr' => Levin\section([
+                    'addr' => Levin\section([
                         'm_ip'   => Levin\uint32le($peer['ip']),
                         'm_port' => Levin\uint32le($peer['port']),
                     ]),

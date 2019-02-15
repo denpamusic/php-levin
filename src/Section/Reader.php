@@ -64,7 +64,7 @@ class Reader
             $this->connection->read(new Ubyte()),
         ];
 
-        foreach ((new Section())->getSignatures() as $key => $signature) {
+        foreach (Levin\section()->getSignatures() as $key => $signature) {
             if ($signatures[$key]->toHex() != $signature->toHex()) {
                 throw new SignatureMismatchException($signature, 'Section signature mismatch');
             }
@@ -78,7 +78,7 @@ class Reader
      */
     protected function readSection() : Section
     {
-        $section = new Section();
+        $section = Levin\section();
 
         $count = $this->connection->read(new Varint())->toInt();
 

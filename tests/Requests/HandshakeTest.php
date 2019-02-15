@@ -47,6 +47,6 @@ class HandshakeTest extends TestCase
         $this->assertEquals(0, (new Handshake())->my_port);
         $this->assertEquals(Levin\peer_id(), (new Handshake())->peer_id);
         $this->assertEquals(hex2bin('1230f171610441611731008216a1a110'), (new Handshake())->network_id);
-        $this->assertEquals(hex2bin('418015bb9ae982a1975da7d79277c2705727a56894ba0fb246adaabb1f4632e3'), (new Handshake())->genesis);
+        $this->assertEquals(hex2bin('418015bb9ae982a1975da7d79277c2705727a56894ba0fb246adaabb1f4632e3'), (new Handshake())->top_id);
     }
 }

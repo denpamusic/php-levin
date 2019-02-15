@@ -13,7 +13,7 @@ class Ping extends Command implements RequestInterface
      */
     public function request() : Section
     {
-        return new Section();
+        return Levin\section();
     }
 
     /**
@@ -21,7 +21,7 @@ class Ping extends Command implements RequestInterface
      */
     public function response() : Section
     {
-        return new Section([
+        return Levin\section([
             'status'  => Levin\bytestring('OK'),
             'peer_id' => $this->peer_id,
         ]);

@@ -50,6 +50,16 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
+    public function testIsRequest() : void
+    {
+        $handshake = new Handshake();
+        $this->assertSame(Bucket::LEVIN_PACKET_REQUEST, FakeBucket::request($handshake)->flags->toInt());
+        $this->assertSame(Bucket::LEVIN_PACKET_RESPONSE, FakeBucket::response($handshake)->flags->toInt());
+    }
+
+    /**
+     * @return void
+     */
     public function testSetSignatureWithUint() : void
     {
         $uint64 = new Uint64(Bucket::LEVIN_SIGNATURE, Uint64::LE);
