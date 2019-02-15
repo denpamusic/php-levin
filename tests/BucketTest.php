@@ -387,7 +387,6 @@ class BucketTest extends TestCase
                 new Varint(0)
             );
 
-
         $this->bucket->read($connection);
     }
 
