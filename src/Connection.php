@@ -5,7 +5,7 @@ namespace Denpa\Levin;
 use Denpa\Levin\Exceptions\ConnectionException;
 use Denpa\Levin\Types\TypeInterface;
 
-class Connection
+class Connection implements ConnectionInterface
 {
     /**
      * @var resource
@@ -35,6 +35,14 @@ class Connection
     }
 
     /**
+     * @return void
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
      * @param callable $callback
      *
      * @return void
@@ -50,14 +58,6 @@ class Connection
                 break;
             }
         }
-    }
-
-    /**
-     * @return void
-     */
-    public function __destruct()
-    {
-        $this->close();
     }
 
     /**

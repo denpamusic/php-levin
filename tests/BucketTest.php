@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Tests;
 
+use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
@@ -13,6 +14,7 @@ use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
+use Denpa\Levin\Types\Varint;
 use UnexpectedValueException;
 
 class BucketTest extends TestCase
@@ -345,6 +347,7 @@ class BucketTest extends TestCase
      */
     public function testRead() : void
     {
+        $signatures = Levin\section()->getSignatures();
         $connection = $this->createMock(Connection::class);
 
         $connection->expects($this->once())
@@ -354,23 +357,36 @@ class BucketTest extends TestCase
         $connection->expects($this->exactly(7))
             ->method('read')
             ->withConsecutive(
+                // head
                 [$this->isInstanceOf(Uint64::class)],
                 [$this->isInstanceOf(Uint64::class)],
                 [$this->isInstanceOf(Boolean::class)],
                 [$this->isInstanceOf(Uint32::class)],
                 [$this->isInstanceOf(Int32::class)],
                 [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Uint32::class)]
+                [$this->isInstanceOf(Uint32::class)],
+                // section
+                [$this->isInstanceOf(Uint32::class)],
+                [$this->isInstanceOf(Uint32::class)],
+                [$this->isInstanceOf(Ubyte::class)],
+                [$this->isInstanceOf(Uint::class)]
             )
             ->willReturnOnConsecutiveCalls(
+                // head
                 new Uint64(Bucket::LEVIN_SIGNATURE, Uint64::LE),
                 new Uint64(0, Uint64::LE),
                 new Boolean(false),
                 new Uint32(RequestInterface::P2P_COMMANDS_POOL_BASE + 1, Uint32::LE),
                 new Int32(0, Int32::LE),
                 new Uint32(Bucket::LEVIN_PACKET_RESPONSE, Uint32::LE),
-                new Uint32(Bucket::LEVIN_PROTOCOL_VER_1, Uint32::LE)
+                new Uint32(Bucket::LEVIN_PROTOCOL_VER_1, Uint32::LE),
+                // section
+                $signatures[0],
+                $signatures[1],
+                $signatures[2],
+                new Varint(0)
             );
+
 
         $this->bucket->read($connection);
     }

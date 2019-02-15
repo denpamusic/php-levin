@@ -303,7 +303,7 @@ if (!function_exists('connection')) {
      *
      * @return \Denpa\Levin\ConnectionInterface
      */
-    function connection(string $host, $port, array $args = []) : Connection
+    function connection(string $host, $port, array $args = []) : ConnectionInterface
     {
         $connection = new Connection($host, $port);
         $connection->write(request('handshake', $args));

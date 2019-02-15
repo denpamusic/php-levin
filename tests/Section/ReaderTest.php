@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Tests\Section;
 
+use Denpa\Levin;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
@@ -20,7 +21,7 @@ class ReaderTest extends TestCase
     {
         parent::setUp();
 
-        $this->signatures = (new Section())->getSignatures();
+        $this->signatures = Levin\section()->getSignatures();
         $this->connection = $this->createMock(Connection::class);
         $this->reader = new FakeReader($this->connection);
     }
