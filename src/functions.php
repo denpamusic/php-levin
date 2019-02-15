@@ -297,15 +297,15 @@ if (!function_exists('response')) {
 
 if (!function_exists('connection')) {
     /**
-     * @param string $ip
+     * @param string $host
      * @param mixed  $port
      * @param array  $args
      *
      * @return \Denpa\Levin\ConnectionInterface
      */
-    function connection(string $ip, $port, array $args = []) : Connection
+    function connection(string $host, $port, array $args = []) : Connection
     {
-        $connection = new Connection($ip, $port);
+        $connection = new Connection($host, $port);
         $connection->write(request('handshake', $args));
 
         return $connection;

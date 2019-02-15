@@ -14,7 +14,7 @@ use Denpa\Levin\Connection;
 
 $connection = Levin\connection($ip, $port, ['network_id' => 'somenetwork']);
 
-$connection->listen(function (Bucket $bucket, Connection $connection))
+$connection->listen(function (Bucket $bucket, Connection $connection) {
     if ($bucket->is('supportflags') || $bucket->is('timedsync')) {
         // respond to supportflags and timedsync commands to keep connection open
         $connection->write($bucket->response());
