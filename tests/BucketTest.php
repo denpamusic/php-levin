@@ -12,6 +12,7 @@ use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
+use Denpa\Levin\Types\Ubyte;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Varint;
@@ -347,34 +348,35 @@ class BucketTest extends TestCase
      */
     public function testRead() : void
     {
-        $signatures = Levin\section()->getSignatures();
+        $section = Levin\section();
+        $signatures = $section->getSignatures();
         $connection = $this->createMock(Connection::class);
 
         $connection->expects($this->once())
             ->method('eof')
             ->willReturn(false);
 
-        $connection->expects($this->exactly(7))
+        $connection->expects($this->exactly(11))
             ->method('read')
             ->withConsecutive(
                 // head
-                [$this->isInstanceOf(Uint64::class)],
-                [$this->isInstanceOf(Uint64::class)],
-                [$this->isInstanceOf(Boolean::class)],
-                [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Int32::class)],
-                [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Uint32::class)],
+                [$this->isInstanceOf(Uint64::class)],  // signature
+                [$this->isInstanceOf(Uint64::class)],  // cb
+                [$this->isInstanceOf(Boolean::class)], // return_data
+                [$this->isInstanceOf(Uint32::class)],  // command
+                [$this->isInstanceOf(Int32::class)],   // return_code
+                [$this->isInstanceOf(Uint32::class)],  // flags
+                [$this->isInstanceOf(Uint32::class)],  // protocol_version
                 // section
-                [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Ubyte::class)],
-                [$this->isInstanceOf(Uint::class)]
+                [$this->isInstanceOf(Uint32::class)],  // signature1
+                [$this->isInstanceOf(Uint32::class)],  // signature2
+                [$this->isInstanceOf(Ubyte::class)],   // signature3
+                [$this->isInstanceOf(Varint::class)]     // section size
             )
             ->willReturnOnConsecutiveCalls(
                 // head
                 new Uint64(Bucket::LEVIN_SIGNATURE, Uint64::LE),
-                new Uint64(0, Uint64::LE),
+                new Uint64(strlen($section->toBinary()), Uint64::LE),
                 new Boolean(false),
                 new Uint32(RequestInterface::P2P_COMMANDS_POOL_BASE + 1, Uint32::LE),
                 new Int32(0, Int32::LE),
