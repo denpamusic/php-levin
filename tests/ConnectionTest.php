@@ -4,9 +4,8 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
-use Denpa\Levin\FakeConnection;
-use VirtualFileSystem\FileSystem;
 use Denpa\Levin\Requests\Handshake;
+use VirtualFileSystem\FileSystem;
 
 /**
  * @var \VirtualFileSystem\FileSystem
@@ -35,7 +34,7 @@ class ConnectionTest extends TestCase
      */
     public function testListen() : void
     {
-        $handshake = (new Bucket)->response(new Handshake());
+        $handshake = (new Bucket())->response(new Handshake());
         $response = $handshake->head().$handshake->payload()->toBinary();
         file_put_contents($this->fs->path('127.0.0.1:1000'), $response);
 
@@ -69,5 +68,6 @@ function fsockopen(
     $errno = 101;
     $errstr = 'Test error message';
     global $fs;
+
     return fopen($fs->path("$host:$port"), 'r+');
 }
