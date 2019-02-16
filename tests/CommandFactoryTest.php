@@ -94,7 +94,7 @@ class CommandFactoryTest extends TestCase
             ['supportflags',           SupportFlags::class],
             ['newblock',               NewBlock::class],
             ['newtransactions',        NewTransactions::class],
-            ['responsegetobjects',     RequestGetObjects::class],
+            ['requestgetobjects',      RequestGetObjects::class],
             ['responsegetobjects',     ResponseGetObjects::class],
             ['requestchain',           RequestChain::class],
             ['responsechainentry',     ResponseChainEntry::class],
