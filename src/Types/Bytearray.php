@@ -4,7 +4,7 @@ namespace Denpa\Levin\Types;
 
 use ArrayAccess;
 use Countable;
-use Denpa\Levin\Section;
+use Denpa\Levin\Section\Section;
 use Denpa\Levin\Traits\Arrayable;
 use InvalidArgumentException;
 use IteratorAggregate;
@@ -33,8 +33,12 @@ class Bytearray implements
      *
      * @return void
      */
-    public function __construct(array $entries = [])
+    public function __construct(array $entries = [], ?BoostSerializable $type = null)
     {
+        if (!is_null($type)) {
+            $this->type = $type->getSerializeType();
+        }
+
         foreach ($entries as $entry) {
             $this->validate($entry);
         }

@@ -31,6 +31,10 @@ class Bytestring extends Type implements BoostSerializable
     {
         $length = $connection->read(new Varint())->toInt();
 
+        if ($length == 0) {
+            return new self();
+        }
+
         return new self($connection->readBytes($length));
     }
 }

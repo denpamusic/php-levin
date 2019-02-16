@@ -23,9 +23,9 @@ if (!function_exists('bytearray')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function bytearray(array $entries = []) : TypeInterface
+    function bytearray(array $entries = [], $type = null) : TypeInterface
     {
-        return new Types\Bytearray($entries);
+        return new Types\Bytearray($entries, $type);
     }
 }
 

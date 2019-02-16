@@ -125,7 +125,7 @@ class Reader
     {
         $type = $this->connection->read(new Ubyte())->toInt();
 
-        if (($type & SERIALIZE_FLAG_ARRAY) != 0) {
+        if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             throw new UnexpectedValueException('Incorrect array sequence');
         }
 

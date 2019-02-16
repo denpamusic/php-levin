@@ -30,11 +30,11 @@ trait Peerlist
                         'm_ip'   => Levin\uint32le($peer['ip']),
                         'm_port' => Levin\uint32le($peer['port']),
                     ]),
-                    'type' => Levin\uint8le($peer['type'] ?? 0),
+                    'type' => Levin\uint8le($peer['type']),
                 ]),
                 'id'        => $peer['id'] instanceof Uint64 ?
                     $peer['id'] : Levin\uint64le($peer['id']),
-                'last_seen' => Levin\int64le($peer['last_seen'] ?? time()),
+                'last_seen' => Levin\int64le($peer['last_seen']),
             ]);
         }
 

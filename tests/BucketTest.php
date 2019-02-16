@@ -359,7 +359,9 @@ class BucketTest extends TestCase
         $connection->expects($this->exactly(11))
             ->method('read')
             ->withConsecutive(
-                // head
+                /**
+                 * BEGIN HEAD
+                 */
                 [$this->isInstanceOf(Uint64::class)],  // signature
                 [$this->isInstanceOf(Uint64::class)],  // cb
                 [$this->isInstanceOf(Boolean::class)], // return_data
@@ -367,14 +369,18 @@ class BucketTest extends TestCase
                 [$this->isInstanceOf(Int32::class)],   // return_code
                 [$this->isInstanceOf(Uint32::class)],  // flags
                 [$this->isInstanceOf(Uint32::class)],  // protocol_version
-                // section
+                /**
+                 * BEGIN SECTION
+                 */
                 [$this->isInstanceOf(Uint32::class)],  // signature1
                 [$this->isInstanceOf(Uint32::class)],  // signature2
                 [$this->isInstanceOf(Ubyte::class)],   // signature3
-                [$this->isInstanceOf(Varint::class)]     // section size
+                [$this->isInstanceOf(Varint::class)]   // section size
             )
             ->willReturnOnConsecutiveCalls(
-                // head
+                /**
+                 * BEGIN HEAD
+                 */
                 new Uint64(Bucket::LEVIN_SIGNATURE, Uint64::LE),
                 new Uint64(strlen($section->toBinary()), Uint64::LE),
                 new Boolean(false),
@@ -382,7 +388,9 @@ class BucketTest extends TestCase
                 new Int32(0, Int32::LE),
                 new Uint32(Bucket::LEVIN_PACKET_RESPONSE, Uint32::LE),
                 new Uint32(Bucket::LEVIN_PROTOCOL_VER_1, Uint32::LE),
-                // section
+                /**
+                 * BEGIN SECTION
+                 */
                 $signatures[0],
                 $signatures[1],
                 $signatures[2],
