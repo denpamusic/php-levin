@@ -108,7 +108,7 @@ class CommandFactory
     {
         return new Requests\SupportFlags($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
@@ -124,7 +124,7 @@ class CommandFactory
     {
         return new Notifications\NewTransactions($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
@@ -132,7 +132,7 @@ class CommandFactory
     {
         return new Notifications\RequestGetObjects($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
@@ -140,7 +140,7 @@ class CommandFactory
     {
         return new Notifications\ResponseGetObjects($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
@@ -148,7 +148,7 @@ class CommandFactory
     {
         return new Notifications\RequestChain($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
@@ -156,7 +156,7 @@ class CommandFactory
     {
         return new Notifications\ResponseChainEntry($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
@@ -164,7 +164,7 @@ class CommandFactory
     {
         return new Notifications\NewFluffyBlock($vars);
     }
-    
+
     /**
      * @return \Denpa\Levin\CommandInterface
      */
