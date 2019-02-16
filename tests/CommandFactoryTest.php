@@ -12,6 +12,14 @@ use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Requests\StatInfo;
 use Denpa\Levin\Requests\SupportFlags;
 use Denpa\Levin\Requests\TimedSync;
+use Denpa\Levin\Notifications\NewBlock;
+use Denpa\Levin\Notifications\NewTransactions;
+use Denpa\Levin\Notifications\RequestGetObjects;
+use Denpa\Levin\Notifications\ResponseGetObjects;
+use Denpa\Levin\Notifications\RequestChain;
+use Denpa\Levin\Notifications\ResponseChainEntry;
+use Denpa\Levin\Notifications\NewFluffyBlock;
+use Denpa\Levin\Notifications\RequestFluffyMissingTx;
 use UnexpectedValueException;
 
 class CommandFactoryTest extends TestCase
@@ -77,13 +85,21 @@ class CommandFactoryTest extends TestCase
     public function helperProvider() : array
     {
         return [
-            ['handshake',     Handshake::class],
-            ['timedsync',     TimedSync::class],
-            ['ping',          Ping::class],
-            ['statinfo',      StatInfo::class],
-            ['networkstate',  NetworkState::class],
-            ['peerid',        PeerId::class],
-            ['supportflags',  SupportFlags::class],
+            ['handshake',              Handshake::class],
+            ['timedsync',              TimedSync::class],
+            ['ping',                   Ping::class],
+            ['statinfo',               StatInfo::class],
+            ['networkstate',           NetworkState::class],
+            ['peerid',                 PeerId::class],
+            ['supportflags',           SupportFlags::class],
+            ['newblock',               NewBlock::class],
+            ['newtransactions',        NewTransactions::class],
+            ['responsegetobjects',     RequestGetObjects::class],
+            ['responsegetobjects',     ResponseGetObjects::class],
+            ['requestchain',           RequestChain::class],
+            ['responsechainentry',     ResponseChainEntry::class],
+            ['newfluffyblock',         NewFluffyBlock::class],
+            ['requestfluffymissingtx', RequestFluffyMissingTx::class],
         ];
     }
 }
