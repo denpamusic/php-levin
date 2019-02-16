@@ -359,7 +359,7 @@ class BucketTest extends TestCase
         $connection->expects($this->exactly(11))
             ->method('read')
             ->withConsecutive(
-                /**
+                /*
                  * BEGIN HEAD
                  */
                 [$this->isInstanceOf(Uint64::class)],  // signature
@@ -369,7 +369,7 @@ class BucketTest extends TestCase
                 [$this->isInstanceOf(Int32::class)],   // return_code
                 [$this->isInstanceOf(Uint32::class)],  // flags
                 [$this->isInstanceOf(Uint32::class)],  // protocol_version
-                /**
+                /*
                  * BEGIN SECTION
                  */
                 [$this->isInstanceOf(Uint32::class)],  // signature1
@@ -378,7 +378,7 @@ class BucketTest extends TestCase
                 [$this->isInstanceOf(Varint::class)]   // section size
             )
             ->willReturnOnConsecutiveCalls(
-                /**
+                /*
                  * BEGIN HEAD
                  */
                 new Uint64(Bucket::LEVIN_SIGNATURE, Uint64::LE),
@@ -388,7 +388,7 @@ class BucketTest extends TestCase
                 new Int32(0, Int32::LE),
                 new Uint32(Bucket::LEVIN_PACKET_RESPONSE, Uint32::LE),
                 new Uint32(Bucket::LEVIN_PROTOCOL_VER_1, Uint32::LE),
-                /**
+                /*
                  * BEGIN SECTION
                  */
                 $signatures[0],
