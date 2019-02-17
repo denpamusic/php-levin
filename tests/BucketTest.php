@@ -60,7 +60,7 @@ class BucketTest extends TestCase
         $this->assertTrue($bucket->is('handshake'));
         $this->assertFalse($bucket->is('ping'));
     }
-    
+
     /**
      * @return void
      */
