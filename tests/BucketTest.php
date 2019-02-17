@@ -49,11 +49,11 @@ class BucketTest extends TestCase
         $request = (new FakeBucket())->request($handshake);
         $this->assertTrue($request->isRequest('handshake'));
         $this->assertFalse($request->isRequest('ping'));
-        
+
         $response = (new FakeBucket())->response($handshake);
         $this->assertFalse($response->isRequest('handshake'));
     }
-    
+
     /**
      * @return void
      */
@@ -63,7 +63,7 @@ class BucketTest extends TestCase
         $response = (new FakeBucket())->response($handshake);
         $this->assertTrue($response->isResponse('handshake'));
         $this->assertFalse($response->isResponse('ping'));
-        
+
         $request = (new FakeBucket())->request($handshake);
         $this->assertFalse($request->isResponse('handshake'));
     }
