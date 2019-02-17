@@ -89,7 +89,7 @@ class Bucket implements BucketInterface
         return $this->is(...$commands) &&
             ($this->flags->toInt() == self::LEVIN_PACKET_REQUEST);
     }
-    
+
     /**
      * @param string $commands,...
      *
