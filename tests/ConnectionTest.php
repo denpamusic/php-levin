@@ -48,8 +48,6 @@ class ConnectionTest extends TestCase
             
             return false;
         });
-        
-        $this->assertFalse($connection->isOpen());
     }
     
     /**
