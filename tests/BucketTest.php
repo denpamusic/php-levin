@@ -12,7 +12,7 @@ use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
-use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Varint;
@@ -386,7 +386,7 @@ class BucketTest extends TestCase
                  */
                 [$this->isInstanceOf(Uint32::class)],  // signature1
                 [$this->isInstanceOf(Uint32::class)],  // signature2
-                [$this->isInstanceOf(Ubyte::class)],   // signature3
+                [$this->isInstanceOf(Uint8::class)],   // signature3
                 [$this->isInstanceOf(Varint::class)]   // section size
             )
             ->willReturnOnConsecutiveCalls(

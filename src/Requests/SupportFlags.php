@@ -27,7 +27,7 @@ class SupportFlags extends Command implements RequestInterface
     public function response() : Section
     {
         return Levin\section([
-            'support_flags' => Levin\ubyte($this->support_flags),
+            'support_flags' => Levin\uint8($this->support_flags),
         ]);
     }
 

@@ -12,7 +12,6 @@ use Denpa\Levin\Types\Int16;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Int64;
 use Denpa\Levin\Types\Int8;
-use Denpa\Levin\Types\Ubyte;
 use Denpa\Levin\Types\Uint16;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
@@ -61,7 +60,7 @@ class Reader
         $signatures = [
             $this->connection->read(new Uint32()),
             $this->connection->read(new Uint32()),
-            $this->connection->read(new Ubyte()),
+            $this->connection->read(new Uint8()),
         ];
 
         foreach (Levin\section()->getSignatures() as $key => $signature) {
@@ -95,7 +94,7 @@ class Reader
      */
     protected function readName() : string
     {
-        $length = $this->connection->read(new Ubyte());
+        $length = $this->connection->read(new Uint8());
 
         return $this->connection->readBytes($length->toInt());
     }
@@ -105,7 +104,7 @@ class Reader
      */
     protected function loadEntries() : BoostSerializable
     {
-        $type = $this->connection->read(new Ubyte())->toInt();
+        $type = $this->connection->read(new Uint8())->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             return $this->readArrayEntry($type);
@@ -123,7 +122,7 @@ class Reader
      */
     protected function readEntryArrayEntry() : Bytearray
     {
-        $type = $this->connection->read(new Ubyte())->toInt();
+        $type = $this->connection->read(new Uint8())->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
             throw new UnexpectedValueException('Incorrect array sequence');

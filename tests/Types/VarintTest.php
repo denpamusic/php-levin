@@ -4,7 +4,7 @@ namespace Denpa\Levin\Tests\Types;
 
 use Denpa\Levin\Connection;
 use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
 use UnexpectedValueException;
 
@@ -53,8 +53,8 @@ class VarintTest extends TestCase
 
         $connection->expects($this->once())
             ->method('read')
-            ->with($this->isInstanceOf(Ubyte::class))
-            ->willReturn(new Ubyte($first));
+            ->with($this->isInstanceOf(Uint8::class))
+            ->willReturn(new Uint8($first));
 
         if (!is_null($second)) {
             $connection->expects($this->once())

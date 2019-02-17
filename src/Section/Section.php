@@ -9,7 +9,7 @@ use Denpa\Levin\BufferInterface;
 use Denpa\Levin\Traits\Arrayable;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
-use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Uint8;
 use IteratorAggregate;
 use UnexpectedValueException;
 
@@ -45,7 +45,7 @@ class Section implements
         $this->signatures = [
             Levin\uint32le(self::PORTABLE_STORAGE_SIGNATUREA),
             Levin\uint32le(self::PORTABLE_STORAGE_SIGNATUREB),
-            Levin\ubyte(self::PORTABLE_STORAGE_FORMAT_VER),
+            Levin\uint8(self::PORTABLE_STORAGE_FORMAT_VER),
         ];
     }
 
@@ -63,11 +63,11 @@ class Section implements
     }
 
     /**
-     * @return \Denpa\Levin\Types\Ubyte
+     * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Ubyte
+    public function getSerializeType() : Uint8
     {
-        return new Ubyte(self::SERIALIZE_TYPE_OBJECT);
+        return new Uint8(self::SERIALIZE_TYPE_OBJECT);
     }
 
     /**
@@ -136,7 +136,7 @@ class Section implements
                 );
             }
 
-            $result .= Levin\ubyte(strlen($key));
+            $result .= Levin\uint8(strlen($key));
             $result .= $key;
             $result .= $entry->getSerializeType();
 

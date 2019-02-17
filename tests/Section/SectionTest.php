@@ -5,7 +5,7 @@ namespace Denpa\Levin\Tests\Section;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Bytestring;
-use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Varint;
 use UnexpectedValueException;
@@ -24,7 +24,7 @@ class SectionTest extends TestCase
         $this->signatures = [
             new Uint32(Section::PORTABLE_STORAGE_SIGNATUREA, Uint32::LE),
             new Uint32(Section::PORTABLE_STORAGE_SIGNATUREB, Uint32::LE),
-            new Ubyte(Section::PORTABLE_STORAGE_FORMAT_VER),
+            new Uint8(Section::PORTABLE_STORAGE_FORMAT_VER),
         ];
     }
 
@@ -76,7 +76,7 @@ class SectionTest extends TestCase
         $offset += 1;
 
         // title size
-        $this->assertEquals((new Ubyte(strlen('test')))->toBinary(), substr($binary, $offset, 1));
+        $this->assertEquals((new Uint8(strlen('test')))->toBinary(), substr($binary, $offset, 1));
         $offset += 1;
 
         // title

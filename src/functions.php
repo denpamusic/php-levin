@@ -53,18 +53,6 @@ if (!function_exists('varint')) {
     }
 }
 
-if (!function_exists('ubyte')) {
-    /**
-     * @param int|string $int
-     *
-     * @return \Denpa\Levin\Types\TypeInterface
-     */
-    function ubyte($int = 0) : TypeInterface
-    {
-        return new Types\Ubyte($int);
-    }
-}
-
 if (!function_exists('uint8')) {
     /**
      * @param int|string $int

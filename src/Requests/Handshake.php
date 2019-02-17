@@ -27,7 +27,7 @@ class Handshake extends Command implements RequestInterface
                 'cumulative_difficulty' => Levin\uint64le($this->cumulative_difficulty),
                 'current_height'        => Levin\uint64le($this->current_height),
                 'top_id'                => Levin\bytestring($this->top_id),
-                'top_version'           => Levin\ubyte($this->top_version),
+                'top_version'           => Levin\uint8($this->top_version),
             ]),
         ]);
     }
@@ -50,7 +50,7 @@ class Handshake extends Command implements RequestInterface
                 'cumulative_difficulty' => Levin\uint64le($this->cumulative_difficulty),
                 'current_height'        => Levin\uint64le($this->current_height),
                 'top_id'                => Levin\bytestring($this->top_id),
-                'top_version'           => Levin\ubyte($this->top_version),
+                'top_version'           => Levin\uint8($this->top_version),
             ]),
             'local_peerlist_new' => Levin\bytearray($localPeerlistNew, Levin\section()),
             'local_peerlist'     => Levin\bytestring($localPeerlist),

@@ -8,7 +8,7 @@ use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Types\Ubyte;
+use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Varint;
 
@@ -37,7 +37,7 @@ class ReaderTest extends TestCase
             ->withConsecutive(
                 [$this->isInstanceOf(Uint32::class)],
                 [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Ubyte::class)],
+                [$this->isInstanceOf(Uint8::class)],
                 [$this->isInstanceOf(Varint::class)]
             )
             ->willReturnOnConsecutiveCalls(
@@ -61,7 +61,7 @@ class ReaderTest extends TestCase
             ->withConsecutive(
                 [$this->isInstanceOf(Uint32::class)],
                 [$this->isInstanceOf(Uint32::class)],
-                [$this->isInstanceOf(Ubyte::class)]
+                [$this->isInstanceOf(Uint8::class)]
             )
             ->willReturnOnConsecutiveCalls(
                 $this->signatures[2],
@@ -83,8 +83,8 @@ class ReaderTest extends TestCase
         $this->connection
             ->expects($this->once())
             ->method('read')
-            ->with($this->isInstanceOf(Ubyte::class))
-            ->willReturn(new Ubyte(4));
+            ->with($this->isInstanceOf(Uint8::class))
+            ->willReturn(new Uint8(4));
 
         $this->connection
             ->expects($this->once())

@@ -24,7 +24,7 @@ class Bytearray implements
     protected $entries = [];
 
     /**
-     * @var \Denpa\Levin\Types\Ubyte|null
+     * @var \Denpa\Levin\Types\Uint8|null
      */
     protected $type = null;
 
@@ -111,12 +111,12 @@ class Bytearray implements
     }
 
     /**
-     * @return \Denpa\Levin\Types\Ubyte
+     * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Ubyte
+    public function getSerializeType() : Uint8
     {
         if (is_null($this->type)) {
-            return new Ubyte(BoostSerializable::SERIALIZE_TYPE_ARRAY);
+            return new Uint8(BoostSerializable::SERIALIZE_TYPE_ARRAY);
         }
 
         return $this->type->or(BoostSerializable::SERIALIZE_FLAG_ARRAY);

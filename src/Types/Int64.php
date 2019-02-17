@@ -13,10 +13,10 @@ class Int64 extends SignedInt implements BoostSerializable
     }
 
     /**
-     * @return \Denpa\Levin\Types\Ubyte
+     * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Ubyte
+    public function getSerializeType() : Uint8
     {
-        return new Ubyte(self::SERIALIZE_TYPE_INT64);
+        return new Uint8(self::SERIALIZE_TYPE_INT64);
     }
 }

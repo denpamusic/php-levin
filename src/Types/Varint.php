@@ -39,7 +39,7 @@ class Varint extends Type
     {
         switch (true) {
             case $this->value <= 63:
-                $value = new Ubyte(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_BYTE);
+                $value = new Uint8(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_BYTE);
                 break;
             case $this->value <= 16383:
                 $value = new Uint16(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_WORD, Type::LE);
@@ -63,7 +63,7 @@ class Varint extends Type
      */
     public function read(Connection $connection) : Type
     {
-        $first = $connection->read(new Ubyte());
+        $first = $connection->read(new Uint8());
 
         $mask = $first->toInt() & self::PORTABLE_RAW_SIZE_MARK_MASK;
 

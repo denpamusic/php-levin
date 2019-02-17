@@ -75,7 +75,7 @@ interface BoostSerializable
     const SERIALIZE_FLAG_ARRAY = 0x80;
 
     /**
-     * @return \Denpa\Levin\Types\Ubyte
+     * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Ubyte;
+    public function getSerializeType() : Uint8;
 }

@@ -6,7 +6,7 @@ use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
-use Denpa\Levin\Types\uByte;
+use Denpa\Levin\Types\Uint8;
 use InvalidArgumentException;
 
 class BytearrayTest extends TestCase
@@ -42,7 +42,7 @@ class BytearrayTest extends TestCase
 
         $bytearray = new Bytearray([
             new Bytestring('fail'),
-            new uByte(1),
+            new Uint8(1),
         ]);
     }
 
@@ -73,7 +73,7 @@ class BytearrayTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Array entries must be of the same type');
 
-        $this->bytearray->offsetSet(null, new uByte(1));
+        $this->bytearray->offsetSet(null, new Uint8(1));
     }
 
     /**

@@ -12,7 +12,6 @@ use Denpa\Levin\Types\Int16;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Int64;
 use Denpa\Levin\Types\Int8;
-use Denpa\Levin\Types\Ubyte;
 use Denpa\Levin\Types\Uint16;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
@@ -53,14 +52,6 @@ class FunctionsTest extends TestCase
     public function testVarint() : void
     {
         $this->assertInstanceOf(Varint::class, Levin\varint(10));
-    }
-
-    /**
-     * @return void
-     */
-    public function testUbyte() : void
-    {
-        $this->assertInstanceOf(Ubyte::class, Levin\ubyte(1));
     }
 
     /**
