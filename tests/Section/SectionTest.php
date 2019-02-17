@@ -5,8 +5,8 @@ namespace Denpa\Levin\Tests\Section;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Bytestring;
-use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Uint32;
+use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
 use UnexpectedValueException;
 

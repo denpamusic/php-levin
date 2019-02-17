@@ -15,8 +15,8 @@ class Uint8 extends Type implements BoostSerializable
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Uint8
+    public function getSerializeType() : self
     {
-        return new Uint8(self::SERIALIZE_TYPE_UINT8);
+        return new self(self::SERIALIZE_TYPE_UINT8);
     }
 }
