@@ -50,7 +50,7 @@ class BucketTest extends TestCase
         $this->assertTrue($request->isRequest('handshake'));
         $this->assertFalse($request->isRequest('ping'));
         
-        $response = (new FakeBucket())->response($handshake));
+        $response = (new FakeBucket())->response($handshake);
         $this->assertFalse($response->isRequest('handshake'));
     }
     
