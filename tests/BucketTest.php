@@ -46,8 +46,26 @@ class BucketTest extends TestCase
     public function testIsRequest() : void
     {
         $handshake = new Handshake();
-        $this->assertSame(Bucket::LEVIN_PACKET_REQUEST, (new FakeBucket())->request($handshake)->flags->toInt());
-        $this->assertSame(Bucket::LEVIN_PACKET_RESPONSE, (new FakeBucket())->response($handshake)->flags->toInt());
+        $request = (new FakeBucket())->request($handshake);
+        $this->assertTrue($request->isRequest('handshake'));
+        $this->assertFalse($request->isRequest('ping'));
+        
+        $response = (new FakeBucket())->response($handshake));
+        $this->assertFalse($response->isRequest('handshake'));
+    }
+    
+    /**
+     * @return void
+     */
+    public function testIsResponse() : void
+    {
+        $handshake = new Handshake();
+        $response = (new FakeBucket())->response($handshake);
+        $this->assertTrue($response->isResponse('handshake'));
+        $this->assertFalse($response->isResponse('ping'));
+        
+        $request = (new FakeBucket())->request($handshake);
+        $this->assertFalse($request->isResponse('handshake'));
     }
 
     /**

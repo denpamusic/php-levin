@@ -15,12 +15,19 @@ $vars = [
 ];
 
 Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
-    if ($bucket->is('supportflags', 'timedsync')) {
-        // respond to supportflags and timedsync commands to keep connection open
+    if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
+        // respond to supportflags, timedsync and ping requests
+        // to keep the connection open
         $connection->write($bucket->response());
     }
-
-    var_dump($bucket->payload());
+    
+    if ($bucket->isResponse('ping')) {
+       // dump server response to the console
+       var_dump($bucket->payload());
+    }
+    
+    // send ping request to the server
+    $connection->write(Levin\request('ping'));
 });
 ```
 
