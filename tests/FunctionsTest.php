@@ -215,8 +215,7 @@ class FunctionsTest extends TestCase
     public function testRequest() : void
     {
         $this->assertInstanceOf(Bucket::class, Levin\request('ping'));
-        $this->assertTrue(Levin\request('ping')->isRequest());
-        $this->assertTrue(Levin\request('ping')->is('ping'));
+        $this->assertTrue(Levin\request('ping')->isRequest('ping'));
     }
 
     /**
@@ -225,8 +224,7 @@ class FunctionsTest extends TestCase
     public function testResponse() : void
     {
         $this->assertInstanceOf(Bucket::class, Levin\response('ping'));
-        $this->assertFalse(Levin\response('ping')->isRequest());
-        $this->assertTrue(Levin\response('ping')->is('ping'));
+        $this->assertTrue(Levin\response('ping')->isResponse('ping'));
     }
 
     /**
