@@ -97,18 +97,18 @@ class Bucket implements BucketInterface
         if (!is_array($commands)) {
             $commands = [$commands];
         }
-        
+
         $result = false;
-        
+
         foreach ($commands as $command) {
             $handler = get_class((new CommandFactory())->$command());
-            
+
             if ($this->command instanceof $handler) {
                 $result = true;
                 break;
             }
         }
-        
+
         return $result;
     }
 
