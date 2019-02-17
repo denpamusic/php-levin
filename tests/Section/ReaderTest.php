@@ -8,8 +8,8 @@ use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
-use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Uint32;
+use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
 
 class ReaderTest extends TestCase
