@@ -15,12 +15,6 @@ $vars = [
 ];
 
 Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
-    if ($bucket->isResponse('handshake')) {
-        // send ping request to the server after 
-        // receiving handshake response
-        $connection->write(Levin\request('ping'));
-    }
-
     if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
         // respond to supportflags, timedsync and ping requests
         // to keep the connection open
@@ -28,8 +22,17 @@ Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
     }
     
     if ($bucket->isResponse('ping')) {
-       // dump server response to the console
-       var_dump($bucket->payload());
+        // dump server response to the console
+        var_dump($bucket->payload());
+       
+        // returning false closes connection
+        return false;
+    }
+    
+    if ($bucket->isResponse('handshake')) {
+        // send ping request to the server after 
+        // receiving handshake response
+        $connection->write(Levin\request('ping'));
     }
 });
 ```
