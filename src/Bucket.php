@@ -88,15 +88,28 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @param string $command
+     * @param string $commands,...
      *
      * @return bool
      */
-    public function is(string $command) : bool
+    public function is(...$commands) : bool
     {
-        $handler = get_class((new CommandFactory())->$command());
-
-        return $this->command instanceof $handler;
+        if (!is_array($commands)) {
+            $commands = [$commands];
+        }
+        
+        $result = false;
+        
+        foreach ($commands as $command) {
+            $handler = get_class((new CommandFactory())->$command());
+            
+            if ($this->command instanceof $handler) {
+                $result = true;
+                break;
+            }
+        }
+        
+        return $result;
     }
 
     /**

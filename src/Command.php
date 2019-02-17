@@ -24,7 +24,7 @@ abstract class Command implements CommandInterface
     /**
      * @param string $name
      *
-     * @return void
+     * @return mixed
      */
     public function __get(string $name)
     {

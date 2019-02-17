@@ -60,6 +60,18 @@ class BucketTest extends TestCase
         $this->assertTrue($bucket->is('handshake'));
         $this->assertFalse($bucket->is('ping'));
     }
+    
+    /**
+     * @return void
+     */
+    public function testIsWithMultipleArgs() : void
+    {
+        $handshake = new Handshake();
+        $bucket = (new FakeBucket())->fill($handshake);
+        $this->assertTrue($bucket->is('handshake', 'ping'));
+        $this->assertTrue($bucket->is('supportflags', 'handshake'));
+        $this->assertFalse($bucket->is('ping', 'supportflags'));
+    }
 
     /**
      * @return void

@@ -10,6 +10,7 @@ class CommandFactory
      * @var array
      */
     protected $handlers = [
+        // requests
         Requests\Handshake::class,
         Requests\TimedSync::class,
         Requests\Ping::class,
@@ -17,7 +18,7 @@ class CommandFactory
         Requests\NetworkState::class,
         Requests\PeerId::class,
         Requests\SupportFlags::class,
-
+        // notifications
         Notifications\NewBlock::class,
         Notifications\NewTransactions::class,
         Notifications\RequestGetObjects::class,

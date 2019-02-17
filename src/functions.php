@@ -299,14 +299,14 @@ if (!function_exists('connection')) {
     /**
      * @param string $host
      * @param mixed  $port
-     * @param array  $args
+     * @param array  $vars
      *
      * @return \Denpa\Levin\ConnectionInterface
      */
-    function connection(string $host, $port, array $args = []) : ConnectionInterface
+    function connection(string $host, $port, array $vars = []) : ConnectionInterface
     {
         $connection = new Connection($host, $port);
-        $connection->write(request('handshake', $args));
+        $connection->write(request('handshake', $vars));
 
         return $connection;
     }

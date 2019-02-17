@@ -22,7 +22,7 @@ class PeerId extends Command implements RequestInterface
     public function response() : Section
     {
         return Levin\section([
-            'my_id' => Levin\peer_id(),
+            'my_id' => $this->my_id,
         ]);
     }
 

@@ -9,13 +9,13 @@
 ## Example
 ```php
 use Denpa\Levin;
-use Denpa\Levin\Bucket;
-use Denpa\Levin\Connection;
 
-$connection = Levin\connection($ip, $port, ['network_id' => 'somenetwork']);
+$vars = [
+    'network_id' => 'somenetwork',
+];
 
-$connection->listen(function (Bucket $bucket, Connection $connection) {
-    if ($bucket->is('supportflags') || $bucket->is('timedsync')) {
+Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
+    if ($bucket->is('supportflags', 'timedsync')) {
         // respond to supportflags and timedsync commands to keep connection open
         $connection->write($bucket->response());
     }
