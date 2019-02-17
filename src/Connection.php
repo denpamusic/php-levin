@@ -78,7 +78,7 @@ class Connection implements ConnectionInterface
         if ($object instanceof TypeInterface) {
             return new $object($this->readBytes($object->getByteSize()), $object::LE);
         }
-        
+
         return $this->readBytes($object);
     }
 

@@ -4,9 +4,9 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Exceptions\ConnectionException;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Exceptions\ConnectionException;
 use VirtualFileSystem\FileSystem;
 
 /**
@@ -45,11 +45,11 @@ class ConnectionTest extends TestCase
             $this->assertInstanceOf(Bucket::class, $bucket);
             $this->assertInstanceOf(Connection::class, $connection);
             $this->assertTrue($bucket->is('handshake'));
-            
+
             return false;
         });
     }
-    
+
     /**
      * @return void
      */
@@ -58,12 +58,12 @@ class ConnectionTest extends TestCase
         $handshake = (new Bucket())->response(new Handshake());
         $response = $handshake->head().$handshake->payload()->toBinary();
         file_put_contents($this->fs->path('127.0.0.1:1000'), $response);
-        
+
         $uint64 = (new Connection('127.0.0.1', 1000))->read(new Uint64());
         $this->assertInstanceOf(Uint64::class, $uint64);
         $this->assertEquals(Bucket::LEVIN_SIGNATURE, $uint64->toInt());
     }
-    
+
     /**
      * @return void
      */
@@ -71,7 +71,7 @@ class ConnectionTest extends TestCase
     {
         $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage('Test error message');
-        
+
         new Connection('127.0.0.1', 1001);
     }
 
@@ -84,7 +84,7 @@ class ConnectionTest extends TestCase
         $connection = new Connection('127.0.0.1', 1000);
         $connection->write($handshake);
         $connection->close();
-        
+
         // pointer resets after connection will be reopened due to "r+" mode
         // so we should be able to read the bucket, that we just wrote
         $bucket = (new Connection('127.0.0.1', 1000))->read(new Bucket());
