@@ -94,10 +94,6 @@ class Bucket implements BucketInterface
      */
     public function is(...$commands) : bool
     {
-        if (!is_array($commands)) {
-            $commands = [$commands];
-        }
-
         $result = false;
 
         foreach ($commands as $command) {

@@ -41,7 +41,7 @@ class TimedSync extends Command implements RequestInterface
                 'top_id'                => Levin\bytestring($this->top_id),
                 'top_version'           => Levin\ubyte($this->top_version),
             ]),
-            'local_peerlist_new' => Levin\bytearray($localPeerlistNew),
+            'local_peerlist_new' => Levin\bytearray($localPeerlistNew, Levin\section()),
             'local_peerlist'     => Levin\bytestring($localPeerlist),
         ]);
     }
