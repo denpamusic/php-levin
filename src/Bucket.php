@@ -86,8 +86,10 @@ class Bucket implements BucketInterface
      */
     public function isRequest(...$commands) : bool
     {
-        return $this->is(...$commands) &&
-            ($this->flags->toInt() == self::LEVIN_PACKET_REQUEST);
+        $isRequest = $this->flags->toInt() == self::LEVIN_PACKET_REQUEST;
+    
+        return !empty($commands) ?
+            $this->is(...$commands) && $isRequest : $isRequest;
     }
 
     /**
@@ -97,8 +99,10 @@ class Bucket implements BucketInterface
      */
     public function isResponse(...$commands) : bool
     {
-        return $this->is(...$commands) &&
-            ($this->flags->toInt() == self::LEVIN_PACKET_RESPONSE);
+        $isResponse = $this->flags->toInt() == self::LEVIN_PACKET_RESPONSE;
+    
+        return !empty($commands) ?
+            $this->is(...$commands) && $isResponse : $isResponse;
     }
 
     /**
