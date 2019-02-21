@@ -2,8 +2,6 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Section\Section;
-
 interface BucketInterface
 {
     /**
