@@ -2,12 +2,12 @@
 
 namespace Denpa\Levin\Tests\Types;
 
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Uint8;
-use InvalidArgumentException;
 
 class BytearrayTest extends TestCase
 {
@@ -27,7 +27,7 @@ class BytearrayTest extends TestCase
      */
     public function testCreateWithIllegalType() : void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be serializable');
         $bytearray = new Bytearray(['fail']);
     }
@@ -37,7 +37,7 @@ class BytearrayTest extends TestCase
      */
     public function testCreateWithMultipleTypes() : void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be of the same type');
 
         $bytearray = new Bytearray([
@@ -60,7 +60,7 @@ class BytearrayTest extends TestCase
      */
     public function testOffsetSetWithIllegalType() : void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be serializable');
         $this->bytearray->offsetSet(null, 'fail');
     }
@@ -70,7 +70,7 @@ class BytearrayTest extends TestCase
      */
     public function testOffsetSetWithMultipleTypes() : void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be of the same type');
 
         $this->bytearray->offsetSet(null, new Uint8(1));

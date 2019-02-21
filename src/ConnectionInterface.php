@@ -9,7 +9,7 @@ interface ConnectionInterface
      *
      * @return void
      */
-    public function listen(callable $callback) : void;
+    public function connect(callable $callback) : void;
 
     /**
      * @param mixed $object

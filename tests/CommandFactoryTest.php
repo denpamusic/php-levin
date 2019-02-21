@@ -4,6 +4,7 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandFactory;
+use Denpa\Levin\Exceptions\UnknownCommandException;
 use Denpa\Levin\Notifications\NewBlock;
 use Denpa\Levin\Notifications\NewFluffyBlock;
 use Denpa\Levin\Notifications\NewTransactions;
@@ -20,7 +21,6 @@ use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Requests\StatInfo;
 use Denpa\Levin\Requests\SupportFlags;
 use Denpa\Levin\Requests\TimedSync;
-use UnexpectedValueException;
 
 class CommandFactoryTest extends TestCase
 {
@@ -52,7 +52,7 @@ class CommandFactoryTest extends TestCase
      */
     public function testGetCommandWithUnknown() : void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(UnknownCommandException::class);
         $this->expectExceptionMessage('Unknown command [9999]');
         $this->commandFactory->getCommand(9999);
     }

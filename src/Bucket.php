@@ -2,6 +2,8 @@
 
 namespace Denpa\Levin;
 
+use BadMethodCallException;
+use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
@@ -9,9 +11,18 @@ use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
-use LengthException;
 use UnexpectedValueException;
 
+/**
+ * @method \Denpa\Levin\Types\Uint64 getSignature()
+ * @method \Denpa\Levin\Types\Uint64 getCb()
+ * @method \Denpa\Levin\Types\Uint32 getReturnData()
+ * @method \Denpa\Levin\Command      getCommand()
+ * @method \Denpa\Levin\Types\Int32  getReturnCode()
+ * @method \Denpa\Levin\Types\Uint32 getFlags()
+ * @method \Denpa\Levin\Types\Uint32 getProtocolVersion()
+ * @method \Denpa\Levin\Section      getPayload()
+ */
 class Bucket implements BucketInterface
 {
     /**
@@ -52,7 +63,7 @@ class Bucket implements BucketInterface
     /**
      * @var \Denpa\Levin\Section|null
      */
-    protected $payloadSection = null;
+    protected $payload = null;
 
     /**
      * @return void
@@ -72,7 +83,7 @@ class Bucket implements BucketInterface
         $params = $params + $defaults;
 
         foreach ($params as $key => $value) {
-            $mutator = 'set'.camel_case($key);
+            $mutator = 'set'.ucfirst(camel_case($key));
             if (method_exists($this, $mutator)) {
                 $this->$mutator($value);
             }
@@ -155,18 +166,10 @@ class Bucket implements BucketInterface
         if ($this->cb->toInt() > self::LEVIN_DEFAULT_MAX_PACKET_SIZE) {
             $maxsize = self::LEVIN_DEFAULT_MAX_PACKET_SIZE;
 
-            throw new LengthException("Packet is too large [> $maxsize]");
+            throw new EntryTooLargeException("Bucket is too large [> $maxsize]");
         }
 
         return $this;
-    }
-
-    /**
-     * @return \Denpa\Levin\Types\Uint64
-     */
-    public function getCb() : Uint64
-    {
-        return $this->cb;
     }
 
     /**
@@ -198,14 +201,6 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return \Denpa\Levin\CommandInterface|null
-     */
-    public function getCommand() : ?CommandInterface
-    {
-        return $this->command;
-    }
-
-    /**
      * @param \Denpa\Levin\CommandInterface $command
      *
      * @return self
@@ -215,7 +210,7 @@ class Bucket implements BucketInterface
         $method = $this->isRequest() ? 'request' : 'response';
 
         $this->command = $command;
-        $this->setPayloadSection($command->$method());
+        $this->setPayload($command->$method());
 
         return $this;
     }
@@ -263,10 +258,10 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setPayloadSection(Section $section) : self
+    public function setPayload(Section $section) : self
     {
         $this->setCb($section->getByteSize());
-        $this->payloadSection = $section;
+        $this->payload = $section;
 
         return $this;
     }
@@ -274,7 +269,7 @@ class Bucket implements BucketInterface
     /**
      * @return string
      */
-    public function head() : string
+    public function getHead() : string
     {
         $head = [
             'signature'        => $this->signature,
@@ -302,24 +297,16 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * @return \Denpa\Levin\Section|null
-     */
-    public function payload() : ?Section
-    {
-        return $this->payloadSection;
-    }
-
-    /**
      * @param \Denpa\Levin\Connection $connection
      *
      * @return void
      */
     public function write(Connection $connection) : void
     {
-        $connection->write($this->head());
+        $connection->write($this->getHead());
 
-        if (!is_null($this->payloadSection)) {
-            $connection->write($this->payload()->toBinary());
+        if (!is_null($this->payload)) {
+            $connection->write($this->getPayload()->toBinary());
         }
     }
 
@@ -344,9 +331,9 @@ class Bucket implements BucketInterface
             'protocol_version' => $connection->read(uint32le()),
         ]);
 
-        if ($bucket->getCb()->toInt() > 0) {
+        if ($bucket->cb->toInt() > 0) {
             $section = (new Reader($connection))->read();
-            $bucket->setPayloadSection($section);
+            $bucket->setPayload($section);
         }
 
         return $bucket;
@@ -386,5 +373,22 @@ class Bucket implements BucketInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args = [])
+    {
+        if (substr($method, 0, 3) == 'get') {
+            $variable = camel_case(substr($method, 3));
+
+            return $this->$variable ?? null;
+        }
+
+        throw new BadMethodCallException("Method [$method] does not exist");
     }
 }

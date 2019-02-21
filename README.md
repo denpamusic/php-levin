@@ -6,38 +6,152 @@
 [![Code Coverage](https://codeclimate.com/github/denpamusic/php-levin/badges/coverage.svg)](https://codeclimate.com/github/denpamusic/php-levin/coverage)
 
 
-## Example
+## Examples
+### Using helpers
 ```php
+require 'vendor/autoload.php';
+
 use Denpa\Levin;
 
 $vars = [
     'network_id' => 'somenetwork',
 ];
 
-Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
-    if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
-        // respond to supportflags, timedsync and ping requests
-        // to keep the connection open
-        $connection->write($bucket->response());
+Levin\connection($ip, $port, $vars)->connect(
+    function ($bucket, $connection) {
+        if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
+            // respond to supportflags, timedsync and ping requests
+            // to keep the connection open
+            $connection->write($bucket->response());
+        }
+
+        if ($bucket->isResponse('handshake')) {
+            // send ping request to the server after
+            // receiving handshake response
+            $connection->write(Levin\request('ping'));
+        }
+
+        if ($bucket->isResponse('ping')) {
+            // dump server response to the console
+            var_dump($bucket->getPayload());
+
+            // returning false closes connection
+            return false;
+        }
     }
-    
-    if ($bucket->isResponse('ping')) {
-        // dump server response to the console
-        var_dump($bucket->payload());
-       
-        // returning false closes connection
-        return false;
-    }
-    
-    if ($bucket->isResponse('handshake')) {
-        // send ping request to the server after 
-        // receiving handshake response
-        $connection->write(Levin\request('ping'));
-    }
-});
+);
 ```
 
-## Command Support
+### Using objects
+```php
+require 'vendor/autoload.php';
+
+use Denpa\Levin\Bucket;
+use Denpa\Levin\Connection;
+use Denpa\Levin\Requests\Handshake;
+
+$handshake = new Handshake(['network_id' => 'somenetwork']);
+$request = (new Bucket())->request($handshake);
+
+$connection = new Connection($ip, $port);
+$connection->write($request);
+
+while ($bucket = $connection->read()) {
+	// ...
+}
+```
+
+### Fetching peers
+```php
+require 'vendor/autoload.php';
+
+use Denpa\Levin;
+
+function peerlist(array $entries) : array
+{
+    $peers = [];
+
+	foreach ($entries as $entry) {
+    	$addr = $entry['adr']['addr'] ?? null;
+        
+        if (is_null($addr)) continue;
+
+    	// convert ip to big-endian int
+        $ip = Levin\uint32($addr['m_ip']->toBinary());
+        
+        $peer = [];
+     	$peer['ip'] = inet_ntop($ip->toBinary());
+        $peer['port'] = $addr['m_port']->toInt();
+    	$peer['last_seen'] = isset($entry['last_seen']) ?
+    		date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : null;
+        
+    	$peers[] = $peer;
+	}
+    
+    return $peers;
+}
+
+$vars = [
+    'network_id' => 'somenetwork',
+];
+
+$section = [];
+
+Levin\connection($ip, $port, $vars)->connect(
+    function ($bucket, $connection) use ($section) {
+        if ($bucket->isResponse('handshake')) {
+            $section = $bucket->getPayload();
+            
+            return false;
+        }
+    }
+);
+
+$peers = peerlist($section['local_peerlist_new'] ?? []);
+
+var_dump($peers);
+/**
+ * Array(
+ *     Array(
+ *         'ip' => '88.99.122.111',
+ *         'port' => 1000,
+ *         'last_seen' => '2019-02-21 12:00:00'
+ *     ),
+ *     ...
+ * )
+ */
+```
+### Monitoring blocks
+```php
+require 'vendor/autoload.php';
+
+use Denpa\Levin;
+
+$vars = [
+    'network_id' => 'somenetwork',
+];
+
+Levin\connection($ip, $port, $vars)->connect(
+    function ($bucket, $connection) {
+        if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
+            // respond to supportflags, timedsync and ping requests
+            // to keep the connection open
+            $connection->write($bucket->response());
+        }
+
+        if ($bucket->isRequest('newblock')) {
+            $section = $bucket->getPayload();
+			
+            printf("New block: %d\n", $section['current_blockchain_height']);
+            var_dump($section['b']);
+            
+            // no need to respond to notification
+        }
+    }
+);
+```
+
+## Request Support
 | command      | link                                                                                  | request | response |
 |--------------|---------------------------------------------------------------------------------------|---------|----------|
 | Handshake    | [p2p_protocol_defs.h#L177](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L177) | ✅       | ✅        |
@@ -61,7 +175,11 @@ Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
 
 ## Exceptions
 * `Denpa\Levin\Exceptions\ConnectionException` - thrown on connection errors.
+* `Denpa\Levin\Exceptions\EntryTooLargeException` - thrown when type or packet size is too large.
 * `Denpa\Levin\Exceptions\SignatureMismatchException` - thrown on section or bucket signature mismatches.
+* `Denpa\Levin\Exceptions\UnexpectedTypeException` - thrown on unexpected or invalid type.
+* `Denpa\Levin\Exceptions\UnknownCommandException` - thrown on unknown command.
+* `Denpa\Levin\Exceptions\UnpackException` - thrown when unable to unpack binary data.
 
 ## License
 This product is distributed under the [MIT license](https://github.com/denpamusic/php-levin/blob/master/LICENSE).

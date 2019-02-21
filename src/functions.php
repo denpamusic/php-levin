@@ -308,9 +308,27 @@ if (!function_exists('camel_case')) {
      */
     function camel_case(string $string) : string
     {
-        $string = str_replace('_', ' ', $string);
+        $string = str_replace('_', ' ', ltrim(snake_case($string), '_'));
 
-        return str_replace(' ', '', ucwords(strtolower($string)));
+        return str_replace(' ', '', lcfirst(ucwords(strtolower($string))));
+    }
+}
+
+if (!function_exists('snake_case')) {
+    /**
+     * @param string $string
+     *
+     * @return string
+     *
+     * @copyright 2016 Syone
+     *
+     * @link https://stackoverflow.com/a/35719689/10405250 Answer on StackOverflow.
+     */
+    function snake_case(string $string) : string
+    {
+        $string = preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string);
+
+        return strtolower($string);
     }
 }
 

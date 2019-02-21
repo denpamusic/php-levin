@@ -6,12 +6,12 @@ use ArrayAccess;
 use Countable;
 use Denpa\Levin;
 use Denpa\Levin\BufferInterface;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Traits\Arrayable;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Uint8;
 use IteratorAggregate;
-use UnexpectedValueException;
 
 class Section implements
     SectionInterface,
@@ -131,7 +131,7 @@ class Section implements
 
         foreach ($this->entries as $key => $entry) {
             if (!$entry instanceof BoostSerializable) {
-                throw new UnexpectedValueException(
+                throw new UnexpectedTypeException(
                     "Cannot serialize unserializable item [$key]"
                 );
             }

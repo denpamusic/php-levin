@@ -2,13 +2,13 @@
 
 namespace Denpa\Levin\Tests\Section;
 
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
-use UnexpectedValueException;
 
 class SectionTest extends TestCase
 {
@@ -100,7 +100,7 @@ class SectionTest extends TestCase
      */
     public function testToBinaryWithInvalidData() : void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Cannot serialize unserializable item [test]');
         $this->section['test'] = new Varint(3);
         $this->section->toBinary();

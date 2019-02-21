@@ -4,9 +4,9 @@ namespace Denpa\Levin\Types;
 
 use ArrayAccess;
 use Countable;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Traits\Arrayable;
-use InvalidArgumentException;
 use IteratorAggregate;
 
 class Bytearray implements
@@ -113,6 +113,14 @@ class Bytearray implements
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
+    public function getType() : Uint8
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return \Denpa\Levin\Types\Uint8
+     */
     public function getSerializeType() : Uint8
     {
         if (is_null($this->type)) {
@@ -130,13 +138,13 @@ class Bytearray implements
     protected function validate($value) : void
     {
         if (!$value instanceof BoostSerializable) {
-            throw new InvalidArgumentException(
+            throw new UnexpectedTypeException(
                 'Array entries must be serializable'
             );
         }
 
         if ($this->type && ($this->type != $value->getSerializeType())) {
-            throw new InvalidArgumentException(
+            throw new UnexpectedTypeException(
                 'Array entries must be of the same type'
             );
         }

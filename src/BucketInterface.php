@@ -2,8 +2,6 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Section\Section;
-
 interface BucketInterface
 {
     /**
@@ -30,16 +28,6 @@ interface BucketInterface
      * @var int
      */
     const LEVIN_DEFAULT_MAX_PACKET_SIZE = 100000000; // 100MB
-
-    /**
-     * @return string
-     */
-    public function head() : string;
-
-    /**
-     * @return \Denpa\Levin\Section|null
-     */
-    public function payload() : ?Section;
 
     /**
      * @param \Denpa\Levin\Connection $connection

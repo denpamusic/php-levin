@@ -5,6 +5,7 @@ namespace Denpa\Levin\Section;
 use Denpa\Levin;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
@@ -17,7 +18,6 @@ use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
-use UnexpectedValueException;
 
 class Reader
 {
@@ -125,7 +125,7 @@ class Reader
         $type = $this->connection->read(new Uint8())->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
-            throw new UnexpectedValueException('Incorrect array sequence');
+            throw new UnexpectedTypeException('Incorrect type sequence');
         }
 
         return $this->readArrayEntry($type);
@@ -147,7 +147,7 @@ class Reader
             $count--;
         }
 
-        return Levin\bytearray($result);
+        return Levin\bytearray($result, new $this->types[$type]());
     }
 
     /**
@@ -158,7 +158,7 @@ class Reader
     protected function readValue(int $type) : BoostSerializable
     {
         if (!array_key_exists($type, $this->types)) {
-            throw new UnexpectedValueException(
+            throw new UnexpectedTypeException(
                 "Cannot unserialize unknown type [$type]"
             );
         }

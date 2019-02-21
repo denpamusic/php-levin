@@ -4,6 +4,8 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
+use Denpa\Levin\Connection;
+use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Bytearray;
@@ -230,9 +232,74 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
-    public function testCamelCase() : void
+    public function testConnection() : void
     {
-        $this->assertEquals('TestCamelcase', Levin\camel_case('teSt_cAMElcase'));
+        $socket = $this->createSocketMock(null);
+
+        $connection = Levin\connection(...$socket);
+        $this->assertInstanceOf(Connection::class, $connection);
+        $connection->close();
+
+        // pointer resets after connection will be reopened due to "r+" mode
+        // so we should be able to read the bucket, that we just wrote
+        $connection = new Connection(...$socket);
+
+        $bucket = $connection->read();
+        $this->assertInstanceOf(Handshake::class, $bucket->getCommand());
+        $this->assertEquals(
+            Bucket::LEVIN_PACKET_REQUEST,
+            $bucket->getFlags()->toInt()
+        );
+    }
+
+    /**
+     * @return void
+     *
+     * @dataProvider camelCaseProvider
+     */
+    public function testCamelCase(string $string, string $expected) : void
+    {
+        $this->assertEquals($expected, Levin\camel_case($string));
+    }
+
+    /**
+     * @return void
+     *
+     * @dataProvider snakeCaseProvider
+     */
+    public function testSnakeCase(string $string, string $expected) : void
+    {
+        $this->assertEquals($expected, Levin\snake_case($string));
+    }
+
+    /**
+     * @return array
+     */
+    public function camelCaseProvider() : array
+    {
+        return [
+            ['test_camel_case', 'testCamelCase'],
+            ['test__camel_case', 'testCamelCase'],
+            ['testCamelCase', 'testCamelCase'],
+            ['TESTCamelCase123', 'testCamelCase123'],
+            ['_test_camel_case', 'testCamelCase'],
+            ['123testCAMELCase', '123testCamelCase'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function snakeCaseProvider() : array
+    {
+        return [
+            ['testSnakeCase', 'test_snake_case'],
+            ['TestSnakeCase', 'test_snake_case'],
+            ['test_snake_case', 'test_snake_case'],
+            ['TESTSnakeCASE', 'test_snake_case'],
+            ['__TestSnakeCase123', '__test_snake_case123'],
+            ['123testCAMELCase', '123test_camel_case'],
+        ];
     }
 
     /**
