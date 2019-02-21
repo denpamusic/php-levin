@@ -14,14 +14,14 @@ use Denpa\Levin\Types\Uint64;
 use UnexpectedValueException;
 
 /**
- * @method \Denpa\Levin\Types\TypeInterface getSignature()
- * @method \Denpa\Levin\Types\TypeInterface getCb()
- * @method \Denpa\Levin\Types\TypeInterface getReturnData()
- * @method \Denpa\Levin\CommandInterface    getCommand()
- * @method \Denpa\Levin\Types\TypeInterface getReturnCode()
- * @method \Denpa\Levin\Types\TypeInterface getFlags()
- * @method \Denpa\Levin\Types\TypeInterface getProtocolVersion()
- * @method \Denpa\Levin\Section             getPayload()
+ * @method \Denpa\Levin\Types\Uint64 getSignature()
+ * @method \Denpa\Levin\Types\Uint64 getCb()
+ * @method \Denpa\Levin\Types\Uint32 getReturnData()
+ * @method \Denpa\Levin\Command      getCommand()
+ * @method \Denpa\Levin\Types\Int32  getReturnCode()
+ * @method \Denpa\Levin\Types\Uint32 getFlags()
+ * @method \Denpa\Levin\Types\Uint32 getProtocolVersion()
+ * @method \Denpa\Levin\Section      getPayload()
  */
 class Bucket implements BucketInterface
 {

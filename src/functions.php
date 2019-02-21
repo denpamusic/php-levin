@@ -319,6 +319,9 @@ if (!function_exists('snake_case')) {
      * @param string $string
      *
      * @return string
+     *
+     * @copyright 2016 Syone
+     * @link https://stackoverflow.com/a/35719689/10405250 Answer on StackOverflow.
      */
     function snake_case(string $string) : string
     {
