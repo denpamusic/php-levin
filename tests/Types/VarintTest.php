@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Tests\Types;
 
+use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Uint8;
@@ -28,7 +29,7 @@ class VarintTest extends TestCase
      */
     public function testToBinaryTooLarge() : void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(EntryTooLargeException::class);
         $this->expectExceptionMessage('VarInt is too large [> 4611686018427387903]');
         (new Varint(4611686018427387904))->toBinary();
     }

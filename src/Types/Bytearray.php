@@ -6,6 +6,7 @@ use ArrayAccess;
 use Countable;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Traits\Arrayable;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use InvalidArgumentException;
 use IteratorAggregate;
 
@@ -138,13 +139,13 @@ class Bytearray implements
     protected function validate($value) : void
     {
         if (!$value instanceof BoostSerializable) {
-            throw new InvalidArgumentException(
+            throw new UnexpectedTypeException(
                 'Array entries must be serializable'
             );
         }
 
         if ($this->type && ($this->type != $value->getSerializeType())) {
-            throw new InvalidArgumentException(
+            throw new UnexpectedTypeException(
                 'Array entries must be of the same type'
             );
         }

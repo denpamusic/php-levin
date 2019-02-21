@@ -5,6 +5,7 @@ namespace Denpa\Levin\Tests\Section;
 use Denpa\Levin;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Tests\TestCase;
@@ -129,7 +130,7 @@ class ReaderTest extends TestCase
      */
     public function testLoadEntriesWithIncorrectArrayTypeSequence() : void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Incorrect type sequence');
 
         $this->connection
@@ -179,7 +180,7 @@ class ReaderTest extends TestCase
      */
     public function testReadValueWithUnknownType() : void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Cannot unserialize unknown type [999]');
 
         $this->reader->readValue(999);

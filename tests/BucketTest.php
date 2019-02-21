@@ -7,6 +7,7 @@ use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\RequestInterface;
@@ -155,8 +156,8 @@ class BucketTest extends TestCase
     public function testSetCbMaxSize() : void
     {
         $maxsize = Bucket::LEVIN_DEFAULT_MAX_PACKET_SIZE;
-        $this->expectException(LengthException::class);
-        $this->expectExceptionMessage("Packet is too large [> $maxsize]");
+        $this->expectException(EntryTooLargeException::class);
+        $this->expectExceptionMessage("Bucket is too large [> $maxsize]");
         $this->bucket->setCb($maxsize + 1);
     }
 

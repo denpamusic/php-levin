@@ -2,7 +2,7 @@
 
 namespace Denpa\Levin;
 
-use UnexpectedValueException;
+use Denpa\Levin\Exceptions\UnknownCommandException;
 
 class CommandFactory
 {
@@ -48,7 +48,7 @@ class CommandFactory
     public function getCommand(int $command) : CommandInterface
     {
         if (!isset($this->commands[$command])) {
-            throw new UnexpectedValueException("Unknown command [$command]");
+            throw new UnknownCommandException("Unknown command [$command]");
         }
 
         return new $this->commands[$command]();

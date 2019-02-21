@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Tests\Types;
 
+use Denpa\Levin\Exceptions\UnpackException;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Type;
 use UnexpectedValueException;
@@ -46,7 +47,7 @@ class TypeTest extends TestCase
      */
     public function testToBinaryWithInvalidData()
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(UnpackException::class);
         $this->expectExceptionMessage('Failed to unpack binary data [&]');
 
         $type = $this->getMockForAbstractClass(Type::class, ['&']);

@@ -3,6 +3,7 @@
 namespace Denpa\Levin;
 
 use BadMethodCallException;
+use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
@@ -10,7 +11,6 @@ use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
-use LengthException;
 use UnexpectedValueException;
 
 /**
@@ -166,7 +166,7 @@ class Bucket implements BucketInterface
         if ($this->cb->toInt() > self::LEVIN_DEFAULT_MAX_PACKET_SIZE) {
             $maxsize = self::LEVIN_DEFAULT_MAX_PACKET_SIZE;
 
-            throw new LengthException("Packet is too large [> $maxsize]");
+            throw new EntryTooLargeException("Bucket is too large [> $maxsize]");
         }
 
         return $this;

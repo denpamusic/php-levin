@@ -3,7 +3,7 @@
 namespace Denpa\Levin\Types;
 
 use Denpa\Levin\Connection;
-use UnexpectedValueException;
+use Denpa\Levin\Exceptions\EntryTooLargeException;
 
 class Varint extends Type
 {
@@ -48,7 +48,7 @@ class Varint extends Type
                 $value = new Uint32(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_DWORD, Type::LE);
                 break;
             case $this->value >= 4611686018427387903:
-                throw new UnexpectedValueException('VarInt is too large [> 4611686018427387903]');
+                throw new EntryTooLargeException('VarInt is too large [> 4611686018427387903]');
             default:
                 $value = new Uint64(($this->value << 2) | self::PORTABLE_RAW_SIZE_MARK_INT64, Type::LE);
         }
