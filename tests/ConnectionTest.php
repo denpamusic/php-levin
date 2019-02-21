@@ -7,12 +7,6 @@ use Denpa\Levin\Connection;
 use Denpa\Levin\Exceptions\ConnectionException;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Types\Uint64;
-use VirtualFileSystem\FileSystem;
-
-/**
- * @var \VirtualFileSystem\FileSystem
- */
-$fs = null;
 
 class ConnectionTest extends TestCase
 {
@@ -21,27 +15,18 @@ class ConnectionTest extends TestCase
      */
     public function setUp() : void
     {
-        global $fs;
         parent::setUp();
 
-        $this->fs = new FileSystem();
-
-        if (is_null($fs)) {
-            $fs = $this->fs;
-        }
+        $this->socket = $this->createSocketMock('handshake');
     }
 
     /**
      * @return void
      */
-    public function testListen() : void
+    public function testConnect() : void
     {
-        $handshake = (new Bucket())->response(new Handshake());
-        $response = $handshake->head().$handshake->payload()->toBinary();
-        file_put_contents($this->fs->path('127.0.0.1:1000'), $response);
-
-        $connection = new Connection('127.0.0.1', 1000);
-        $connection->listen(function ($bucket, $connection) {
+        $connection = new Connection(...$this->socket);
+        $connection->connect(function ($bucket, $connection) {
             $this->assertInstanceOf(Bucket::class, $bucket);
             $this->assertInstanceOf(Connection::class, $connection);
             $this->assertTrue($bucket->is('handshake'));
@@ -53,15 +38,34 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
+    public function testListenOnClosedConnection() : void
+    {
+        $connection = new Connection(...$this->socket);
+        $connection->close();
+
+        $run = false;
+        $connection->connect(function ($bucket) use ($run) {
+            $run = true;
+        });
+
+        $this->assertFalse($run, 'Listen function run on closed connection.');
+    }
+
+    /**
+     * @return void
+     */
     public function testRead() : void
     {
-        $handshake = (new Bucket())->response(new Handshake());
-        $response = $handshake->head().$handshake->payload()->toBinary();
-        file_put_contents($this->fs->path('127.0.0.1:1000'), $response);
-
-        $uint64 = (new Connection('127.0.0.1', 1000))->read(new Uint64());
+        $connection = new Connection(...$this->socket);
+        $uint64 = $connection->read(new Uint64());
         $this->assertInstanceOf(Uint64::class, $uint64);
         $this->assertEquals(Bucket::LEVIN_SIGNATURE, $uint64->toInt());
+
+        $size = (new Uint64())->getByteSize();
+        $this->assertEquals(
+            "\x08\x01\x00\x00\x00\x00\x00\x00",
+            $connection->read($size)
+        );
     }
 
     /**
@@ -80,40 +84,18 @@ class ConnectionTest extends TestCase
      */
     public function testWrite() : void
     {
+        $socket = $this->createSocketMock(null, '127.0.0.2');
+
         $handshake = (new Bucket())->response(new Handshake());
-        $connection = new Connection('127.0.0.1', 1000);
+
+        $connection = new Connection(...$socket);
         $connection->write($handshake);
         $connection->close();
 
         // pointer resets after connection will be reopened due to "r+" mode
         // so we should be able to read the bucket, that we just wrote
-        $bucket = (new Connection('127.0.0.1', 1000))->read(new Bucket());
+        $bucket = (new Connection(...$socket))->read(new Bucket());
         $this->assertInstanceOf(Bucket::class, $bucket);
         $this->assertTrue($bucket->is('handshake'));
     }
-}
-
-namespace Denpa\Levin;
-
-/**
- * @param string $host
- * @param int    $port
- * @param mixed  &$errno
- * @param mixed  &$errstr
- * @param int    $timeout
- *
- * @return resource
- */
-function fsockopen(
-    string $host,
-    int $port,
-    &$errno,
-    &$errstr,
-    int $timeout
-) {
-    $errno = 101;
-    $errstr = 'Test error message';
-    global $fs;
-
-    return fopen($fs->path("$host:$port"), 'r+');
 }

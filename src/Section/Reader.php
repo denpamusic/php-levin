@@ -125,7 +125,7 @@ class Reader
         $type = $this->connection->read(new Uint8())->toInt();
 
         if (($type & Section::SERIALIZE_FLAG_ARRAY) != 0) {
-            throw new UnexpectedValueException('Incorrect array sequence');
+            throw new UnexpectedValueException('Incorrect type sequence');
         }
 
         return $this->readArrayEntry($type);
@@ -147,7 +147,7 @@ class Reader
             $count--;
         }
 
-        return Levin\bytearray($result);
+        return Levin\bytearray($result, new $this->types[$type]());
     }
 
     /**

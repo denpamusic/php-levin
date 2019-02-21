@@ -113,6 +113,14 @@ class Bytearray implements
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
+    public function getType() : Uint8
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return \Denpa\Levin\Types\Uint8
+     */
     public function getSerializeType() : Uint8
     {
         if (is_null($this->type)) {

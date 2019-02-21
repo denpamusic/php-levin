@@ -14,25 +14,25 @@ $vars = [
     'network_id' => 'somenetwork',
 ];
 
-Levin\connection($ip, $port, $vars)->listen(function ($bucket, $connection) {
+Levin\connection($ip, $port, $vars)->connect(function ($bucket, $connection) {
     if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
         // respond to supportflags, timedsync and ping requests
         // to keep the connection open
         $connection->write($bucket->response());
     }
-    
+
+    if ($bucket->isResponse('handshake')) {
+        // send ping request to the server after
+        // receiving handshake response
+        $connection->write(Levin\request('ping'));
+    }
+
     if ($bucket->isResponse('ping')) {
         // dump server response to the console
         var_dump($bucket->payload());
-       
+
         // returning false closes connection
         return false;
-    }
-    
-    if ($bucket->isResponse('handshake')) {
-        // send ping request to the server after 
-        // receiving handshake response
-        $connection->write(Levin\request('ping'));
     }
 });
 ```
