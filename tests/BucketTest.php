@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin\Tests;
 
+use BadMethodCallException;
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandInterface;
@@ -17,7 +18,6 @@ use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
 use LengthException;
-use BadMethodCallException;
 use UnexpectedValueException;
 
 class BucketTest extends TestCase
@@ -307,7 +307,7 @@ class BucketTest extends TestCase
         $offset = 0;
         $head = $this->bucket->getHead();
         foreach ($this->headBytemap as $key => $size) {
-            $getter = 'get' . ucfirst(Levin\camel_case($key));
+            $getter = 'get'.ucfirst(Levin\camel_case($key));
             $item = ($this->bucket->$getter() instanceof CommandInterface) ?
             $this->bucket->$getter()->getCommand() : $this->bucket->$getter();
 

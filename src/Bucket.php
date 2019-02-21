@@ -2,6 +2,7 @@
 
 namespace Denpa\Levin;
 
+use BadMethodCallException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
 use Denpa\Levin\Section\Section;
@@ -10,7 +11,6 @@ use Denpa\Levin\Types\Int32;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use LengthException;
-use BadMethodCallException;
 use UnexpectedValueException;
 
 /**
@@ -385,6 +385,7 @@ class Bucket implements BucketInterface
     {
         if (substr($method, 0, 3) == 'get') {
             $variable = camel_case(substr($method, 3));
+
             return $this->$variable ?? null;
         }
 
