@@ -4,10 +4,9 @@ namespace Denpa\Levin\Types;
 
 use ArrayAccess;
 use Countable;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Traits\Arrayable;
-use Denpa\Levin\Exceptions\UnexpectedTypeException;
-use InvalidArgumentException;
 use IteratorAggregate;
 
 class Bytearray implements

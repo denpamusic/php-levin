@@ -5,7 +5,6 @@ namespace Denpa\Levin\Tests\Types;
 use Denpa\Levin\Exceptions\UnpackException;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Type;
-use UnexpectedValueException;
 
 class TypeTest extends TestCase
 {

@@ -18,7 +18,6 @@ use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint64;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
-use UnexpectedValueException;
 
 class Reader
 {

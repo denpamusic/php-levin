@@ -8,7 +8,6 @@ use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Uint8;
-use InvalidArgumentException;
 
 class BytearrayTest extends TestCase
 {

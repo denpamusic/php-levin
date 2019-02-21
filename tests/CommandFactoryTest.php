@@ -4,6 +4,7 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandFactory;
+use Denpa\Levin\Exceptions\UnknownCommandException;
 use Denpa\Levin\Notifications\NewBlock;
 use Denpa\Levin\Notifications\NewFluffyBlock;
 use Denpa\Levin\Notifications\NewTransactions;
@@ -20,8 +21,6 @@ use Denpa\Levin\Requests\RequestInterface;
 use Denpa\Levin\Requests\StatInfo;
 use Denpa\Levin\Requests\SupportFlags;
 use Denpa\Levin\Requests\TimedSync;
-use Denpa\Levin\Exceptions\UnknownCommandException;
-use UnexpectedValueException;
 
 class CommandFactoryTest extends TestCase
 {
