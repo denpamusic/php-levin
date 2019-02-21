@@ -6,13 +6,12 @@ use ArrayAccess;
 use Countable;
 use Denpa\Levin;
 use Denpa\Levin\BufferInterface;
+use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use Denpa\Levin\Traits\Arrayable;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Uint8;
-use Denpa\Levin\Exceptions\UnexpectedTypeException;
 use IteratorAggregate;
-use UnexpectedValueException;
 
 class Section implements
     SectionInterface,

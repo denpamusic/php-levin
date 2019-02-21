@@ -14,7 +14,6 @@ use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Uint32;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
-use UnexpectedValueException;
 
 class ReaderTest extends TestCase
 {

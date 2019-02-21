@@ -2,12 +2,11 @@
 
 namespace Denpa\Levin\Tests\Types;
 
-use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Types\Uint8;
 use Denpa\Levin\Types\Varint;
-use UnexpectedValueException;
 
 class VarintTest extends TestCase
 {
