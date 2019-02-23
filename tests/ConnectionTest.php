@@ -40,7 +40,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testConnectOnFailure() : void
+    public function testConnectWithFailure() : void
     {
         $socket = $this->createSocketMock(null, '127.0.0.2');
         $connection = new Connection(...$socket);
@@ -55,6 +55,21 @@ class ConnectionTest extends TestCase
             );
             $this->assertInstanceOf(UnpackException::class, $exception);
         });
+    }
+
+    /**
+     * @return void
+     */
+    public function testConnectWithNullCallback() : void
+    {
+        $connection = new Connection(...$this->socket);
+        $connection->connect(null);
+
+        // No errors occured with null callback
+        $this->assertTrue(
+            $connection->isOpen(),
+            'Connection was prematurely terminated.'
+        );
     }
 
     /**

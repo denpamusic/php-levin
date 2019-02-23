@@ -57,20 +57,20 @@ class Connection implements ConnectionInterface
             return;
         }
 
+        $bucket = null;
+
         do {
             try {
                 $bucket = $this->read();
             } catch (Throwable $exception) {
-                $bucket = false;
-                if (is_callable($failure)) {
-                    $failure($exception);
-                }
+                $this->onFailure($failure, $exception);
+                continue;
             }
 
-            if ($bucket && is_callable($success) && $success($bucket, $this) === false) {
+            if ($this->onSuccess($success, $bucket) === false) {
                 break;
             }
-        } while (!$bucket === null);
+        } while ($bucket);
     }
 
     /**
@@ -155,6 +155,32 @@ class Connection implements ConnectionInterface
         if ($this->isOpen()) {
             fclose($this->socket);
             $this->open = false;
+        }
+    }
+
+    /**
+     * @param callable|null $failure
+     * @param \Throwable    $exception
+     *
+     * @return void
+     */
+    protected function onFailure(?callable $failure, Throwable $exception) : void
+    {
+        if (is_callable($failure)) {
+            $failure($exception);
+        }
+    }
+
+    /**
+     * @param callable|null            $success
+     * @param \Denpa\Levin\Bucket|null $bucket
+     *
+     * @return mixed
+     */
+    protected function onSuccess(?callable $success, ?Bucket $bucket)
+    {
+        if (!is_null($bucket) && is_callable($success)) {
+            return $success($bucket, $this);
         }
     }
 }
