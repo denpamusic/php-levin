@@ -259,6 +259,8 @@ if (!function_exists('section')) {
 
 if (!function_exists('request')) {
     /**
+     * Shortcut for creating the request bucket.
+     *
      * @param string $command
      * @param array  $args
      *
@@ -272,6 +274,8 @@ if (!function_exists('request')) {
 
 if (!function_exists('response')) {
     /**
+     * Shortcut for creating the response bucket.
+     *
      * @param string $command
      * @param array  $args
      *
@@ -285,6 +289,8 @@ if (!function_exists('response')) {
 
 if (!function_exists('connection')) {
     /**
+     * Shortcut for opening levin connection.
+     *
      * @param string $host
      * @param mixed  $port
      * @param array  $vars
@@ -334,6 +340,8 @@ if (!function_exists('snake_case')) {
 
 if (!function_exists('peer_id')) {
     /**
+     * Creates peer id with certain prefix.
+     *
      * @param string $prefix
      *
      * @return \Denpa\Levin\Types\Uint64

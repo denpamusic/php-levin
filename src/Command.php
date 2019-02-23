@@ -7,7 +7,7 @@ use Denpa\Levin\Types\Uint32;
 abstract class Command implements CommandInterface
 {
     /**
-     * @var array
+     * @var array Contains command variables.
      */
     protected $vars;
 
@@ -22,6 +22,8 @@ abstract class Command implements CommandInterface
     }
 
     /**
+     * Allows access to command variables.
+     *
      * @param string $name
      *
      * @return mixed
@@ -32,6 +34,8 @@ abstract class Command implements CommandInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @return \Denpa\Levin\Types\Uint32
      */
     public function getCommand() : Uint32
@@ -40,6 +44,8 @@ abstract class Command implements CommandInterface
     }
 
     /**
+     * Gets list of default command variables.
+     *
      * @return array
      */
     protected function defaultVars() : array

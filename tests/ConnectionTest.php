@@ -5,8 +5,10 @@ namespace Denpa\Levin\Tests;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Exceptions\ConnectionException;
+use Denpa\Levin\Exceptions\UnpackException;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Types\Uint64;
+use Throwable;
 
 class ConnectionTest extends TestCase
 {
@@ -38,7 +40,28 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testListenOnClosedConnection() : void
+    public function testConnectOnFailure() : void
+    {
+        $socket = $this->createSocketMock(null, '127.0.0.2');
+        $connection = new Connection(...$socket);
+        $connection->writeBytes(new Uint64(0));
+        $connection->close();
+
+        $connection = new Connection(...$socket);
+        $connection->connect(null, function (Throwable $exception) {
+            $this->assertEquals(
+                'Failed to unpack binary data []',
+                $exception->getMessage()
+            );
+            $this->assertInstanceOf(UnpackException::class, $exception);
+        });
+
+    }
+
+    /**
+     * @return void
+     */
+    public function testConnectOnClosedConnection() : void
     {
         $connection = new Connection(...$this->socket);
         $connection->close();

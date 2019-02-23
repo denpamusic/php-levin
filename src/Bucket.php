@@ -26,17 +26,17 @@ use UnexpectedValueException;
 class Bucket implements BucketInterface
 {
     /**
-     * @var \Denpa\Levin\Types\Uint64
+     * @var \Denpa\Levin\Types\Uint64 Levin signature aka Bender's nightmare.
      */
     protected $signature;
 
     /**
-     * @var \Denpa\Levin\Types\Uint64|null
+     * @var \Denpa\Levin\Types\Uint64 Bucket size in bytes.
      */
     protected $cb;
 
     /**
-     * @var \Denpa\Levin\Types\Uint32
+     * @var \Denpa\Levin\Types\Uint32 Indicates whether data should be returned.
      */
     protected $returnData;
 
@@ -51,7 +51,7 @@ class Bucket implements BucketInterface
     protected $returnCode;
 
     /**
-     * @var \Denpa\Levin\Types\Uint32
+     * @var \Denpa\Levin\Types\Uint32 Used to indicate bucket type.
      */
     protected $flags;
 
@@ -117,6 +117,8 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * Checks if bucket contains any of the specified commands.
+     *
      * @param string $commands,...
      *
      * @return bool
@@ -141,6 +143,8 @@ class Bucket implements BucketInterface
      * @param mixed $signature
      *
      * @return self
+     *
+     * @throws \Denpa\Levin\Exceptions\SignatureMismatchException
      */
     public function setSignature($signature) : self
     {
@@ -158,6 +162,8 @@ class Bucket implements BucketInterface
      * @param mixed $cb
      *
      * @return self
+     *
+     * @throws \Denpa\Levin\Exceptions\EntryTooLargeException
      */
     public function setCb($cb) : self
     {
@@ -201,6 +207,8 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * Fills the bucket with payload data from command class.
+     *
      * @param \Denpa\Levin\CommandInterface $command
      *
      * @return self
@@ -267,7 +275,11 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * Gets bucket head.
+     *
      * @return string
+     *
+     * @throws \UnexpectedValueException
      */
     public function getHead() : string
     {
@@ -297,6 +309,8 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param \Denpa\Levin\Connection $connection
      *
      * @return void
@@ -311,6 +325,8 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param \Denpa\Levin\Connection $connection
      *
      * @return self|null
@@ -340,6 +356,8 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
@@ -358,6 +376,8 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
@@ -376,10 +396,14 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * Allows access to the class variables via magic.
+     *
      * @param string $method
      * @param array  $args
      *
      * @return mixed
+     *
+     * @throws \BadMethodCallException
      */
     public function __call(string $method, array $args = [])
     {

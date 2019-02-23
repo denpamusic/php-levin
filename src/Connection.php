@@ -4,6 +4,7 @@ namespace Denpa\Levin;
 
 use Denpa\Levin\Exceptions\ConnectionException;
 use Denpa\Levin\Types\TypeInterface;
+use Throwable;
 
 class Connection implements ConnectionInterface
 {
@@ -22,6 +23,8 @@ class Connection implements ConnectionInterface
      * @param mixed  $port
      *
      * @return void
+     *
+     * @throws \Denpa\Levin\Exceptions\ConnectionException
      */
     public function __construct(string $host, $port, int $timeout = 5)
     {
@@ -43,21 +46,29 @@ class Connection implements ConnectionInterface
     }
 
     /**
-     * @param callable $callback
+     * @param callable|null $success
+     * @param callable|null $failure
      *
      * @return void
      */
-    public function connect(callable $callback) : void
+    public function connect(?callable $success, ?callable $failure = null) : void
     {
         if (!$this->isOpen()) {
             return;
         }
 
-        while ($bucket = $this->read()) {
-            if ($callback($bucket, $this) === false) {
+        do {
+            try {
+                $bucket = $this->read();
+            } catch (Throwable $exception) {
+                $bucket = false;
+                if (is_callable($failure)) $failure($exception);
+            }
+
+            if ($bucket && is_callable($success) && $success($bucket, $this) === false) {
                 break;
             }
-        }
+        } while (!$bucket === null);
     }
 
     /**
