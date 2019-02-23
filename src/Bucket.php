@@ -371,7 +371,6 @@ class Bucket implements BucketInterface
      */
     public function request(?CommandInterface $command = null) : self
     {
-
         $this->setReturnData(true);
         $this->setReturnCode(1);
         $this->setFlags(self::LEVIN_PACKET_REQUEST);
