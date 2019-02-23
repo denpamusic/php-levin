@@ -112,6 +112,7 @@ class Connection implements ConnectionInterface
         if ($bytes === false || $bytes === 0) {
             // lost connection
             $this->close();
+
             throw new ConnectionTerminatedException();
         }
 
