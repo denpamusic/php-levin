@@ -142,9 +142,9 @@ class Bucket implements BucketInterface
     /**
      * @param mixed $signature
      *
-     * @return self
-     *
      * @throws \Denpa\Levin\Exceptions\SignatureMismatchException
+     *
+     * @return self
      */
     public function setSignature($signature) : self
     {
@@ -161,9 +161,9 @@ class Bucket implements BucketInterface
     /**
      * @param mixed $cb
      *
-     * @return self
-     *
      * @throws \Denpa\Levin\Exceptions\EntryTooLargeException
+     *
+     * @return self
      */
     public function setCb($cb) : self
     {
@@ -277,9 +277,9 @@ class Bucket implements BucketInterface
     /**
      * Gets bucket head.
      *
-     * @return string
-     *
      * @throws \UnexpectedValueException
+     *
+     * @return string
      */
     public function getHead() : string
     {
@@ -309,7 +309,7 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param \Denpa\Levin\Connection $connection
      *
@@ -325,7 +325,7 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param \Denpa\Levin\Connection $connection
      *
@@ -356,7 +356,7 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param \Denpa\Levin\CommandInterface|null $command
      *
@@ -376,7 +376,7 @@ class Bucket implements BucketInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param \Denpa\Levin\CommandInterface|null $command
      *
@@ -401,9 +401,9 @@ class Bucket implements BucketInterface
      * @param string $method
      * @param array  $args
      *
-     * @return mixed
-     *
      * @throws \BadMethodCallException
+     *
+     * @return mixed
      */
     public function __call(string $method, array $args = [])
     {

@@ -22,9 +22,9 @@ class Connection implements ConnectionInterface
      * @param string $host
      * @param mixed  $port
      *
-     * @return void
-     *
      * @throws \Denpa\Levin\Exceptions\ConnectionException
+     *
+     * @return void
      */
     public function __construct(string $host, $port, int $timeout = 5)
     {
@@ -62,7 +62,9 @@ class Connection implements ConnectionInterface
                 $bucket = $this->read();
             } catch (Throwable $exception) {
                 $bucket = false;
-                if (is_callable($failure)) $failure($exception);
+                if (is_callable($failure)) {
+                    $failure($exception);
+                }
             }
 
             if ($bucket && is_callable($success) && $success($bucket, $this) === false) {

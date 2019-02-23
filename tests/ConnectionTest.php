@@ -55,7 +55,6 @@ class ConnectionTest extends TestCase
             );
             $this->assertInstanceOf(UnpackException::class, $exception);
         });
-
     }
 
     /**

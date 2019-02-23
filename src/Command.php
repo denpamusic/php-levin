@@ -34,7 +34,7 @@ abstract class Command implements CommandInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return \Denpa\Levin\Types\Uint32
      */
