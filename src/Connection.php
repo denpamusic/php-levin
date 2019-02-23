@@ -27,7 +27,7 @@ class Connection implements ConnectionInterface
      *
      * @return void
      */
-    public function __construct(string $host, $port, int $timeout = 5)
+    public function __construct(string $host, $port)
     {
         $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);

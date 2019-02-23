@@ -210,16 +210,20 @@ class Bucket implements BucketInterface
     /**
      * Fills the bucket with payload data from command class.
      *
-     * @param \Denpa\Levin\CommandInterface $command
+     * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
      */
-    public function fill(CommandInterface $command) : self
+    public function fill(?CommandInterface $command = null) : self
     {
-        $method = $this->isRequest() ? 'request' : 'response';
+        $command = $command ?? $this->getCommand();
 
-        $this->command = $command;
-        $this->setPayload($command->$method());
+        if (!is_null($command)) {
+            $method = $this->isRequest() ? 'request' : 'response';
+
+            $this->command = $command;
+            $this->setPayload($command->$method());
+        }
 
         return $this;
     }
@@ -367,15 +371,11 @@ class Bucket implements BucketInterface
      */
     public function request(?CommandInterface $command = null) : self
     {
-        $command = $command ?? $this->getCommand();
 
         $this->setReturnData(true);
         $this->setReturnCode(1);
         $this->setFlags(self::LEVIN_PACKET_REQUEST);
-
-        if (!is_null($command)) {
-            $this->fill($command);
-        }
+        $this->fill($command);
 
         return $this;
     }
@@ -394,10 +394,7 @@ class Bucket implements BucketInterface
         $this->setReturnData(false);
         $this->setReturnCode(1);
         $this->setFlags(self::LEVIN_PACKET_RESPONSE);
-
-        if (!is_null($command)) {
-            $this->fill($command);
-        }
+        $this->fill($command);
 
         return $this;
     }
