@@ -3,6 +3,7 @@
 namespace Denpa\Levin;
 
 use BadMethodCallException;
+use Denpa\Levin\Exceptions\ConnectionTerminatedException;
 use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Section\Reader;
@@ -317,11 +318,13 @@ class Bucket implements BucketInterface
      */
     public function write(Connection $connection) : void
     {
-        $connection->write($this->getHead());
+        $bucket = $this->getHead();
 
         if (!is_null($this->payload)) {
-            $connection->write($this->getPayload()->toBinary());
+            $bucket .= $this->getPayload()->toBinary();
         }
+
+        $connection->write($bucket);
     }
 
     /**
@@ -333,26 +336,26 @@ class Bucket implements BucketInterface
      */
     public function read(Connection $connection) : ?self
     {
-        if ($connection->eof()) {
+        try {
+            $bucket = new static([
+                'signature'        => $connection->read(uint64le()),
+                'cb'               => $connection->read(uint64le()),
+                'return_data'      => $connection->read(boolean()),
+                'command'          => $connection->read(uint32le()),
+                'return_code'      => $connection->read(int32le()),
+                'flags'            => $connection->read(uint32le()),
+                'protocol_version' => $connection->read(uint32le()),
+            ]);
+
+            if ($bucket->cb->toInt() > 0) {
+                $section = (new Reader($connection))->read();
+                $bucket->setPayload($section);
+            }
+
+            return $bucket;
+        } catch (ConnectionTerminatedException $exception) {
             return null;
         }
-
-        $bucket = new static([
-            'signature'        => $connection->read(uint64le()),
-            'cb'               => $connection->read(uint64le()),
-            'return_data'      => $connection->read(boolean()),
-            'command'          => $connection->read(uint32le()),
-            'return_code'      => $connection->read(int32le()),
-            'flags'            => $connection->read(uint32le()),
-            'protocol_version' => $connection->read(uint32le()),
-        ]);
-
-        if ($bucket->cb->toInt() > 0) {
-            $section = (new Reader($connection))->read();
-            $bucket->setPayload($section);
-        }
-
-        return $bucket;
     }
 
     /**
@@ -364,8 +367,10 @@ class Bucket implements BucketInterface
      */
     public function request(?CommandInterface $command = null) : self
     {
+        $command = $command ?? $this->getCommand();
+
         $this->setReturnData(true);
-        $this->setReturnCode(0);
+        $this->setReturnCode(1);
         $this->setFlags(self::LEVIN_PACKET_REQUEST);
 
         if (!is_null($command)) {
@@ -384,8 +389,10 @@ class Bucket implements BucketInterface
      */
     public function response(?CommandInterface $command = null) : self
     {
+        $command = $command ?? $this->getCommand();
+
         $this->setReturnData(false);
-        $this->setReturnCode(0);
+        $this->setReturnCode(1);
         $this->setFlags(self::LEVIN_PACKET_RESPONSE);
 
         if (!is_null($command)) {

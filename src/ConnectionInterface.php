@@ -42,11 +42,6 @@ interface ConnectionInterface
     /**
      * @return void
      */
-    public function eof() : bool;
-
-    /**
-     * @return void
-     */
     public function isOpen() : bool;
 
     /**

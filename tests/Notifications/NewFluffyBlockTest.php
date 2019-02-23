@@ -22,6 +22,6 @@ class NewFluffyBlockTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new NewFluffyBlock())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 6);
+        $this->assertEquals((new NewFluffyBlock())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 8);
     }
 }

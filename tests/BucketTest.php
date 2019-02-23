@@ -7,6 +7,7 @@ use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Exceptions\ConnectionTerminatedException;
 use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Requests\Handshake;
@@ -370,11 +371,10 @@ class BucketTest extends TestCase
 
         $connection = $this->createMock(Connection::class);
 
-        $connection->expects($this->exactly(2))
+        $connection->expects($this->once())
             ->method('write')
-            ->withConsecutive(
-                [$this->bucket->getHead()],
-                [$this->bucket->getPayload()->toBinary()]
+            ->with(
+                $this->bucket->getHead().$this->bucket->getPayload()->toBinary()
             );
 
         $this->bucket->write($connection);
@@ -388,10 +388,6 @@ class BucketTest extends TestCase
         $section = Levin\section();
         $signatures = $section->getSignatures();
         $connection = $this->createMock(Connection::class);
-
-        $connection->expects($this->once())
-            ->method('eof')
-            ->willReturn(false);
 
         $connection->expects($this->exactly(11))
             ->method('read')
@@ -440,13 +436,13 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testReadEof() : void
+    public function testReadWithConnectionTerminated() : void
     {
         $connection = $this->createMock(Connection::class);
 
         $connection->expects($this->once())
-            ->method('eof')
-            ->willReturn(true);
+            ->method('read')
+            ->will($this->throwException(new ConnectionTerminatedException()));
 
         $bucket = $this->bucket->read($connection);
 

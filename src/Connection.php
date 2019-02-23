@@ -3,6 +3,7 @@
 namespace Denpa\Levin;
 
 use Denpa\Levin\Exceptions\ConnectionException;
+use Denpa\Levin\Exceptions\ConnectionTerminatedException;
 use Denpa\Levin\Types\TypeInterface;
 use Throwable;
 
@@ -28,10 +29,13 @@ class Connection implements ConnectionInterface
      */
     public function __construct(string $host, $port, int $timeout = 5)
     {
-        $this->socket = @fsockopen($host, (int) $port, $errno, $errstr, $timeout);
+        $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_set_option($this->socket, SOL_SOCKET, SO_KEEPALIVE, 1);
+        @socket_connect($this->socket, $host, (int) $port);
 
-        if (!$this->socket) {
-            throw new ConnectionException($errstr, $errno);
+        if ($this->socket === false) {
+            throw new ConnectionException($this->socket);
         }
 
         $this->open = true;
@@ -98,11 +102,20 @@ class Connection implements ConnectionInterface
     /**
      * @param int $bytesize
      *
-     * @return mixed
+     * @return string
      */
-    public function readBytes(int $bytesize)
+    public function readBytes(int $bytesize) : string
     {
-        return fread($this->socket, $bytesize);
+        $buffer = '';
+        $bytes = socket_recv($this->socket, $buffer, $bytesize, MSG_WAITALL);
+
+        if ($bytes === false || $bytes === 0) {
+            // lost connection
+            $this->close();
+            throw new ConnectionTerminatedException();
+        }
+
+        return $buffer;
     }
 
     /**
@@ -128,15 +141,7 @@ class Connection implements ConnectionInterface
      */
     public function writeBytes(string $bytes) : void
     {
-        fwrite($this->socket, $bytes);
-    }
-
-    /**
-     * @return bool
-     */
-    public function eof() : bool
-    {
-        return feof($this->socket);
+        socket_send($this->socket, $bytes, strlen($bytes), 0);
     }
 
     /**
@@ -153,7 +158,7 @@ class Connection implements ConnectionInterface
     public function close() : void
     {
         if ($this->isOpen()) {
-            fclose($this->socket);
+            socket_close($this->socket);
             $this->open = false;
         }
     }

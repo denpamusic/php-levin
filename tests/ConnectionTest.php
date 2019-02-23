@@ -44,13 +44,13 @@ class ConnectionTest extends TestCase
     {
         $socket = $this->createSocketMock(null, '127.0.0.2');
         $connection = new Connection(...$socket);
-        $connection->writeBytes(new Uint64(0));
+        $connection->writeBytes('~');
         $connection->close();
 
         $connection = new Connection(...$socket);
         $connection->connect(null, function (Throwable $exception) {
             $this->assertEquals(
-                'Failed to unpack binary data []',
+                'Failed to unpack binary data [~]',
                 $exception->getMessage()
             );
             $this->assertInstanceOf(UnpackException::class, $exception);
@@ -65,11 +65,7 @@ class ConnectionTest extends TestCase
         $connection = new Connection(...$this->socket);
         $connection->connect(null);
 
-        // No errors occured with null callback
-        $this->assertTrue(
-            $connection->isOpen(),
-            'Connection was prematurely terminated.'
-        );
+        $this->addToAssertionCount(1);  // does not throw an exception
     }
 
     /**

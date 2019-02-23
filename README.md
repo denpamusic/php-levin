@@ -139,7 +139,7 @@ Levin\connection($ip, $port, $vars)->connect(
             $connection->write($bucket->response());
         }
 
-        if ($bucket->isRequest('newblock')) {
+        if ($bucket->isRequest('newblock', 'newfluffyblock')) {
             $section = $bucket->getPayload();
 			
             printf("New block: %d\n", $section['current_blockchain_height']);
