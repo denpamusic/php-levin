@@ -2,7 +2,6 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin;
 use Denpa\Levin\Notifications\RequestGetObjects;
 
 class RequestGetObjectsTest extends NotificationTest

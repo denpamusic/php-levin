@@ -59,6 +59,7 @@ class CommandTest extends TestCase
     {
         if (empty($map)) {
             $this->assertEmpty($response);
+
             return;
         }
 
@@ -90,7 +91,7 @@ class CommandTest extends TestCase
      */
     protected function assertVars(array $vars = []) : void
     {
-        $classVars = (array)(new $this->classname($vars));
+        $classVars = (array) (new $this->classname($vars));
         $this->assertEquals($classVars["\0*\0vars"], $vars);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin\Tests\CommandTest;
 use Denpa\Levin\Notifications\NotificationInterface;
+use Denpa\Levin\Tests\CommandTest;
 
 abstract class NotificationTest extends CommandTest
 {

@@ -2,7 +2,6 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin;
 use Denpa\Levin\Requests\NetworkState;
 
 class NetworkStateTest extends RequestTest
