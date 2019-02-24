@@ -371,12 +371,11 @@ class Bucket implements BucketInterface
      */
     public function request(?CommandInterface $command = null) : self
     {
-        $this->setReturnData(true);
-        $this->setReturnCode(1);
-        $this->setFlags(self::LEVIN_PACKET_REQUEST);
-        $this->fill($command);
-
-        return $this;
+        return $this
+            ->setReturnData(true)
+            ->setReturnCode(1)
+            ->setFlags(self::LEVIN_PACKET_REQUEST)
+            ->fill($command);
     }
 
     /**
@@ -388,14 +387,11 @@ class Bucket implements BucketInterface
      */
     public function response(?CommandInterface $command = null) : self
     {
-        $command = $command ?? $this->getCommand();
-
-        $this->setReturnData(false);
-        $this->setReturnCode(1);
-        $this->setFlags(self::LEVIN_PACKET_RESPONSE);
-        $this->fill($command);
-
-        return $this;
+        return $this
+            ->setReturnData(false)
+            ->setReturnCode(1)
+            ->setFlags(self::LEVIN_PACKET_RESPONSE)
+            ->fill($command);
     }
 
     /**
