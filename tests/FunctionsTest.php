@@ -232,6 +232,17 @@ class FunctionsTest extends TestCase
     /**
      * @return void
      */
+    public function testNotification() : void
+    {
+        $bucket = Levin\notification('requestchain');
+        $this->assertInstanceOf(Bucket::class, $bucket);
+        $this->assertTrue($bucket->isRequest('requestchain'));
+        $this->assertFalse($bucket->getReturnData()->getValue());
+    }
+
+    /**
+     * @return void
+     */
     public function testConnection() : void
     {
         $socket = $this->createSocketMock(null);

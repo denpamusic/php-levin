@@ -287,6 +287,21 @@ if (!function_exists('response')) {
     }
 }
 
+if (!function_exists('notification')) {
+    /**
+     * Shortcut for creating the notification bucket.
+     *
+     * @param string $command
+     * @param array  $args
+     *
+     * @return \Denpa\Levin\Bucket
+     */
+    function notification(string $command, array $args = []) : Bucket
+    {
+        return (new Bucket())->notification((new CommandFactory())->$command($args));
+    }
+}
+
 if (!function_exists('connection')) {
     /**
      * Shortcut for opening levin connection.

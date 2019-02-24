@@ -13,7 +13,19 @@ class RequestChain extends Command implements NotificationInterface
      */
     public function request() : Section
     {
-        return Levin\section();
+        return Levin\section([
+            'block_ids' => Levin\bytestring($this->block_ids),
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function defaultVars() : array
+    {
+        return [
+            'block_ids' => '',
+        ];
     }
 
     /**

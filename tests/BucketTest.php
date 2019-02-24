@@ -12,6 +12,7 @@ use Denpa\Levin\Exceptions\EntryTooLargeException;
 use Denpa\Levin\Exceptions\SignatureMismatchException;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin\Notifications\RequestChain;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
 use Denpa\Levin\Types\Int32;
@@ -359,6 +360,19 @@ class BucketTest extends TestCase
         $this->assertInstanceOf(Bucket::class, $response);
         $this->assertEquals(Bucket::LEVIN_PACKET_RESPONSE, $response->getFlags()->toInt());
         $this->assertEquals($handshake, $response->getCommand());
+    }
+
+    /**
+     * @return void
+     */
+    public function testNotification() : void
+    {
+        $requestChain = new RequestChain();
+        $notification = (new Bucket())->notification($requestChain);
+        $this->assertInstanceOf(Bucket::class, $notification);
+        $this->assertEquals(Bucket::LEVIN_PACKET_REQUEST, $notification->getFlags()->toInt());
+        $this->assertEquals($requestChain, $notification->getCommand());
+        $this->assertFalse($notification->getReturnData()->getValue());
     }
 
     /**

@@ -399,6 +399,20 @@ class Bucket implements BucketInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @param \Denpa\Levin\CommandInterface|null $command
+     *
+     * @return self
+     */
+    public function notification(?CommandInterface $command = null) : self
+    {
+        return $this
+            ->request($command)
+            ->setReturnData(false);
+    }
+
+    /**
      * Allows access to the class variables via magic.
      *
      * @param string $method
