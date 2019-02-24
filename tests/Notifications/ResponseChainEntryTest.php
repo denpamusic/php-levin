@@ -2,19 +2,27 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin\Notifications\NotificationInterface;
+use Denpa\Levin;
 use Denpa\Levin\Notifications\ResponseChainEntry;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class ResponseChainEntryTest extends TestCase
+class ResponseChainEntryTest extends NotificationTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = ResponseChainEntry::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new ResponseChainEntry())->request());
+        $this->assertRequestMap([
+            'start_height'          => Levin\uint64le(),
+            'total_height'          => Levin\uint64le(),
+            'cumulative_difficulty' => Levin\uint64le(),
+            'm_block_ids'           => Levin\bytestring(),
+        ]);
     }
 
     /**
@@ -22,6 +30,19 @@ class ResponseChainEntryTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new ResponseChainEntry())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 7);
+        $this->assertCommandCode(7);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars([
+            'start_height'          => 0,
+            'total_height'          => 0,
+            'cumulative_difficulty' => 0,
+            'm_block_ids'           => '',
+        ]);
     }
 }

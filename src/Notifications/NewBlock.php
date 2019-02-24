@@ -13,7 +13,21 @@ class NewBlock extends Command implements NotificationInterface
      */
     public function request() : Section
     {
-        return Levin\section();
+        return Levin\section([
+            'b'                         => Levin\bytestring($this->block),
+            'current_blockchain_height' => Levin\uint64le($this->current_blockchain_height),
+        ]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function defaultVars() : array
+    {
+        return [
+            'block'                     => '',
+            'current_blockchain_height' => 0,
+        ];
     }
 
     /**

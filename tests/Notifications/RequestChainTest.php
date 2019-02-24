@@ -2,19 +2,24 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin\Notifications\NotificationInterface;
+use Denpa\Levin;
 use Denpa\Levin\Notifications\RequestChain;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class RequestChainTest extends TestCase
+class RequestChainTest extends NotificationTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = RequestChain::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new RequestChain())->request());
+        $this->assertRequestMap([
+            'block_ids' => Levin\bytestring(),
+        ]);
     }
 
     /**
@@ -22,6 +27,16 @@ class RequestChainTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new RequestChain())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 6);
+        $this->assertCommandCode(6);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars([
+            'block_ids' => '',
+        ]);
     }
 }

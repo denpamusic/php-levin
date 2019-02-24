@@ -2,19 +2,29 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin;
 use Denpa\Levin\Requests\TimedSync;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class TimedSyncTest extends TestCase
+class TimedSyncTest extends RequestTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = TimedSync::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new TimedSync())->request());
+        $this->assertRequestMap([
+            'payload_data' => [
+                'cumulative_difficulty' => Levin\uint64le(),
+                'current_height'        => Levin\uint64le(),
+                'top_id'                => Levin\bytestring(),
+                'top_version'           => Levin\uint8(),
+            ],
+        ]);
     }
 
     /**
@@ -22,7 +32,17 @@ class TimedSyncTest extends TestCase
      */
     public function testResponse() : void
     {
-        $this->assertInstanceOf(Section::class, (new TimedSync())->response());
+        $this->assertResponseMap([
+            'local_time'   => Levin\uint64le(),
+            'payload_data' => [
+                'cumulative_difficulty' => Levin\uint64le(),
+                'current_height'        => Levin\uint64le(),
+                'top_id'                => Levin\bytestring(),
+                'top_version'           => Levin\uint8(),
+            ],
+            'local_peerlist_new' => Levin\bytearray(),
+            'local_peerlist'     => Levin\bytestring(),
+        ]);
     }
 
     /**
@@ -30,6 +50,20 @@ class TimedSyncTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new TimedSync())->getCommandCode(), RequestInterface::P2P_COMMANDS_POOL_BASE + 2);
+        $this->assertCommandCode(2);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars([
+            'cumulative_difficulty' => 1,
+            'current_height'        => 1,
+            'top_version'           => 1,
+            'top_id'                => hex2bin('418015bb9ae982a1975da7d79277c2705727a56894ba0fb246adaabb1f4632e3'),
+            'peerlist'              => [],
+        ]);
     }
 }

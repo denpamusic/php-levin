@@ -2,19 +2,22 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin\Notifications\NotificationInterface;
+use Denpa\Levin;
 use Denpa\Levin\Notifications\RequestFluffyMissingTx;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class RequestFluffyMissingTxTest extends TestCase
+class RequestFluffyMissingTxTest extends NotificationTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = RequestFluffyMissingTx::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new RequestFluffyMissingTx())->request());
+        $this->assertRequestMap();
     }
 
     /**
@@ -22,6 +25,14 @@ class RequestFluffyMissingTxTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new RequestFluffyMissingTx())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 9);
+        $this->assertCommandCode(9);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars();
     }
 }

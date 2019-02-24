@@ -2,19 +2,22 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin\Notifications\NotificationInterface;
+use Denpa\Levin;
 use Denpa\Levin\Notifications\RequestGetObjects;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class RequestGetObjectsTest extends TestCase
+class RequestGetObjectsTest extends NotificationTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = RequestGetObjects::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new RequestGetObjects())->request());
+        $this->assertRequestMap();
     }
 
     /**
@@ -22,6 +25,14 @@ class RequestGetObjectsTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new RequestGetObjects())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 3);
+        $this->assertCommandCode(3);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars();
     }
 }

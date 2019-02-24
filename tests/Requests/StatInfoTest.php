@@ -2,19 +2,22 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin;
 use Denpa\Levin\Requests\StatInfo;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class StatInfoTest extends TestCase
+class StatInfoTest extends RequestTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = StatInfo::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new StatInfo())->request());
+        $this->assertRequestMap();
     }
 
     /**
@@ -22,7 +25,7 @@ class StatInfoTest extends TestCase
      */
     public function testResponse() : void
     {
-        $this->assertInstanceOf(Section::class, (new StatInfo())->response());
+        $this->assertResponseMap();
     }
 
     /**
@@ -30,6 +33,14 @@ class StatInfoTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new StatInfo())->getCommandCode(), RequestInterface::P2P_COMMANDS_POOL_BASE + 4);
+        $this->assertCommandCode(4);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars();
     }
 }

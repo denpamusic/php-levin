@@ -2,19 +2,22 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin;
 use Denpa\Levin\Requests\SupportFlags;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class SupportFlagsTest extends TestCase
+class SupportFlagsTest extends RequestTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = SupportFlags::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new SupportFlags())->request());
+        $this->assertRequestMap();
     }
 
     /**
@@ -22,9 +25,9 @@ class SupportFlagsTest extends TestCase
      */
     public function testResponse() : void
     {
-        $supportflags = new SupportFlags();
-        $this->assertInstanceOf(Section::class, $supportflags->response());
-        $this->assertEquals(1, $supportflags->response()['support_flags']->toInt());
+        $this->assertResponseMap([
+            'support_flags' => Levin\uint32le(),
+        ]);
     }
 
     /**
@@ -32,6 +35,16 @@ class SupportFlagsTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new SupportFlags())->getCommandCode(), RequestInterface::P2P_COMMANDS_POOL_BASE + 7);
+        $this->assertCommandCode(7);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars([
+            'support_flags' => SupportFlags::P2P_SUPPORT_FLAG_FLUFFY_BLOCKS,
+        ]);
     }
 }

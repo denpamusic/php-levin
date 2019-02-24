@@ -166,12 +166,12 @@ Levin\connection($ip, $port, $vars)->connect(
 ## Notification Support
 | command                | link                                                                                                         | request |
 |------------------------|--------------------------------------------------------------------------------------------------------------|---------|
-| NewBlock               | [cryptonote_protocol_defs.h#L126](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L126) | ❌       |
+| NewBlock               | [cryptonote_protocol_defs.h#L126](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L126) | ✅       |
 | RequestGetObjects      | [cryptonote_protocol_defs.h#L163](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L163) | ❌       |
 | ResponseGetObjects     | [cryptonote_protocol_defs.h#L179](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L179) | ❌       |
 | RequestChain           | [cryptonote_protocol_defs.h#L217](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L217) | ✅       |
 | ResponseChainEntry     | [cryptonote_protocol_defs.h#L231](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L231) | ✅       |
-| NewFluffyBlock         | [cryptonote_protocol_defs.h#L254](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L254) | ❌       |
+| NewFluffyBlock         | [cryptonote_protocol_defs.h#L254](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L254) | ✅       |
 | RequestFluffyMissingTx | [cryptonote_protocol_defs.h#L273](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L273) | ❌       |
 
 ## Exceptions

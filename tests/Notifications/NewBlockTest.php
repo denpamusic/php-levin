@@ -2,19 +2,25 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
+use Denpa\Levin;
 use Denpa\Levin\Notifications\NewBlock;
-use Denpa\Levin\Notifications\NotificationInterface;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class NewBlockTest extends TestCase
+class NewBlockTest extends NotificationTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = NewBlock::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new NewBlock())->request());
+        $this->assertRequestMap([
+            'b'                         => Levin\bytestring(),
+            'current_blockchain_height' => Levin\uint64le(),
+        ]);
     }
 
     /**
@@ -22,6 +28,17 @@ class NewBlockTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new NewBlock())->getCommandCode(), NotificationInterface::BC_COMMANDS_POOL_BASE + 1);
+        $this->assertCommandCode(1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars([
+            'block'                     => '',
+            'current_blockchain_height' => 0,
+        ]);
     }
 }

@@ -2,19 +2,22 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
+use Denpa\Levin;
 use Denpa\Levin\Requests\NetworkState;
-use Denpa\Levin\Requests\RequestInterface;
-use Denpa\Levin\Section\Section;
-use Denpa\Levin\Tests\TestCase;
 
-class NetworkStateTest extends TestCase
+class NetworkStateTest extends RequestTest
 {
+    /**
+     * @var string
+     */
+    protected $classname = NetworkState::class;
+
     /**
      * @return void
      */
     public function testRequest() : void
     {
-        $this->assertInstanceOf(Section::class, (new NetworkState())->request());
+        $this->assertRequestMap();
     }
 
     /**
@@ -22,7 +25,7 @@ class NetworkStateTest extends TestCase
      */
     public function testResponse() : void
     {
-        $this->assertInstanceOf(Section::class, (new NetworkState())->response());
+        $this->assertResponseMap();
     }
 
     /**
@@ -30,6 +33,14 @@ class NetworkStateTest extends TestCase
      */
     public function testGetCommandCode() : void
     {
-        $this->assertEquals((new NetworkState())->getCommandCode(), RequestInterface::P2P_COMMANDS_POOL_BASE + 5);
+        $this->assertCommandCode(5);
+    }
+
+    /**
+     * @return void
+     */
+    public function testVars() : void
+    {
+        $this->assertVars();
     }
 }
