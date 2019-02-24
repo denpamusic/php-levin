@@ -2,7 +2,6 @@
 
 namespace Denpa\Levin\Tests\Notifications;
 
-use Denpa\Levin;
 use Denpa\Levin\Notifications\RequestFluffyMissingTx;
 
 class RequestFluffyMissingTxTest extends NotificationTest

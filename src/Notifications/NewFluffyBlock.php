@@ -29,6 +29,7 @@ class NewFluffyBlock extends Command implements NotificationInterface
             'current_blockchain_height' => 0,
         ];
     }
+
     /**
      * @return int
      */

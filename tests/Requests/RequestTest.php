@@ -2,8 +2,8 @@
 
 namespace Denpa\Levin\Tests\Requests;
 
-use Denpa\Levin\Tests\CommandTest;
 use Denpa\Levin\Requests\RequestInterface;
+use Denpa\Levin\Tests\CommandTest;
 
 abstract class RequestTest extends CommandTest
 {
