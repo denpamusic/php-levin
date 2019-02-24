@@ -50,7 +50,7 @@ interface BucketInterface
     /**
      * Creates request bucket.
      *
-     * @param \Denpa\Levin\CommandInterface $command
+     * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
      */
@@ -59,9 +59,18 @@ interface BucketInterface
     /**
      * Creates response bucket.
      *
-     * @param \Denpa\Levin\CommandInterface $command
+     * @param \Denpa\Levin\CommandInterface|null $command
      *
      * @return self
      */
     public function response(?CommandInterface $command = null);
+
+    /**
+     * Creates notification bucket.
+     *
+     * @param \Denpa\Levin\CommandInterface|null $command
+     *
+     * @return self
+     */
+    public function notification(?CommandInterface $command = null);
 }
