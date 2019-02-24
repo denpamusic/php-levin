@@ -20,19 +20,19 @@ class Connection implements ConnectionInterface
     protected $open = false;
 
     /**
-     * @param string $host
+     * @param string $address
      * @param mixed  $port
      *
      * @throws \Denpa\Levin\Exceptions\ConnectionException
      *
      * @return void
      */
-    public function __construct(string $host, $port)
+    public function __construct(string $address, $port)
     {
         $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         socket_set_option($this->socket, SOL_SOCKET, SO_REUSEADDR, 1);
         socket_set_option($this->socket, SOL_SOCKET, SO_KEEPALIVE, 1);
-        @socket_connect($this->socket, $host, (int) $port);
+        @socket_connect($this->socket, $address, (int) $port);
 
         if ($this->socket === false) {
             throw new ConnectionException($this->socket);
@@ -107,9 +107,9 @@ class Connection implements ConnectionInterface
     public function readBytes(int $bytesize) : string
     {
         $buffer = '';
-        $bytes = socket_recv($this->socket, $buffer, $bytesize, MSG_WAITALL);
+        $bytes = @socket_recv($this->socket, $buffer, $bytesize, MSG_WAITALL);
 
-        if ($bytes === false || $bytes === 0) {
+        if ($bytes == 0) {
             // lost connection
             $this->close();
 

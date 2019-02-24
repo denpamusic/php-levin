@@ -26,14 +26,14 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string $command
-     * @param string $host
+     * @param string $address
      * @param int    $port
      *
      * @return array
      */
     protected function createSocketMock(
         ?string $command,
-        string $host = '127.0.0.1',
+        string $address = '127.0.0.1',
         int $port = 1000
     ) : array {
         $response = '';
@@ -44,9 +44,9 @@ class TestCase extends \PHPUnit\Framework\TestCase
             $response = $handshake->getHead().$handshake->getPayload()->toBinary();
         }
 
-        file_put_contents($this->fs->path("$host:$port"), $response);
+        file_put_contents($this->fs->path("$address:$port"), $response);
 
-        return [$host, $port];
+        return [$address, $port];
     }
 }
 

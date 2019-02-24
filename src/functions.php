@@ -306,15 +306,15 @@ if (!function_exists('connection')) {
     /**
      * Shortcut for opening levin connection.
      *
-     * @param string $host
+     * @param string $address
      * @param mixed  $port
      * @param array  $vars
      *
      * @return \Denpa\Levin\ConnectionInterface
      */
-    function connection(string $host, $port, array $vars = []) : ConnectionInterface
+    function connection(string $address, $port, array $vars = []) : ConnectionInterface
     {
-        $connection = new Connection($host, $port);
+        $connection = new Connection($address, $port);
         $connection->write(request('handshake', $vars));
 
         return $connection;
