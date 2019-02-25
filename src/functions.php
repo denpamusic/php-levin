@@ -353,6 +353,20 @@ if (!function_exists('snake_case')) {
     }
 }
 
+if (!function_exists('classname')) {
+    /**
+     * Gets class basename.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    function classname(string $class) : string
+    {
+        return basename(str_replace('\\', DIRECTORY_SEPARATOR, trim($class)));
+    }
+}
+
 if (!function_exists('peer_id')) {
     /**
      * Creates peer id with certain prefix.

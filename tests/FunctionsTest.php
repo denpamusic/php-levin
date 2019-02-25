@@ -264,23 +264,37 @@ class FunctionsTest extends TestCase
     }
 
     /**
+     * @param string $string
+     * @param string $expect
+     *
      * @return void
      *
      * @dataProvider camelCaseProvider
      */
-    public function testCamelCase(string $string, string $expected) : void
+    public function testCamelCase(string $string, string $expect) : void
     {
-        $this->assertEquals($expected, Levin\camel_case($string));
+        $this->assertEquals($expect, Levin\camel_case($string));
     }
 
     /**
+     * @param string $string
+     * @param string $expect
+     *
      * @return void
      *
      * @dataProvider snakeCaseProvider
      */
-    public function testSnakeCase(string $string, string $expected) : void
+    public function testSnakeCase(string $string, string $expect) : void
     {
-        $this->assertEquals($expected, Levin\snake_case($string));
+        $this->assertEquals($expect, Levin\snake_case($string));
+    }
+
+    /**
+     * @return void
+     */
+    public function testClassname() : void
+    {
+        $this->assertEquals('Bucket', Levin\classname(Bucket::class));
     }
 
     /**

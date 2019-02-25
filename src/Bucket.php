@@ -126,18 +126,15 @@ class Bucket implements BucketInterface
      */
     public function is(...$commands) : bool
     {
-        $result = false;
-
         foreach ($commands as $command) {
-            $handler = get_class((new CommandFactory())->$command());
+            $classname = classname(get_class($this->command));
 
-            if ($this->command instanceof $handler) {
-                $result = true;
-                break;
+            if (strtolower($classname) == strtolower($command)) {
+                return true;
             }
         }
 
-        return $result;
+        return false;
     }
 
     /**

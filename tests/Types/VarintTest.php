@@ -12,15 +12,15 @@ class VarintTest extends TestCase
 {
     /**
      * @param int    $int
-     * @param string $expected
+     * @param string $expect
      *
      * @return void
      *
      * @dataProvider intProvider
      */
-    public function testToBinary(int $int, string $expected) : void
+    public function testToBinary(int $int, string $expect) : void
     {
-        $this->assertEquals($expected, (new Varint($int))->toHex());
+        $this->assertEquals($expect, (new Varint($int))->toHex());
     }
 
     /**
@@ -47,7 +47,7 @@ class VarintTest extends TestCase
         int $first,
         ?int $second = null,
         string $bytes,
-        int $expected
+        int $expect
     ) : void {
         $connection = $this->createMock(Connection::class);
 
@@ -64,7 +64,7 @@ class VarintTest extends TestCase
         }
 
         $varint = (new Varint())->read($connection);
-        $this->assertEquals($expected, $varint->toInt());
+        $this->assertEquals($expect, $varint->toInt());
     }
 
     /**
