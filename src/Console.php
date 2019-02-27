@@ -21,6 +21,17 @@ class Console
     }
 
     /**
+     * @param string $message
+     * @param mixed  $args,...
+     *
+     * @return void
+     */
+    public function error(string $message = '', ...$args) : void
+    {
+        fwrite(STDERR, sprintf($message, ...$args));
+    }
+
+    /**
      * @param mixed $object
      *
      * @return void

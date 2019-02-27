@@ -104,18 +104,17 @@ class DummyNode extends Node
      */
     public function handleException(Throwable $exception) : void
     {
-        $this->console("Exception: %s\n", $exception->getMessage());
+        $this->console()->error("Exception: %s\n", $exception->getMessage());
     }
 
     /**
      * Handles remote peerlist.
      *
-     * @param \Denpa\Levin\Bucket     $bucket
-     * @param \Denpa\Levin\Connection $connection
+     * @param \Denpa\Levin\Bucket $bucket
      *
      * @return mixed
      */
-    protected function peerlistHandler($bucket, $connection)
+    protected function peerlistHandler($bucket)
     {
         $peers = $bucket->getPayload()['local_peerlist_new'] ?? [];
 
@@ -153,12 +152,11 @@ class DummyNode extends Node
     /**
      * Handles requests and responses that have payload data.
      *
-     * @param \Denpa\Levin\Bucket     $bucket
-     * @param \Denpa\Levin\Connection $connection
+     * @param \Denpa\Levin\Bucket $bucket
      *
      * @return mixed
      */
-    protected function payloadDataHandler($bucket, $connection)
+    protected function payloadDataHandler($bucket)
     {
         $payloadData = $bucket->getPayload()['payload_data'];
 
@@ -235,12 +233,11 @@ class DummyNode extends Node
     /**
      * Handles new block notifications.
      *
-     * @param \Denpa\Levin\Bucket     $bucket
-     * @param \Denpa\Levin\Connection $connection
+     * @param \Denpa\Levin\Bucket $bucket
      *
      * @return mixed
      */
-    protected function newBlockHandler($bucket, $connection)
+    protected function newBlockHandler($bucket)
     {
         $payload = $bucket->getPayload();
 
@@ -253,15 +250,12 @@ class DummyNode extends Node
     /**
      * Handles new transactions notifications.
      *
-     * @param \Denpa\Levin\Bucket     $bucket
-     * @param \Denpa\Levin\Connection $connection
+     * @param \Denpa\Levin\Bucket $bucket
      *
      * @return mixed
      */
-    protected function newTransactionsHandler(
-        Bucket $bucket,
-        Connection $connection
-    ) : void {
+    protected function newTransactionsHandler($bucket) : void
+    {
         $txs = $bucket->getPayload()['txs'];
 
         $this->console("Received %d new transactions:\n", count($txs));
@@ -287,12 +281,11 @@ class DummyNode extends Node
     /**
      * Outputs received ping status.
      *
-     * @param \Denpa\Levin\Bucket     $bucket
-     * @param \Denpa\Levin\Connection $connection
+     * @param \Denpa\Levin\Bucket $bucket
      *
      * @return mixed
      */
-    protected function recvPingHandler($bucket, $connection)
+    protected function recvPingHandler($bucket)
     {
         $this->console("PING: %s\n", $bucket->getPayload()['status']);
     }
