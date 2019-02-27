@@ -6,8 +6,7 @@
 [![Code Coverage](https://codeclimate.com/github/denpamusic/php-levin/badges/coverage.svg)](https://codeclimate.com/github/denpamusic/php-levin/coverage)
 
 
-## Examples
-### Using helpers
+## Example
 ```php
 require 'vendor/autoload.php';
 
