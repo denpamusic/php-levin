@@ -38,8 +38,6 @@ interface NodeInterface
     public function handle(Bucket $bucket, Connection $connection);
 
     /**
-     * {@inheritdoc}
-     *
      * @param string $address
      * @param mixed  $port
      * @param array  $options

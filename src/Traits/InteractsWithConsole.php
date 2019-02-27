@@ -2,7 +2,6 @@
 
 namespace Denpa\Levin\Traits;
 
-use Denpa\Levin;
 use Denpa\Levin\Console;
 
 trait InteractsWithConsole
@@ -18,7 +17,7 @@ trait InteractsWithConsole
     protected function console(string $message = '', ...$args) : Console
     {
         if (!$this->console instanceof Console) {
-            $this->console = new Console;
+            $this->console = new Console();
         }
 
         if ($message != '') {

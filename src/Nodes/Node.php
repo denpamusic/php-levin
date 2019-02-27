@@ -102,7 +102,7 @@ abstract class Node implements NodeInterface
         $vars = [
             'network_id' => hex2bin(
                 $options['network-id'] ?? '1230f171610441611731008216a1a110'
-            )
+            ),
         ];
 
         $exceptionHandler = [$this, 'handleException'];
