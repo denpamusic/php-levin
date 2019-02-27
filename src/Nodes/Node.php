@@ -10,14 +10,9 @@ use Throwable;
 abstract class Node implements NodeInterface
 {
     /**
-     * @var array Contains request buckets handler methods.
+     * @var array Contains handler methods.
      */
-    protected $requestHandlers = [];
-
-    /**
-     * @var array Contains response buckets handler methods.
-     */
-    protected $responseHandlers = [];
+    protected $handlers = [];
 
     /**
      * {@inheritdoc}
@@ -31,7 +26,7 @@ abstract class Node implements NodeInterface
         string $handler,
         string ...$commands
     ) : self {
-        $this->requestHandlers[$handler] = $commands;
+        $this->handlers['request.'.$handler] = $commands;
 
         return $this;
     }
@@ -48,7 +43,7 @@ abstract class Node implements NodeInterface
         string $handler,
         string ...$commands
     ) : self {
-        $this->responseHandlers[$handler] = $commands;
+        $this->handlers['response.'.$handler] = $commands;
 
         return $this;
     }
@@ -63,16 +58,16 @@ abstract class Node implements NodeInterface
      */
     public function handle(Bucket $bucket, Connection $connection)
     {
-        foreach (['request', 'response'] as $type) {
-            foreach ($this->{$type.'Handlers'} as $handler => $commands) {
-                $isType = [$bucket, 'is'.ucfirst($type)];
+        foreach ($this->handlers as $key => $commands) {
+            list($type, $handler) = explode('.', $key, 2);
 
-                if ($isType(...$commands)) {
-                    if ($this->$handler($bucket, $connection) === false) {
-                        // close connection if any of the handlers return false
-                        return false;
-                    }
-                }
+            $isCommand = [$bucket, 'is'.ucfirst($type)];
+
+            if (
+                $isCommand(...$commands) &&
+                !$this->$handler($bucket, $connection) === false
+            ) {
+                return false;
             }
         }
     }

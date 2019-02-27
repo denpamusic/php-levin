@@ -19,8 +19,8 @@ class NodeTest extends TestCase
 
         $vars = (array) $node;
         $this->assertEquals(
-            ['requestHandler' => ['request']],
-            $vars["\0*\0requestHandlers"]
+            ['request.requestHandler' => ['request']],
+            $vars["\0*\0handlers"]
         );
     }
 
@@ -34,8 +34,8 @@ class NodeTest extends TestCase
 
         $vars = (array) $node;
         $this->assertEquals(
-            ['responseHandler' => ['response']],
-            $vars["\0*\0responseHandlers"]
+            ['response.responseHandler' => ['response']],
+            $vars["\0*\0handlers"]
         );
     }
 
