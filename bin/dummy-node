@@ -34,7 +34,7 @@ if (!isset($argv[1])) {
 }
 
 $address = $argv[1];
-$port = $argv[2] ?? 17401;
+$port = $argv[2] ?? 18080;
 $options = getopt('v', ['network-id::']);
 
 (new \Denpa\Levin\Nodes\DummyNode())->connect($address, $port, $options);
