@@ -17,7 +17,7 @@ class NodeTest extends TestCase
         $node = $this->getMockForAbstractClass(Node::class);
         $node->registerRequestHandler('requestHandler', 'request');
 
-        $vars = (array)$node;
+        $vars = (array) $node;
         $this->assertEquals(
             ['requestHandler' => ['request']],
             $vars["\0*\0requestHandlers"]
@@ -32,7 +32,7 @@ class NodeTest extends TestCase
         $node = $this->getMockForAbstractClass(Node::class);
         $node->registerResponseHandler('responseHandler', 'response');
 
-        $vars = (array)$node;
+        $vars = (array) $node;
         $this->assertEquals(
             ['responseHandler' => ['response']],
             $vars["\0*\0responseHandlers"]

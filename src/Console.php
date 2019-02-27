@@ -2,9 +2,7 @@
 
 namespace Denpa\Levin;
 
-use Denpa\Levin\Bucket;
 use Denpa\Levin\Section\Section;
-use Denpa\Levin\CommandInterface;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
@@ -75,6 +73,7 @@ class Console
     PAYLOAD:
 %s\n\n
 EOD;
+
         return sprintf($template, ...$head);
     }
 
@@ -86,6 +85,7 @@ EOD;
     public function dumpCommand(CommandInterface $command) : string
     {
         $classname = classname(get_class($command));
+
         return sprintf("[%d] %s\n", $command->getCommandCode(), $classname);
     }
 
@@ -98,8 +98,7 @@ EOD;
     {
         $output = '';
 
-        foreach ($section as $key => $value)
-        {
+        foreach ($section as $key => $value) {
             if (!$value instanceof Bytearray && !$value instanceof Section) {
                 $output .= sprintf("\t%s : %s", $key, $this->dumpType($value));
             }
@@ -138,16 +137,16 @@ EOD;
     public function dumpBytestring(Bytestring $bytestring) : string
     {
         return sprintf(
-            "<bytestring> [%d bytes] %s",
+            '<bytestring> [%d bytes] %s',
             count($bytestring),
             $bytestring->toHex()
         );
     }
 
     /**
-     * @param string  $hex
-     * @param int     $endianness
-     * @param int     $size
+     * @param string $hex
+     * @param int    $endianness
+     * @param int    $size
      *
      * @return string
      */
@@ -155,8 +154,7 @@ EOD;
         string $hex,
         bool $reverse = false,
         int $size = 2
-    ) : string
-    {
+    ) : string {
         $hex = str_split($hex, $size);
 
         if ($reverse) {

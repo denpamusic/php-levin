@@ -163,9 +163,9 @@ class DummyNode extends Node
         $payloadData = $bucket->getPayload()['payload_data'];
 
         $this->difficulty = $payloadData['cumulative_difficulty']->toInt();
-        $this->height     = $payloadData['current_height']->toInt();
+        $this->height = $payloadData['current_height']->toInt();
         $this->topVersion = $payloadData['top_version']->toInt();
-        $this->topId      = $payloadData['top_id']->getValue();
+        $this->topId = $payloadData['top_id']->getValue();
 
         $this->console(
             "Top Id: %s, Version: %d, Height: %d, Difficulty: %d\n",
@@ -328,7 +328,7 @@ class DummyNode extends Node
             $type = '(notification)';
         }
 
-        switch($direction) {
+        switch ($direction) {
             case 'in':
                 $direction = '>>>';
                 break;
