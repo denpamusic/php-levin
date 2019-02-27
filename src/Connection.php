@@ -142,7 +142,7 @@ class Connection implements ConnectionInterface
      */
     public function writeBytes(string $bytes) : void
     {
-        socket_send($this->socket, $bytes, strlen($bytes), 0);
+        @socket_send($this->socket, $bytes, strlen($bytes), 0);
     }
 
     /**

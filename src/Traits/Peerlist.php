@@ -49,7 +49,7 @@ trait Peerlist
     protected function peerDefaults(array &$peer) : void
     {
         $peer = [
-            'ip'        => ip2long($peer['ip'] ?? '127.0.0.1'),
+            'ip'        => inet_pton($peer['ip'] ?? '127.0.0.1'),
             'port'      => $peer['port'] ?? 0,
             'type'      => $peer['type'] ?? 0,
             'id'        => $peer['id'] ?? Levin\peer_id(bin2hex(random_bytes(4))),

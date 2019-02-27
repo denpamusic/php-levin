@@ -74,8 +74,8 @@ class PeerlistTest extends TestCase
         $now = time();
 
         return [
-            [[], ['ip' => ip2long('127.0.0.1'), 'port' => 0, 'type' => 0]],
-            [['ip' => '127.0.0.2'], ['ip' => ip2long('127.0.0.2')]],
+            [[], ['ip' => inet_pton('127.0.0.1'), 'port' => 0, 'type' => 0]],
+            [['ip' => '127.0.0.2'], ['ip' => inet_pton('127.0.0.2')]],
             [['port' => 1000], ['port' => 1000]],
             [['type' => 3], ['type' => 3]],
             [['last_seen' => $now], ['last_seen' => $now]],

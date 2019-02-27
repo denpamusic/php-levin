@@ -42,118 +42,9 @@ Levin\connection($ip, $port, $vars)->connect(
 );
 ```
 
-### Using objects
-```php
-require 'vendor/autoload.php';
-
-use Denpa\Levin\Bucket;
-use Denpa\Levin\Connection;
-use Denpa\Levin\Requests\Handshake;
-
-$handshake = new Handshake(['network_id' => 'somenetwork']);
-$request = (new Bucket())->request($handshake);
-
-$connection = new Connection($ip, $port);
-$connection->write($request);
-
-while ($bucket = $connection->read()) {
-	// ...
-}
-```
-
-### Fetching peers
-```php
-require 'vendor/autoload.php';
-
-use Denpa\Levin;
-
-function peerlist(array $entries) : array
-{
-    $peers = [];
-
-	foreach ($entries as $entry) {
-    	$addr = $entry['adr']['addr'] ?? null;
-        
-        if (is_null($addr)) continue;
-
-    	// convert ip to big-endian int
-        $ip = Levin\uint32($addr['m_ip']->toBinary());
-        
-        $peer = [];
-     	$peer['ip'] = inet_ntop($ip->toBinary());
-        $peer['port'] = $addr['m_port']->toInt();
-    	$peer['last_seen'] = isset($entry['last_seen']) ?
-    		date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : null;
-        
-    	$peers[] = $peer;
-	}
-    
-    return $peers;
-}
-
-$vars = [
-    'network_id' => 'somenetwork',
-];
-
-$section = [];
-
-Levin\connection($ip, $port, $vars)->connect(
-    function ($bucket, $connection) use ($section) {
-        if ($bucket->isResponse('handshake')) {
-            $section = $bucket->getPayload();
-            
-            return false;
-        }
-    }
-);
-
-$peers = peerlist($section['local_peerlist_new'] ?? []);
-
-var_dump($peers);
-/**
- * Array(
- *     Array(
- *         'ip' => '88.99.122.111',
- *         'port' => 1000,
- *         'last_seen' => '2019-02-21 12:00:00'
- *     ),
- *     ...
- * )
- */
-```
-### Monitoring blocks
-```php
-require 'vendor/autoload.php';
-
-use Denpa\Levin;
-
-$vars = [
-    'network_id' => 'somenetwork',
-];
-
-Levin\connection($ip, $port, $vars)->connect(
-    function ($bucket, $connection) {
-        if ($bucket->isRequest('supportflags', 'timedsync', 'ping')) {
-            // respond to supportflags, timedsync and ping requests
-            // to keep the connection open
-            $connection->write($bucket->response());
-        }
-
-        if ($bucket->isRequest('newblock', 'newfluffyblock')) {
-            $section = $bucket->getPayload();
-			
-            printf("New block: %d\n", $section['current_blockchain_height']);
-            var_dump($section['b']);
-            
-            // no need to respond to notification
-        }
-    }
-);
-```
-
 ## Request Support
-| command      | link                                                                                  | request | response |
-|--------------|---------------------------------------------------------------------------------------|---------|----------|
+| command      | link                                                                                                              | request | response  |
+|--------------|-------------------------------------------------------------------------------------------------------------------|---------|-----------|
 | Handshake    | [p2p_protocol_defs.h#L177](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L177) | ✅       | ✅        |
 | TimedSync    | [p2p_protocol_defs.h#L239](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L239) | ✅       | ✅        |
 | Ping         | [p2p_protocol_defs.h#L297](https://github.com/monero-project/monero/blob/master/src/p2p/p2p_protocol_defs.h#L297) | ✅       | ✅        |
@@ -164,8 +55,8 @@ Levin\connection($ip, $port, $vars)->connect(
 
 
 ## Notification Support
-| command                | link                                                                                                         | request |
-|------------------------|--------------------------------------------------------------------------------------------------------------|---------|
+| command                | link                                                                                                                                            | request |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|---------|
 | NewBlock               | [cryptonote_protocol_defs.h#L126](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L126) | ✅       |
 | RequestGetObjects      | [cryptonote_protocol_defs.h#L163](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L163) | ❌       |
 | ResponseGetObjects     | [cryptonote_protocol_defs.h#L179](https://github.com/monero-project/monero/blob/master/src/cryptonote_protocol/cryptonote_protocol_defs.h#L179) | ❌       |

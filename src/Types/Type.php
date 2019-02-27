@@ -112,9 +112,10 @@ abstract class Type implements TypeInterface, Countable
      */
     public function or($value) : self
     {
-        $this->value |= $value instanceof self ? $value->toInt() : $value;
+        $type = clone $this;
+        $type->value |= $value instanceof self ? $value->toInt() : $value;
 
-        return $this;
+        return $type;
     }
 
     /**
@@ -124,9 +125,10 @@ abstract class Type implements TypeInterface, Countable
      */
     public function and($value) : self
     {
-        $this->value &= $value instanceof self ? $value->toInt() : $value;
+        $type = clone $this;
+        $type->value &= $value instanceof self ? $value->toInt() : $value;
 
-        return $this;
+        return $type;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\CommandFactory;
+use Denpa\Levin\Connection;
 use VirtualFileSystem\FileSystem;
 
 /**
