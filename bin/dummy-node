@@ -35,11 +35,11 @@ $argv = array_filter($argv, function ($arg) {
 $argv = array_merge($argv);
 
 if (!isset($argv[1])) {
-    exit('Usage: '.basename($argv[0]).'[-v] [--network-id=] <ip> <port>');
+    exit('Usage: '.basename($argv[0]).'[-v] [--no-ansi] [--network-id=] <ip> <port>');
 }
 
 $address = $argv[1];
 $port = $argv[2] ?? 18080;
-$options = getopt('v', ['network-id::']);
+$options = getopt('v', ['network-id::', 'no-ansi']);
 
 (new \Denpa\Levin\Nodes\DummyNode())->connect($address, $port, $options);

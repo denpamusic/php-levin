@@ -5,6 +5,7 @@ namespace Denpa\Levin;
 use ArrayAccess;
 use Denpa\Levin\Notifications\NotificationInterface;
 use Denpa\Levin\Section\Section;
+use Denpa\Levin\Traits\ConsoleColor;
 use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
@@ -13,6 +14,8 @@ use ReflectionClass;
 
 class Console
 {
+    use ConsoleColor;
+
     /**
      * @var int
      */
@@ -22,6 +25,11 @@ class Console
      * @var array Contains array of serializable types.
      */
     protected $types = [];
+
+    /**
+     * @var resource
+     */
+    protected $target = STDOUT;
 
     /**
      * @var array
@@ -52,20 +60,11 @@ class Console
      */
     public function line(string $message = '', ...$args) : self
     {
-        fwrite(STDOUT, $message == '' ? PHP_EOL : sprintf($message, ...$args));
-
-        return $this;
-    }
-
-    /**
-     * @param string $message
-     * @param mixed  $args,...
-     *
-     * @return self
-     */
-    public function error(string $message = '', ...$args) : self
-    {
-        fwrite(STDERR, $message == '' ? PHP_EOL : sprintf($message, ...$args));
+        fwrite(
+            $this->target,
+            $message == '' ?
+                PHP_EOL : $this->colorize(sprintf($message, ...$args))
+        );
 
         return $this;
     }
@@ -131,25 +130,49 @@ class Console
      */
     public function eol() : self
     {
-        $this->line();
+        return $this->line();
+    }
+
+    /**
+     * @param resource $target
+     *
+     * @return self
+     */
+    public function target($target = STDOUT) : self
+    {
+        $this->target = $target;
 
         return $this;
     }
 
     /**
-     * @param \Denpa\Levin\Bucket
+     * @param \Denpa\Levin\Bucket $bucket
      *
      * @return self
      */
     protected function dumpBucket(Bucket $bucket) : self
     {
         return $this
+            ->resetColors()
+            ->color('red')
             ->line(
                 '<%s bucket, payload: %d bytes>'.PHP_EOL,
                 $bucket->isRequest() ? 'request' : 'response',
                 $bucket->getCb()->toInt()
             )
-            ->line('[head]    =>')
+            ->resetColors()
+            ->dumpBucketHead($bucket)
+            ->dumpBucketPayload($bucket);
+    }
+
+    /**
+     * @param \Denpa\Levin\Bucket $bucket
+     *
+     * @return self
+     */
+    protected function dumpBucketHead(Bucket $bucket) : self
+    {
+        return $this->line('[head]    =>')
             ->eol()
             ->startBlock()
             ->dump([
@@ -162,7 +185,17 @@ class Console
                 'protocol_version' => $bucket->getProtocolVersion(),
             ])
             ->endBlock()
-            ->eol()
+            ->eol();
+    }
+
+    /**
+     * @param \Denpa\Levin\Bucket $bucket
+     *
+     * @return self
+     */
+    protected function dumpBucketPayload(Bucket $bucket) : self
+    {
+        return $this
             ->line('[payload] => ')
             ->startBlock()
             ->dump($bucket->getPayload())
@@ -180,12 +213,17 @@ class Console
         $type = $command instanceof NotificationInterface
             ? 'notification' : 'request';
 
-        return $this->line(
-            '(%s %d) %s',
-            $type,
-            $command->getCommandCode(),
-            classname(get_class($command))
-        );
+        return $this
+            ->resetColors()
+            ->line('(')
+            ->color('bright-yellow')
+            ->line('%s %d', $type, $command->getCommandCode())
+            ->resetColors()
+            ->line(') ')
+            ->background('white')
+            ->color('black')
+            ->line(classname(get_class($command)))
+            ->resetColors();
     }
 
     /**
@@ -200,6 +238,7 @@ class Console
         foreach ($arrayable as $key => $value) {
             $this
                 ->indent()
+                ->resetColors()
                 ->line('%s => ', str_pad("[$key]", $keyLength));
 
             if ($value instanceof ArrayAccess || is_array($value)) {
@@ -229,12 +268,16 @@ class Console
             return $this->dumpBytestring($type);
         }
 
-        return $this->line(
-            '<%s> %s (%d)',
-            $name,
-            $this->splitHex($type->toHex(), !$type->isBigEndian()),
-            $type->toInt()
-        );
+        return $this
+            ->resetColors()
+            ->color('red')
+            ->line('<%s> ', $name)
+            ->resetColors()
+            ->line($this->splitHex($type->toHex(), !$type->isBigEndian()) . ' (')
+            ->color('bright-yellow')
+            ->line($type->toInt())
+            ->resetColors()
+            ->line(')');
     }
 
     /**
@@ -244,20 +287,28 @@ class Console
      */
     protected function dumpBytestring(Bytestring $bytestring) : self
     {
-        $plaintext = preg_replace(
-            '/[^a-z0-9!"#$%&\'()*+,.\/:;<=>?@\[\] ^_`{|}~-]+/i',
-            '.',
-            $bytestring->getValue()
-        );
+        $this
+            ->resetColors()
+            ->color('red')
+            ->line('<bytestring, %d bytes> ', count($bytestring))
+            ->resetColors();
 
-        $plaintext = count($bytestring) == 0 ? '' : " ($plaintext)";
+        if (count($bytestring) > 0) {
+            $plaintext = preg_replace(
+                '/[^a-z0-9!"#$%&\'()*+,.\/:;<=>?@\[\] ^_`{|}~-]+/i',
+                '.',
+                $bytestring->getValue()
+            );
 
-        return $this->line(
-            '<bytestring, %d bytes> %s%s',
-            count($bytestring),
-            $bytestring->toHex(),
-            $plaintext
-        );
+            $this
+                ->line($bytestring->toHex() . ' (')
+                ->color('bright-yellow')
+                ->line('%s', $plaintext)
+                ->resetColors()
+                ->line(')');
+        }
+
+        return $this;
     }
 
     /**
@@ -275,11 +326,14 @@ class Console
         }
 
         return $this
+            ->resetColors()
+            ->color('red')
             ->line(
                 '<bytearray, %d entries of type %s>',
                 count($bytearray),
                 $type
             )
+            ->resetColors()
             ->eol()
             ->dumpArrayable($bytearray);
     }
@@ -293,8 +347,11 @@ class Console
     {
         return $this
             ->eol()
+            ->resetColors()
+            ->color('red')
             ->indent()
             ->line('<section, %d entries>', count($section))
+            ->resetColors()
             ->eol()
             ->dumpArrayable($section);
     }

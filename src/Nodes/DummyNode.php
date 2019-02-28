@@ -94,6 +94,10 @@ class DummyNode extends Node
     {
         $this->verbose = isset($options['v']);
 
+        if (isset($options['no-ansi'])) {
+            $this->console()->disableColors();
+        }
+
         parent::connect($address, $port, $options);
     }
 
@@ -106,6 +110,7 @@ class DummyNode extends Node
     {
         $this
             ->console()
+            ->target(STDERR)
             ->error('Exception: %s', $exception->getMessage())
             ->eol();
     }
@@ -121,10 +126,7 @@ class DummyNode extends Node
     {
         $peers = $bucket->getPayload()['local_peerlist_new'] ?? [];
 
-        $this
-            ->console('Remote peers:')
-            ->eol()
-            ->startBlock();
+        $this->console('Remote peers:')->eol()->startBlock();
 
         foreach ($peers as $entry) {
             $addr = $entry['adr']['addr'] ?? null;
@@ -138,7 +140,8 @@ class DummyNode extends Node
             $lastSeen = isset($entry['last_seen']) ?
                 date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : '';
 
-            $this->console()
+            $this
+                ->console()
                 ->indent()
                 ->line('%s  seen %s', str_pad("$ip:$port", 21), $lastSeen)
                 ->eol();
@@ -155,7 +158,8 @@ class DummyNode extends Node
             ->console()
             ->eol()
             ->indent()
-            ->line('Total: %d known peers'.PHP_EOL, count($this->peerlist))
+            ->line('Total: %d known peers', count($this->peerlist))
+            ->eol()
             ->eol()
             ->endBlock();
     }
@@ -179,7 +183,7 @@ class DummyNode extends Node
         $this
             ->console()
             ->eol()
-            ->line(
+            ->info(
                 'Top Id: %s, Version: %d, Height: %d, Difficulty: %d',
                 bin2hex($this->topId),
                 $this->topVersion,
@@ -283,7 +287,8 @@ class DummyNode extends Node
         $txs = $bucket->getPayload()['txs'];
 
         $this
-            ->console('Received %d new transactions:', count($txs))
+            ->console()
+            ->info('Received %d new transactions:', count($txs))
             ->eol()
             ->startBlock();
 
@@ -321,7 +326,11 @@ class DummyNode extends Node
      */
     protected function recvPingHandler($bucket)
     {
-        $this->console('PING: %s', $bucket->getPayload()['status'])->eol();
+        $this
+            ->console()
+            ->eol()
+            ->info('PING: ' . $bucket->getPayload()['status'])
+            ->eol();
     }
 
     /**
@@ -362,13 +371,17 @@ class DummyNode extends Node
 
         $this
             ->console()
+            ->resetColors()
             ->eol()
-            ->line(
-                '%s %s %s',
-                $direction,
-                str_pad($this->getBucketType($bucket), 15),
-                get_class($bucket->getCommand())
-            )
+            ->line("$direction (");
+
+        $this
+            ->printBucketType($bucket)
+            ->line(')  ')
+            ->background('white')
+            ->color('black')
+            ->line(get_class($bucket->getCommand()))
+            ->resetColors()
             ->eol();
 
         if ($this->verbose) {
@@ -379,14 +392,23 @@ class DummyNode extends Node
     /**
      * @param \Denpa\Levin\Bucket $bucket
      *
-     * @return string
+     * @return \Denpa\Levin\Console
      */
-    protected function getBucketType(Bucket $bucket) : string
+    protected function printBucketType(Bucket $bucket)
     {
+        $this->console()
+            ->resetColors()
+            ->color('bright-yellow');
+
         if ($bucket->isRequest() && !$bucket->getReturnData()->getValue()) {
-            return '(notification)';
+            return $this->console()
+                ->line('notification')
+                ->resetColors();
         }
 
-        return $bucket->isResponse() ? '(response)' : '(request)';
+        return $this
+            ->console()
+            ->line($bucket->isResponse() ? 'response' : 'request')
+            ->resetColors();
     }
 }
