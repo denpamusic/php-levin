@@ -5,7 +5,6 @@ namespace Denpa\Levin\Tests;
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
-use Denpa\Levin\Console;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
