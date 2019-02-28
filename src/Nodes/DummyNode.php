@@ -244,7 +244,7 @@ class DummyNode extends Node
         $this->height = $payload['current_blockchain_height']->toInt();
 
         $this->console("New block: #%d\n", $this->height);
-        $this->console("Block hex:\n%s\n", bin2hex($payload['b']));
+        $this->console("Block hex:\n%s\n", bin2hex($payload['b']['block']));
     }
 
     /**

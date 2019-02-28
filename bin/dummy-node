@@ -6,8 +6,8 @@ if (!defined('STDIN')) {
 }
 
 $autoloadFiles = [
-    __DIR__.'/../../vendor/autoload.php',
     __DIR__.'/../vendor/autoload.php',
+    __DIR__.'/../../../../vendor/autoload.php',
 ];
 
 $autoload = null;
@@ -17,6 +17,11 @@ foreach ($autoloadFiles as $file) {
         $autoload = $file;
         break;
     }
+}
+
+if (! $autoload) {
+    echo "Autoload file not found; try 'composer dump-autoload' first." . PHP_EOL;
+    exit(1);
 }
 
 require $autoload;
