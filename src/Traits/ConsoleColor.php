@@ -189,7 +189,7 @@ trait ConsoleColor
             $output .= "\033[{$this->background}m";
         }
 
-        $output .= $message . "\033[{$this->reset}m";
+        $output .= $message."\033[{$this->reset}m";
 
         return $output;
     }
