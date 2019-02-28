@@ -273,7 +273,7 @@ class Console
             ->color('red')
             ->line('<%s> ', $name)
             ->resetColors()
-            ->line($this->splitHex($type->toHex(), !$type->isBigEndian()) . ' (')
+            ->line($this->splitHex($type->toHex(), !$type->isBigEndian()).' (')
             ->color('bright-yellow')
             ->line($type->toInt())
             ->resetColors()
@@ -301,7 +301,7 @@ class Console
             );
 
             $this
-                ->line($bytestring->toHex() . ' (')
+                ->line($bytestring->toHex().' (')
                 ->color('bright-yellow')
                 ->line('%s', $plaintext)
                 ->resetColors()

@@ -329,7 +329,7 @@ class DummyNode extends Node
         $this
             ->console()
             ->eol()
-            ->info('PING: ' . $bucket->getPayload()['status'])
+            ->info('PING: '.$bucket->getPayload()['status'])
             ->eol();
     }
 
