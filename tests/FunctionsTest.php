@@ -5,6 +5,7 @@ namespace Denpa\Levin\Tests;
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Console;
 use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Boolean;
@@ -295,6 +296,15 @@ class FunctionsTest extends TestCase
     public function testClassname() : void
     {
         $this->assertEquals('Bucket', Levin\classname(Bucket::class));
+    }
+
+    /**
+     * @return void
+     */
+    public function testDump() : void
+    {
+        $this->expectOutputRegex('/int\(1\)/');
+        Levin\dump(1);
     }
 
     /**

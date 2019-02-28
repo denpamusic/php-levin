@@ -104,7 +104,10 @@ class DummyNode extends Node
      */
     public function handleException(Throwable $exception) : void
     {
-        $this->console()->error("Exception: %s\n", $exception->getMessage());
+        $this
+            ->console()
+            ->error('Exception: %s', $exception->getMessage())
+            ->eol();
     }
 
     /**
@@ -118,7 +121,10 @@ class DummyNode extends Node
     {
         $peers = $bucket->getPayload()['local_peerlist_new'] ?? [];
 
-        $this->console("Remote peers:\n");
+        $this
+            ->console('Remote peers:')
+            ->eol()
+            ->startBlock();
 
         foreach ($peers as $entry) {
             $addr = $entry['adr']['addr'] ?? null;
@@ -132,11 +138,10 @@ class DummyNode extends Node
             $lastSeen = isset($entry['last_seen']) ?
                 date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : '';
 
-            $this->console(
-                "\t%s\tseen %s\n",
-                str_pad("$ip:$port", 21),
-                $lastSeen
-            );
+            $this->console()
+                ->indent()
+                ->line('%s  seen %s', str_pad("$ip:$port", 21), $lastSeen)
+                ->eol();
 
             // add peer to peerlist
             $this->peerlist[] = [
@@ -146,7 +151,13 @@ class DummyNode extends Node
             ];
         }
 
-        $this->console("\n\tTotal: %d known peers\n\n", count($this->peerlist));
+        $this
+            ->console()
+            ->eol()
+            ->indent()
+            ->line('Total: %d known peers'.PHP_EOL, count($this->peerlist))
+            ->eol()
+            ->endBlock();
     }
 
     /**
@@ -165,13 +176,17 @@ class DummyNode extends Node
         $this->topVersion = $payloadData['top_version']->toInt();
         $this->topId = $payloadData['top_id']->getValue();
 
-        $this->console(
-            "Top Id: %s, Version: %d, Height: %d, Difficulty: %d\n",
-            bin2hex($this->topId),
-            $this->topVersion,
-            $this->height,
-            $this->difficulty
-        );
+        $this
+            ->console()
+            ->eol()
+            ->line(
+                'Top Id: %s, Version: %d, Height: %d, Difficulty: %d',
+                bin2hex($this->topId),
+                $this->topVersion,
+                $this->height,
+                $this->difficulty
+            )
+            ->eol();
     }
 
     /**
@@ -243,8 +258,17 @@ class DummyNode extends Node
 
         $this->height = $payload['current_blockchain_height']->toInt();
 
-        $this->console("New block: #%d\n", $this->height);
-        $this->console("Block hex:\n%s\n", bin2hex($payload['b']['block']));
+        $this
+            ->console()
+            ->line('New block: #%d', $this->height)
+            ->eol()
+            ->line('Block hex:')
+            ->eol()
+            ->startBlock()
+            ->indent()
+            ->line(bin2hex($payload['b']['block']))
+            ->eol()
+            ->endBlock();
     }
 
     /**
@@ -258,11 +282,21 @@ class DummyNode extends Node
     {
         $txs = $bucket->getPayload()['txs'];
 
-        $this->console("Received %d new transactions:\n", count($txs));
+        $this
+            ->console('Received %d new transactions:', count($txs))
+            ->eol()
+            ->startBlock();
 
         foreach ($txs as $tx) {
-            $this->console("%s\n\n", $tx->toHex());
+            $this
+                ->console()
+                ->indent()
+                ->line($tx->toHex())
+                ->eol()
+                ->eol();
         }
+
+        $this->console()->endBlock();
     }
 
     /**
@@ -287,7 +321,7 @@ class DummyNode extends Node
      */
     protected function recvPingHandler($bucket)
     {
-        $this->console("PING: %s\n", $bucket->getPayload()['status']);
+        $this->console('PING: %s', $bucket->getPayload()['status'])->eol();
     }
 
     /**
@@ -315,12 +349,6 @@ class DummyNode extends Node
      */
     protected function debug(Bucket $bucket, string $direction = '') : void
     {
-        $type = $bucket->isRequest() ? '(request)' : '(response)';
-
-        if ($bucket->isRequest() && !$bucket->getReturnData()->getValue()) {
-            $type = '(notification)';
-        }
-
         switch ($direction) {
             case 'in':
                 $direction = '>>>';
@@ -332,15 +360,33 @@ class DummyNode extends Node
                 $direction = '   ';
         }
 
-        $this->console(
-            "\n%s %s %s\n",
-            $direction,
-            str_pad($type, 15),
-            get_class($bucket->getCommand())
-        );
+        $this
+            ->console()
+            ->eol()
+            ->line(
+                '%s %s %s',
+                $direction,
+                str_pad($this->getBucketType($bucket), 15),
+                get_class($bucket->getCommand())
+            )
+            ->eol();
 
         if ($this->verbose) {
             $this->console()->dump($bucket);
         }
+    }
+
+    /**
+     * @param \Denpa\Levin\Bucket $bucket
+     *
+     * @return string
+     */
+    protected function getBucketType(Bucket $bucket) : string
+    {
+        if ($bucket->isRequest() && !$bucket->getReturnData()->getValue()) {
+            return '(notification)';
+        }
+
+        return $bucket->isResponse() ? '(response)' : '(request)';
     }
 }

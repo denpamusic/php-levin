@@ -16,7 +16,7 @@ class Console
     /**
      * @var int
      */
-    protected $level = 0;
+    public $level = 0;
 
     /**
      * @var array Contains array of serializable types.
@@ -48,93 +48,139 @@ class Console
      * @param string $message
      * @param mixed  $args,...
      *
-     * @return void
+     * @return self
      */
-    public function line(string $message = '', ...$args) : void
+    public function line(string $message = '', ...$args) : self
     {
         fwrite(STDOUT, $message == '' ? PHP_EOL : sprintf($message, ...$args));
+
+        return $this;
     }
 
     /**
      * @param string $message
      * @param mixed  $args,...
      *
-     * @return void
+     * @return self
      */
-    public function error(string $message = '', ...$args) : void
+    public function error(string $message = '', ...$args) : self
     {
         fwrite(STDERR, $message == '' ? PHP_EOL : sprintf($message, ...$args));
+
+        return $this;
     }
 
     /**
      * @param mixed $object
      *
-     * @return void
+     * @return self
      */
-    public function dump($object) : void
+    public function dump($object) : self
     {
         if (is_array($object)) {
-            $this->dumpArrayable($object);
-
-            return;
+            return $this->dumpArrayable($object);
         }
 
         foreach ($this->dumpers as $class => $dumper) {
             if ($object instanceof $class) {
-                $this->$dumper($object);
-
-                return;
+                return $this->$dumper($object);
             }
         }
 
         var_dump($object);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function startBlock() : self
+    {
+        $this->level++;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function endBlock() : self
+    {
+        $this->level--;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function indent() : self
+    {
+        if ($this->level > 0) {
+            $this->line(str_repeat('  ', $this->level));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Alias for inserting end-of-line.
+     *
+     * @return self
+     */
+    public function eol() : self
+    {
+        $this->line();
+
+        return $this;
     }
 
     /**
      * @param \Denpa\Levin\Bucket
      *
-     * @return void
+     * @return self
      */
-    public function dumpBucket(Bucket $bucket) : void
+    protected function dumpBucket(Bucket $bucket) : self
     {
-        $this->line(
-            '<%s bucket, payload: %d bytes>'.PHP_EOL,
-            $bucket->isRequest() ? 'request' : 'response',
-            $bucket->getCb()->toInt()
-        );
-
-        $this->line('[head]    =>'.PHP_EOL);
-        $this->startBlock();
-        $this->dump([
-            'signature'        => $bucket->getSignature(),
-            'cb'               => $bucket->getCb(),
-            'return_data'      => $bucket->getReturnData(),
-            'command'          => $bucket->getCommand(),
-            'return_code'      => $bucket->getReturnCode(),
-            'flags'            => $bucket->getFlags(),
-            'protocol_version' => $bucket->getProtocolVersion(),
-        ]);
-        $this->endBlock();
-        $this->line();
-
-        $this->line('[payload] => ');
-        $this->startBlock();
-        $this->dump($bucket->getPayload());
-        $this->endBlock();
-        $this->line();
+        return $this
+            ->line(
+                '<%s bucket, payload: %d bytes>'.PHP_EOL,
+                $bucket->isRequest() ? 'request' : 'response',
+                $bucket->getCb()->toInt()
+            )
+            ->line('[head]    =>')
+            ->eol()
+            ->startBlock()
+            ->dump([
+                'signature'        => $bucket->getSignature(),
+                'cb'               => $bucket->getCb(),
+                'return_data'      => $bucket->getReturnData(),
+                'command'          => $bucket->getCommand(),
+                'return_code'      => $bucket->getReturnCode(),
+                'flags'            => $bucket->getFlags(),
+                'protocol_version' => $bucket->getProtocolVersion(),
+            ])
+            ->endBlock()
+            ->eol()
+            ->line('[payload] => ')
+            ->startBlock()
+            ->dump($bucket->getPayload())
+            ->endBlock()
+            ->eol();
     }
 
     /**
      * @param Denpa\Levin\CommandInterface $command
      *
-     * @return void
+     * @return self
      */
-    public function dumpCommand(CommandInterface $command) : void
+    protected function dumpCommand(CommandInterface $command) : self
     {
         $type = $command instanceof NotificationInterface
             ? 'notification' : 'request';
 
-        $this->line(
+        return $this->line(
             '(%s %d) %s',
             $type,
             $command->getCommandCode(),
@@ -145,44 +191,45 @@ class Console
     /**
      * @param mixed $arrayable
      *
-     * @return void
+     * @return self
      */
-    public function dumpArrayable($arrayable) : void
+    protected function dumpArrayable($arrayable) : self
     {
         $keyLength = $this->normalizeKeyLength($arrayable);
 
         foreach ($arrayable as $key => $value) {
-            $this->indent();
-            $this->line('%s => ', str_pad("[$key]", $keyLength));
+            $this
+                ->indent()
+                ->line('%s => ', str_pad("[$key]", $keyLength));
 
             if ($value instanceof ArrayAccess || is_array($value)) {
-                $this->startBlock();
-                $this->dump($value);
-                $this->endBlock();
+                $this
+                    ->startBlock()
+                    ->dump($value)
+                    ->endBlock();
                 continue;
             }
 
-            $this->dump($value);
-            $this->line();
+            $this->dump($value)->eol();
         }
+
+        return $this;
     }
 
     /**
      * @param \Denpa\Levin\Types\TypeInterface $type
      *
-     * @return void
+     * @return self
      */
-    public function dumpType(TypeInterface $type) : void
+    protected function dumpType(TypeInterface $type) : self
     {
         $name = strtolower(classname(get_class($type)));
 
         if ($type instanceof Bytestring) {
-            $this->dumpBytestring($type);
-
-            return;
+            return $this->dumpBytestring($type);
         }
 
-        $this->line(
+        return $this->line(
             '<%s> %s (%d)',
             $name,
             $this->splitHex($type->toHex(), !$type->isBigEndian()),
@@ -193,9 +240,9 @@ class Console
     /**
      * @param \Denpa\Levin\Types\Bytestring $bytestring
      *
-     * @return void
+     * @return self
      */
-    public function dumpBytestring(Bytestring $bytestring) : void
+    protected function dumpBytestring(Bytestring $bytestring) : self
     {
         $plaintext = preg_replace(
             '/[^a-z0-9!"#$%&\'()*+,.\/:;<=>?@\[\] ^_`{|}~-]+/i',
@@ -205,7 +252,7 @@ class Console
 
         $plaintext = count($bytestring) == 0 ? '' : " ($plaintext)";
 
-        $this->line(
+        return $this->line(
             '<bytestring, %d bytes> %s%s',
             count($bytestring),
             $bytestring->toHex(),
@@ -216,66 +263,40 @@ class Console
     /**
      * @param Denpa\Levin\Types\Bytearray $bytearray
      *
-     * @return void
+     * @return self
      */
-    public function dumpBytearray(Bytearray $bytearray) : void
+    protected function dumpBytearray(Bytearray $bytearray) : self
     {
         $type = $bytearray->getType()->toInt();
         $type = $this->types[$type] ?? $type;
 
         if (count($bytearray) > 0) {
-            $this->line();
-            $this->indent();
+            $this->eol()->indent();
         }
 
-        $this->line(
-            '<bytearray, %d entries of type %s>',
-            count($bytearray),
-            $type
-        );
-        $this->line();
-
-        $this->dumpArrayable($bytearray);
+        return $this
+            ->line(
+                '<bytearray, %d entries of type %s>',
+                count($bytearray),
+                $type
+            )
+            ->eol()
+            ->dumpArrayable($bytearray);
     }
 
     /**
      * @param \Denpa\Levin\Section\Section $section
      *
-     * @return void
+     * @return self
      */
-    public function dumpSection(Section $section) : void
+    protected function dumpSection(Section $section) : self
     {
-        $this->line();
-        $this->indent();
-        $this->line('<section, %d entries>', count($section));
-        $this->line();
-        $this->dumpArrayable($section);
-    }
-
-    /**
-     * @return int
-     */
-    public function startBlock() : int
-    {
-        return $this->level++;
-    }
-
-    /**
-     * @return int
-     */
-    public function endBlock() : int
-    {
-        return $this->level--;
-    }
-
-    /**
-     * @return void
-     */
-    public function indent() : void
-    {
-        if ($this->level > 0) {
-            $this->line(str_repeat('  ', $this->level));
-        }
+        return $this
+            ->eol()
+            ->indent()
+            ->line('<section, %d entries>', count($section))
+            ->eol()
+            ->dumpArrayable($section);
     }
 
     /**
@@ -315,7 +336,7 @@ class Console
 
     /**
      * @param string $hex
-     * @param int    $endianness
+     * @param bool   $reverse
      * @param int    $size
      *
      * @return void
