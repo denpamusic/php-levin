@@ -3,12 +3,12 @@
 namespace Denpa\Levin;
 
 use ArrayAccess;
+use Denpa\Levin\Notifications\NotificationInterface;
 use Denpa\Levin\Section\Section;
+use Denpa\Levin\Types\BoostSerializable;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\TypeInterface;
-use Denpa\Levin\Types\BoostSerializable;
-use Denpa\Levin\Notifications\NotificationInterface;
 use ReflectionClass;
 
 class Console
@@ -75,12 +75,14 @@ class Console
     {
         if (is_array($object)) {
             $this->dumpArrayable($object);
+
             return;
         }
 
         foreach ($this->dumpers as $class => $dumper) {
             if ($object instanceof $class) {
                 $this->$dumper($object);
+
                 return;
             }
         }
@@ -133,7 +135,7 @@ class Console
             ? 'notification' : 'request';
 
         $this->line(
-            "(%s %d) %s",
+            '(%s %d) %s',
             $type,
             $command->getCommandCode(),
             classname(get_class($command))
@@ -151,7 +153,7 @@ class Console
 
         foreach ($arrayable as $key => $value) {
             $this->indent();
-            $this->line("%s => ", str_pad("[$key]", $keyLength));
+            $this->line('%s => ', str_pad("[$key]", $keyLength));
 
             if ($value instanceof ArrayAccess || is_array($value)) {
                 $this->startBlock();
@@ -176,11 +178,12 @@ class Console
 
         if ($type instanceof Bytestring) {
             $this->dumpBytestring($type);
+
             return;
         }
 
         $this->line(
-            "<%s> %s (%d)",
+            '<%s> %s (%d)',
             $name,
             $this->splitHex($type->toHex(), !$type->isBigEndian()),
             $type->toInt()
@@ -226,7 +229,7 @@ class Console
         }
 
         $this->line(
-            "<bytearray, %d entries of type %s>",
+            '<bytearray, %d entries of type %s>',
             count($bytearray),
             $type
         );
@@ -244,7 +247,7 @@ class Console
     {
         $this->line();
         $this->indent();
-        $this->line("<section, %d entries>", count($section));
+        $this->line('<section, %d entries>', count($section));
         $this->line();
         $this->dumpArrayable($section);
     }
