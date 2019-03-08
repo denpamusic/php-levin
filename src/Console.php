@@ -273,7 +273,7 @@ class Console
             ->color('red')
             ->line('<%s> ', $name)
             ->resetColors()
-            ->line($this->splitHex($type->toHex(), !$type->isBigEndian()).' (')
+            ->line($this->splitHex($type).' (')
             ->color('bright-yellow')
             ->line($type->toInt())
             ->resetColors()
@@ -329,12 +329,11 @@ class Console
             ->resetColors()
             ->color('red')
             ->line(
-                '<bytearray, %d entries of type %s>',
+                '<bytearray, %d entries of type %s>'.PHP_EOL,
                 count($bytearray),
                 $type
             )
             ->resetColors()
-            ->eol()
             ->dumpArrayable($bytearray);
     }
 
@@ -350,9 +349,8 @@ class Console
             ->resetColors()
             ->color('red')
             ->indent()
-            ->line('<section, %d entries>', count($section))
+            ->line('<section, %d entries>'.PHP_EOL, count($section))
             ->resetColors()
-            ->eol()
             ->dumpArrayable($section);
     }
 
@@ -381,34 +379,21 @@ class Console
      */
     protected function normalizeKeyLength($arrayable) : int
     {
-        $max = 0;
+        $keys = method_exists($arrayable, 'keys') ?
+            $arrayable->keys() : array_keys($arrayable);
 
-        foreach ($arrayable as $key => $value) {
-            $length = strlen("[$key]");
-            $max = $length > $max ? $length : $max;
-        }
-
-        return $max;
+        return count($keys) == 0 ? 0 : max(array_map('strlen', $keys));
     }
 
     /**
-     * @param string $hex
-     * @param bool   $reverse
-     * @param int    $size
+     * @param \Denpa\Levin\Types\TypeInterface $hex
+     * @param int                              $length
      *
-     * @return void
+     * @return string
      */
-    protected function splitHex(
-        string $hex,
-        bool $reverse = false,
-        int $size = 2
-    ) : string {
-        $hex = str_split($hex, $size);
+    protected function splitHex(TypeInterface $type, int $length = 2) : string {
+        $arr = str_split($type->toHex(), $length);
 
-        if ($reverse) {
-            $hex = array_reverse($hex);
-        }
-
-        return implode(' ', $hex);
+        return implode(' ', ($type->isBigEndian() ? $arr : array_reverse($arr)));
     }
 }

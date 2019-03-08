@@ -83,7 +83,7 @@ trait ConsoleColor
      */
     public function background(string $background) : self
     {
-        list($color, $modifier) = $this->parseColorString($background);
+        $color = $this->parseColorString($background)[0];
 
         $this->background = $this->backgroundBase + $this->colors[$color];
 

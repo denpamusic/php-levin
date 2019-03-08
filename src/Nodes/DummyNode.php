@@ -4,6 +4,7 @@ namespace Denpa\Levin\Nodes;
 
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
+use Denpa\Levin\Console;
 use Denpa\Levin\Connection;
 use Denpa\Levin\Traits\InteractsWithConsole;
 use Throwable;
@@ -94,7 +95,7 @@ class DummyNode extends Node
     {
         $this->verbose = isset($options['v']);
 
-        if (isset($options['no-ansi'])) {
+        if (!isset($options['colors'])) {
             $this->console()->disableColors();
         }
 
@@ -126,8 +127,6 @@ class DummyNode extends Node
     {
         $peers = $bucket->getPayload()['local_peerlist_new'] ?? [];
 
-        $this->console('Remote peers:')->eol()->startBlock();
-
         foreach ($peers as $entry) {
             $addr = $entry['adr']['addr'] ?? null;
 
@@ -140,12 +139,6 @@ class DummyNode extends Node
             $lastSeen = isset($entry['last_seen']) ?
                 date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : '';
 
-            $this
-                ->console()
-                ->indent()
-                ->line('%s  seen %s', str_pad("$ip:$port", 21), $lastSeen)
-                ->eol();
-
             // add peer to peerlist
             $this->peerlist[] = [
                 'ip'        => $ip,
@@ -154,14 +147,7 @@ class DummyNode extends Node
             ];
         }
 
-        $this
-            ->console()
-            ->eol()
-            ->indent()
-            ->line('Total: %d known peers', count($this->peerlist))
-            ->eol()
-            ->eol()
-            ->endBlock();
+        $this->printPeerlist();
     }
 
     /**
@@ -182,15 +168,15 @@ class DummyNode extends Node
 
         $this
             ->console()
-            ->eol()
             ->info(
-                'Top Id: %s, Version: %d, Height: %d, Difficulty: %d',
+                '%sTop Id: %s, Version: %d, Height: %d, Difficulty: %d%s',
+                PHP_EOL,
                 bin2hex($this->topId),
                 $this->topVersion,
                 $this->height,
-                $this->difficulty
-            )
-            ->eol();
+                $this->difficulty,
+                PHP_EOL
+            );
     }
 
     /**
@@ -264,14 +250,11 @@ class DummyNode extends Node
 
         $this
             ->console()
-            ->line('New block: #%d', $this->height)
-            ->eol()
+            ->line('New block: #%d'.PHP_EOL, $this->height)
             ->line('Block hex:')
-            ->eol()
             ->startBlock()
             ->indent()
-            ->line(bin2hex($payload['b']['block']))
-            ->eol()
+            ->line(bin2hex($payload['b']['block']).PHP_EOL)
             ->endBlock();
     }
 
@@ -288,17 +271,11 @@ class DummyNode extends Node
 
         $this
             ->console()
-            ->info('Received %d new transactions:', count($txs))
-            ->eol()
+            ->info('Received %d new transactions:'.PHP_EOL, count($txs))
             ->startBlock();
 
         foreach ($txs as $tx) {
-            $this
-                ->console()
-                ->indent()
-                ->line($tx->toHex())
-                ->eol()
-                ->eol();
+            $this->console()->indent()->line($tx->toHex())->eol()->eol();
         }
 
         $this->console()->endBlock();
@@ -328,9 +305,7 @@ class DummyNode extends Node
     {
         $this
             ->console()
-            ->eol()
-            ->info('PING: '.$bucket->getPayload()['status'])
-            ->eol();
+            ->info(PHP_EOL.'PING: '.$bucket->getPayload()['status'].PHP_EOL);
     }
 
     /**
@@ -358,6 +333,70 @@ class DummyNode extends Node
      */
     protected function debug(Bucket $bucket, string $direction = '') : void
     {
+        $this
+            ->printDirectionArrows($direction)
+            ->color('bright-yellow')
+            ->line($this->getBucketType($bucket))
+            ->resetColors()
+            ->line(')  ')
+            ->background('white')
+            ->color('black')
+            ->line(get_class($bucket->getCommand()).PHP_EOL)
+            ->resetColors();
+
+        if ($this->verbose) {
+            $this->console()->dump($bucket);
+        }
+    }
+
+    /**
+     * @param \Denpa\Levin\Bucket $bucket
+     *
+     * @return string
+     */
+    protected function getBucketType(Bucket $bucket) : string
+    {
+        if ($bucket->isRequest() && !$bucket->getReturnData()->getValue()) {
+            return 'notification';
+        }
+
+        return $bucket->isResponse() ? 'response' : 'request';
+    }
+
+    /**
+     * @return \Denpa\Levin\Console
+     */
+    protected function printPeerlist() : Console
+    {
+        $this->console()->info('Remote peers:')->eol()->startBlock();
+
+        foreach ($this->peerlist as $peer) {
+            $ipport = $peer['ip'].':'.$peer['port'];
+
+            $this
+                ->console()
+                ->indent()
+                ->line(
+                    '%s  seen %s'.PHP_EOL,
+                    str_pad($ipport, 21),
+                    $peer['last_seen']
+                );
+        }
+
+        return $this->console()
+            ->indent()
+            ->line(PHP_EOL.'Total: %d known peers'.PHP_EOL, count($this->peerlist))
+            ->endBlock()
+            ->eol();
+    }
+
+    /**
+     * @param string $direction
+     *
+     * @return \Denpa\Levin\Console
+     */
+    protected function printDirectionArrows(string $direction = '') : Console
+    {
         switch ($direction) {
             case 'in':
                 $direction = '>>>';
@@ -369,46 +408,9 @@ class DummyNode extends Node
                 $direction = '   ';
         }
 
-        $this
-            ->console()
-            ->resetColors()
-            ->eol()
-            ->line("$direction (");
-
-        $this
-            ->printBucketType($bucket)
-            ->line(')  ')
-            ->background('white')
-            ->color('black')
-            ->line(get_class($bucket->getCommand()))
-            ->resetColors()
-            ->eol();
-
-        if ($this->verbose) {
-            $this->console()->dump($bucket);
-        }
-    }
-
-    /**
-     * @param \Denpa\Levin\Bucket $bucket
-     *
-     * @return \Denpa\Levin\Console
-     */
-    protected function printBucketType(Bucket $bucket)
-    {
-        $this->console()
-            ->resetColors()
-            ->color('bright-yellow');
-
-        if ($bucket->isRequest() && !$bucket->getReturnData()->getValue()) {
-            return $this->console()
-                ->line('notification')
-                ->resetColors();
-        }
-
         return $this
             ->console()
-            ->line($bucket->isResponse() ? 'response' : 'request')
-            ->resetColors();
+            ->resetColors()
+            ->line(PHP_EOL."$direction (");
     }
 }

@@ -11,7 +11,7 @@ This node can be run by typing:
 | param        | *        | description                                                     |
 |--------------|----------|-----------------------------------------------------------------|
 | -v           | optional | Be verbose. Dumps every bucket to the standard output.          |
-| --no-ansi    | optional | Disables ANSI colors in console.                                |
+| --colors     | optional | Enables ANSI colors.                                            |
 | --network-id | optional | Network id encoded as hex string. Defaults to monero's mainnet. |
 | ip           | required | IP address to connect to.                                       |
 | port         | optional | Port to connect to. Defaults to 18080.                          |

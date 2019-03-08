@@ -56,6 +56,14 @@ trait Arrayable
     }
 
     /**
+     * @return array
+     */
+    public function keys() : array
+    {
+        return array_keys($this->entries);
+    }
+
+    /**
      * @return \ArrayIterator
      */
     public function getIterator() : ArrayIterator
