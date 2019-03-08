@@ -4,8 +4,8 @@ namespace Denpa\Levin\Nodes;
 
 use Denpa\Levin;
 use Denpa\Levin\Bucket;
-use Denpa\Levin\Console;
 use Denpa\Levin\Connection;
+use Denpa\Levin\Console;
 use Denpa\Levin\Traits\InteractsWithConsole;
 use Throwable;
 

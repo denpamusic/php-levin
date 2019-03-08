@@ -391,7 +391,8 @@ class Console
      *
      * @return string
      */
-    protected function splitHex(TypeInterface $type, int $length = 2) : string {
+    protected function splitHex(TypeInterface $type, int $length = 2) : string
+    {
         $arr = str_split($type->toHex(), $length);
 
         return implode(' ', ($type->isBigEndian() ? $arr : array_reverse($arr)));
