@@ -50,7 +50,7 @@ class DummyNode extends Node
     protected $verbose = false;
 
     /**
-     * Registers handlers for commands.
+     * Registers handlers for buckets.
      *
      * @return void
      */
@@ -70,6 +70,8 @@ class DummyNode extends Node
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param \Denpa\Levin\Bucket     $bucket
      * @param \Denpa\Levin\Connection $connection
      *
@@ -77,7 +79,7 @@ class DummyNode extends Node
      */
     public function handle(Bucket $bucket, Connection $connection)
     {
-        $this->debug($bucket, 'in');
+        $this->printBucket($bucket, 'in');
 
         return parent::handle($bucket, $connection);
     }
@@ -103,6 +105,8 @@ class DummyNode extends Node
     }
 
     /**
+     * Handles exception by outputing it to stderr.
+     *
      * @param \Throwable $exception
      *
      * @return void
@@ -110,10 +114,8 @@ class DummyNode extends Node
     public function handleException(Throwable $exception) : void
     {
         $this
-            ->console()
-            ->target(STDERR)
-            ->error('Exception: %s', $exception->getMessage())
-            ->eol();
+            ->console()->target(STDERR)
+            ->error('Exception: %s'.PHP_EOL, $exception->getMessage());
     }
 
     /**
@@ -134,16 +136,12 @@ class DummyNode extends Node
                 continue;
             }
 
-            $ip = inet_ntop($addr['m_ip']->toBinary());
-            $port = $addr['m_port']->toInt();
-            $lastSeen = isset($entry['last_seen']) ?
-                date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : '';
-
             // add peer to peerlist
             $this->peerlist[] = [
-                'ip'        => $ip,
-                'port'      => $port,
-                'last_seen' => $lastSeen,
+                'ip'        => inet_ntop($addr['m_ip']->toBinary()),
+                'port'      => $addr['m_port']->toInt(),
+                'last_seen' => isset($entry['last_seen']) ?
+                    date('Y-m-d H:i:s', $entry['last_seen']->toInt()) : '',
             ];
         }
 
@@ -250,11 +248,9 @@ class DummyNode extends Node
 
         $this
             ->console()
-            ->line('New block: #%d'.PHP_EOL, $this->height)
-            ->line('Block hex:')
+            ->line('New block: #%d'.PHP_EOL, $this->height)->line('Block hex:')
             ->startBlock()
-            ->indent()
-            ->line(bin2hex($payload['b']['block']).PHP_EOL)
+            ->indent()->line(bin2hex($payload['b']['block']).PHP_EOL)
             ->endBlock();
     }
 
@@ -267,7 +263,7 @@ class DummyNode extends Node
      */
     protected function newTransactionsHandler($bucket) : void
     {
-        $txs = $bucket->getPayload()['txs'];
+        $txs = $bucket->getPayload()['txs'] ?? [];
 
         $this
             ->console()
@@ -275,7 +271,7 @@ class DummyNode extends Node
             ->startBlock();
 
         foreach ($txs as $tx) {
-            $this->console()->indent()->line($tx->toHex())->eol()->eol();
+            $this->console()->indent()->line($tx->toHex().PHP_EOL.PHP_EOL);
         }
 
         $this->console()->endBlock();
@@ -303,10 +299,16 @@ class DummyNode extends Node
      */
     protected function recvPingHandler($bucket)
     {
+        $status = $bucket->getPayload()['status'] ?? 'FAIL';
+
         $this
             ->console()
-            ->info(PHP_EOL.'PING: '.$bucket->getPayload()['status'].PHP_EOL);
+            ->info(PHP_EOL.'PING: %s'.PHP_EOL, $status);
     }
+
+    /**
+     * End of bucket handler methods.
+     */
 
     /**
      * Write bucket to the connection and output.
@@ -318,7 +320,7 @@ class DummyNode extends Node
      */
     protected function write(Bucket $bucket, Connection $connection) : void
     {
-        $this->debug($bucket, 'out');
+        $this->printBucket($bucket, 'out');
 
         $connection->write($bucket);
     }
@@ -331,16 +333,14 @@ class DummyNode extends Node
      *
      * @return void
      */
-    protected function debug(Bucket $bucket, string $direction = '') : void
+    protected function printBucket(Bucket $bucket, string $direction = '') : void
     {
+        $this->printDirectionArrows($direction);
+        $this->printBucketType($bucket);
+
         $this
-            ->printDirectionArrows($direction)
-            ->color('bright-yellow')
-            ->line($this->getBucketType($bucket))
-            ->resetColors()
-            ->line(')  ')
-            ->background('white')
-            ->color('black')
+            ->console()
+            ->background('white')->color('black')
             ->line(get_class($bucket->getCommand()).PHP_EOL)
             ->resetColors();
 
@@ -350,52 +350,37 @@ class DummyNode extends Node
     }
 
     /**
+     * Prints bucket type, which can be response, request or notification.
+     *
      * @param \Denpa\Levin\Bucket $bucket
      *
-     * @return string
+     * @return void
      */
-    protected function getBucketType(Bucket $bucket) : string
+    protected function printBucketType(Bucket $bucket) : void
     {
+        $type = $bucket->isResponse() ? 'response' : 'request';
+
         if ($bucket->isRequest() && !$bucket->getReturnData()->getValue()) {
-            return 'notification';
+            $type = 'notification';
         }
 
-        return $bucket->isResponse() ? 'response' : 'request';
+        $this
+            ->console()
+            ->line(' (')
+            ->color('bright-yellow')
+            ->line($type)
+            ->resetColors()
+            ->line(')  ');
     }
 
     /**
-     * @return \Denpa\Levin\Console
-     */
-    protected function printPeerlist() : Console
-    {
-        $this->console()->info('Remote peers:')->eol()->startBlock();
-
-        foreach ($this->peerlist as $peer) {
-            $ipport = $peer['ip'].':'.$peer['port'];
-
-            $this
-                ->console()
-                ->indent()
-                ->line(
-                    '%s  seen %s'.PHP_EOL,
-                    str_pad($ipport, 21),
-                    $peer['last_seen']
-                );
-        }
-
-        return $this->console()
-            ->indent()
-            ->line(PHP_EOL.'Total: %d known peers'.PHP_EOL, count($this->peerlist))
-            ->endBlock()
-            ->eol();
-    }
-
-    /**
+     * Prints bucket direction arrows.
+     *
      * @param string $direction
      *
-     * @return \Denpa\Levin\Console
+     * @return void
      */
-    protected function printDirectionArrows(string $direction = '') : Console
+    protected function printDirectionArrows(string $direction = '') : void
     {
         switch ($direction) {
             case 'in':
@@ -408,9 +393,39 @@ class DummyNode extends Node
                 $direction = '   ';
         }
 
-        return $this
+        $this
             ->console()
             ->resetColors()
-            ->line(PHP_EOL."$direction (");
+            ->line(PHP_EOL.$direction);
+    }
+
+    /**
+     * @return void
+     */
+    protected function printPeerlist() : void
+    {
+        $this->console()->info('Remote peers:'.PHP_EOL)->startBlock();
+
+        foreach ($this->peerlist as $peer) {
+            $this
+                ->console()
+                ->indent()
+                ->line(
+                    '%s  seen %s'.PHP_EOL,
+                    str_pad($peer['ip'].':'.$peer['port'], 21),
+                    $peer['last_seen']
+                );
+        }
+
+        $this
+            ->console()
+            ->indent()
+            ->line('%sTotal: %d known peers%s%s',
+                PHP_EOL,
+                count($this->peerlist),
+                PHP_EOL,
+                PHP_EOL
+            )
+            ->endBlock();
     }
 }
