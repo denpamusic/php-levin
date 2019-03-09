@@ -187,7 +187,7 @@ class ConsoleTest extends TestCase
         $contents = $this->getConsoleTargetContents($target);
 
         $this->assertFalse(
-            strpos($contents, (string)$expect) === false,
+            strpos($contents, (string) $expect) === false,
             "Failed asserting that [$contents] contains [$expect]"
         );
     }
