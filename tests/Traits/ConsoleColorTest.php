@@ -2,9 +2,9 @@
 
 namespace Denpa\Levin\Tests\Traits;
 
-use InvalidArgumentException;
 use Denpa\Levin\Tests\TestCase;
 use Denpa\Levin\Traits\ConsoleColor;
+use InvalidArgumentException;
 
 class ConsoleColorTest extends TestCase
 {
@@ -53,8 +53,7 @@ class ConsoleColorTest extends TestCase
         string $method,
         string $color = '',
         string $background = ''
-    ) : void
-    {
+    ) : void {
         $mock = $this->getMockBuilder(ConsoleColor::class)
             ->disableOriginalConstructor()
             ->setMethods(['line', 'resetColors', 'color', 'background'])
@@ -152,7 +151,7 @@ class ConsoleColorTest extends TestCase
     public function testParseColorString() : void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid color [foo]");
+        $this->expectExceptionMessage('Invalid color [foo]');
 
         $this->parseColorString('foo');
     }

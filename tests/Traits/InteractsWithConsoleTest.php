@@ -46,8 +46,7 @@ class InteractsWithConsoleTest extends ConsoleTest
         string $expect,
         string $message,
         ...$args
-    ) : void
-    {
+    ) : void {
         $this->console($message, ...$args);
 
         $this->assertConsoleTargetContains('STDOUT', $expect);
