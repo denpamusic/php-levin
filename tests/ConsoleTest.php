@@ -4,11 +4,11 @@ namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
 use Denpa\Levin\Console;
+use Denpa\Levin\Requests\Handshake;
 use Denpa\Levin\Section\Section;
 use Denpa\Levin\Types\Bytearray;
 use Denpa\Levin\Types\Bytestring;
 use Denpa\Levin\Types\Uint64;
-use Denpa\Levin\Requests\Handshake;
 
 class ConsoleTest extends TestCase
 {
@@ -47,8 +47,7 @@ class ConsoleTest extends TestCase
         string $expect,
         string $message,
         ...$args
-    ) : void
-    {
+    ) : void {
         $this->console->line($message, ...$args);
 
         $this->assertConsoleTargetContains('STDOUT', $expect);
