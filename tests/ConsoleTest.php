@@ -54,14 +54,14 @@ class ConsoleTest extends TestCase
     }
 
     /**
-     * @param string $expect
-     * @param mixed  $object
+     * @param mixed $expect
+     * @param mixed $object
      *
      * @return void
      *
      * @dataProvider objectProvider
      */
-    public function testDump(string $expect, $object) : void
+    public function testDump($expect, $object) : void
     {
         $this->console->dump($object);
 
