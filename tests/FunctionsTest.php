@@ -298,15 +298,6 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @return void
-     */
-    public function testDump() : void
-    {
-        $this->expectOutputRegex('/int\(1\)/');
-        Levin\dump(1);
-    }
-
-    /**
      * @return array
      */
     public function camelCaseProvider() : array

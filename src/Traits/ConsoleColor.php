@@ -56,7 +56,7 @@ trait ConsoleColor
     /**
      * @var bool
      */
-    protected $colorDisabled = false;
+    protected $colorDisabled = true;
 
     /**
      * @param string $color

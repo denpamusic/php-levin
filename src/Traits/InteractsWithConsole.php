@@ -12,6 +12,9 @@ trait InteractsWithConsole
     protected $console;
 
     /**
+     * @param string $message
+     * @param mixed  $args,...
+     *
      * @return \Denpa\Levin\Console
      */
     protected function console(string $message = '', ...$args) : Console

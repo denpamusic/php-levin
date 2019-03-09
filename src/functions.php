@@ -367,18 +367,6 @@ if (!function_exists('classname')) {
     }
 }
 
-if (!function_exists('dump')) {
-    /**
-     * Dumps object to the console.
-     *
-     * @return void
-     */
-    function dump($object) : void
-    {
-        (new Console())->dump($object);
-    }
-}
-
 if (!function_exists('peer_id')) {
     /**
      * Creates peer id with certain prefix.

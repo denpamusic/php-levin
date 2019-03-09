@@ -97,7 +97,7 @@ class DummyNode extends Node
         $this->verbose = isset($options['v']);
 
         if (!isset($options['colors'])) {
-            $this->console()->disableColors();
+            $this->console()->enableColors();
         }
 
         parent::connect($address, $port, $options);

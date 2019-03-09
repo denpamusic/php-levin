@@ -56,6 +56,15 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
+    public function testKeys() : void
+    {
+        $this->array->offsetSet('bar', 'baz');
+        $this->assertEquals(['foo', 'bar'], $this->array->keys());
+    }
+
+    /**
+     * @return void
+     */
     public function testGetIterator() : void
     {
         $this->assertInstanceOf(ArrayIterator::class, $this->array->getIterator());

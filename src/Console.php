@@ -80,13 +80,15 @@ class Console
             return $this->dumpArrayable($object);
         }
 
+        if (is_string($object) || is_numeric($object)) {
+            $this->line($object);
+        }
+
         foreach ($this->dumpers as $class => $dumper) {
             if ($object instanceof $class) {
                 return $this->$dumper($object);
             }
         }
-
-        var_dump($object);
 
         return $this;
     }
@@ -243,6 +245,7 @@ class Console
 
             if ($value instanceof ArrayAccess || is_array($value)) {
                 $this
+                    ->eol()
                     ->startBlock()
                     ->dump($value)
                     ->endBlock();
@@ -263,10 +266,6 @@ class Console
     protected function dumpType(TypeInterface $type) : self
     {
         $name = strtolower(classname(get_class($type)));
-
-        if ($type instanceof Bytestring) {
-            return $this->dumpBytestring($type);
-        }
 
         return $this
             ->resetColors()
