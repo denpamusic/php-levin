@@ -11,7 +11,7 @@ abstract class SignedInt extends Type
      */
     public function machineEndianness() : int
     {
-        return (int)(!unpack('S', "\x01\x00")[1] === 1);
+        return (int) (!unpack('S', "\x01\x00")[1] === 1);
     }
 
     /**
