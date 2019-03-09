@@ -35,13 +35,16 @@ class Console
      * @var array
      */
     protected $dumpers = [
-        CommandInterface::class => 'dumpCommand',
-        BucketInterface::class  => 'dumpBucket',
-        Section::class          => 'dumpSection',
-        Bytearray::class        => 'dumpBytearray',
-        Bytestring::class       => 'dumpBytestring',
-        ArrayAccess::class      => 'dumpArrayable',
-        TypeInterface::class    => 'dumpType',
+        'is_string'                     => 'line',
+        'is_numeric'                    => 'line',
+        'is_array'                      => 'dumpArrayable',
+        'is_a.'.CommandInterface::class => 'dumpCommand',
+        'is_a.'.BucketInterface::class  => 'dumpBucket',
+        'is_a.'.Section::class          => 'dumpSection',
+        'is_a.'.Bytearray::class        => 'dumpBytearray',
+        'is_a.'.Bytestring::class       => 'dumpBytestring',
+        'is_a.'.ArrayAccess::class      => 'dumpArrayable',
+        'is_a.'. TypeInterface::class   => 'dumpType',
     ];
 
     /**
@@ -76,17 +79,12 @@ class Console
      */
     public function dump($object) : self
     {
-        if (is_array($object)) {
-            return $this->dumpArrayable($object);
-        }
+        foreach ($this->dumpers as $dumper => $method) {
+            $args = explode('.', $dumper);
+            $testFn = array_shift($args);
 
-        if (is_string($object) || is_numeric($object)) {
-            $this->line($object);
-        }
-
-        foreach ($this->dumpers as $class => $dumper) {
-            if ($object instanceof $class) {
-                return $this->$dumper($object);
+            if ($testFn($object, ...$args)) {
+                return $this->$method($object);
             }
         }
 
@@ -245,7 +243,6 @@ class Console
 
             if ($value instanceof ArrayAccess || is_array($value)) {
                 $this
-                    ->eol()
                     ->startBlock()
                     ->dump($value)
                     ->endBlock();
@@ -381,7 +378,7 @@ class Console
         $keys = method_exists($arrayable, 'keys') ?
             $arrayable->keys() : array_keys($arrayable);
 
-        return count($keys) == 0 ? 0 : max(array_map('strlen', $keys));
+        return count($keys) == 0 ? 0 : max(array_map('strlen', $keys)) + 2;
     }
 
     /**

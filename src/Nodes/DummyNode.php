@@ -96,7 +96,7 @@ class DummyNode extends Node
     {
         $this->verbose = isset($options['v']);
 
-        if (!isset($options['colors'])) {
+        if (isset($options['colors'])) {
             $this->console()->enableColors();
         }
 
