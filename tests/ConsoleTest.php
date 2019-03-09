@@ -165,7 +165,7 @@ class ConsoleTest extends TestCase
 
     /**
      * @param string $target
-     * @param mixed   $expect
+     * @param mixed  $expect
      *
      * @return void
      */
