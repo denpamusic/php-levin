@@ -165,22 +165,22 @@ class ConsoleTest extends TestCase
 
     /**
      * @param string $target
-     * @param string $expect
+     * @param mixed   $expect
      *
      * @return void
      */
-    protected function assertConsoleTargetEquals(string $target, string $expect) : void
+    protected function assertConsoleTargetEquals(string $target, $expect) : void
     {
         $this->assertEquals($expect, $this->getConsoleTargetContents($target));
     }
 
     /**
      * @param string $target
-     * @param string $expect
+     * @param mixed  $expect
      *
      * @return void
      */
-    protected function assertConsoleTargetContains(string $target, string $expect) : void
+    protected function assertConsoleTargetContains(string $target, $expect) : void
     {
         $contents = $this->getConsoleTargetContents($target);
 
