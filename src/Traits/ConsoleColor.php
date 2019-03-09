@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Traits;
 
 use InvalidArgumentException;
@@ -91,12 +93,12 @@ trait ConsoleColor
     }
 
     /**
-     * @param string $message
-     * @param mixed  $args,...
+     * @param mixed $message
+     * @param mixed $args,...
      *
      * @return self
      */
-    public function error(string $message, ...$args) : self
+    public function error($message, ...$args) : self
     {
         return $this
             ->resetColors()
@@ -107,12 +109,12 @@ trait ConsoleColor
     }
 
     /**
-     * @param string $message
-     * @param mixed  $args,...
+     * @param mixed $message
+     * @param mixed $args,...
      *
      * @return self
      */
-    public function warning(string $message, ...$args) : self
+    public function warning($message, ...$args) : self
     {
         return $this
             ->resetColors()
@@ -123,12 +125,12 @@ trait ConsoleColor
     }
 
     /**
-     * @param string $message
-     * @param mixed  $args,...
+     * @param mixed $message
+     * @param mixed $args,...
      *
      * @return self
      */
-    public function info(string $message, ...$args) : self
+    public function info($message, ...$args) : self
     {
         return $this
             ->resetColors()
@@ -169,11 +171,11 @@ trait ConsoleColor
     }
 
     /**
-     * @param string $message
+     * @param mixed $message
      *
      * @return self
      */
-    protected function colorize(string $message) : string
+    protected function colorize($message) : string
     {
         if ($this->colorDisabled) {
             return $message;

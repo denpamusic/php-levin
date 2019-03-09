@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Tests;
 
 use Denpa\Levin\Bucket;
@@ -185,7 +187,7 @@ class ConsoleTest extends TestCase
         $contents = $this->getConsoleTargetContents($target);
 
         $this->assertFalse(
-            strpos($contents, $expect) === false,
+            strpos($contents, (string)$expect) === false,
             "Failed asserting that [$contents] contains [$expect]"
         );
     }

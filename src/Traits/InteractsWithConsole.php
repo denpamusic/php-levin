@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Traits;
 
 use Denpa\Levin\Console;
@@ -12,12 +14,12 @@ trait InteractsWithConsole
     protected $console;
 
     /**
-     * @param string $message
-     * @param mixed  $args,...
+     * @param mixed $message
+     * @param mixed $args,...
      *
      * @return \Denpa\Levin\Console
      */
-    protected function console(string $message = '', ...$args) : Console
+    protected function console($message = '', ...$args) : Console
     {
         if (!$this->console instanceof Console) {
             $this->console = new Console();

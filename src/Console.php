@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin;
 
 use ArrayAccess;
@@ -56,16 +58,16 @@ class Console
     }
 
     /**
-     * @param string $message
-     * @param mixed  $args,...
+     * @param mixed $message
+     * @param mixed $args,...
      *
      * @return self
      */
-    public function line(string $message = '', ...$args) : self
+    public function line($message = '', ...$args) : self
     {
         fwrite(
             $this->target,
-            $message == '' ?
+            $message === '' ?
                 PHP_EOL : $this->colorize(sprintf($message, ...$args))
         );
 

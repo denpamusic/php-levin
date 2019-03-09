@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 if (!defined('STDIN')) {
     exit('This command must be run from command line.');
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Tests\Traits;
 
 use Denpa\Levin\Tests\TestCase;
