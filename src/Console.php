@@ -44,7 +44,7 @@ class Console
         'is_a.'.Bytearray::class        => 'dumpBytearray',
         'is_a.'.Bytestring::class       => 'dumpBytestring',
         'is_a.'.ArrayAccess::class      => 'dumpArrayable',
-        'is_a.'. TypeInterface::class   => 'dumpType',
+        'is_a.'.TypeInterface::class    => 'dumpType',
     ];
 
     /**
