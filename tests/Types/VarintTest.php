@@ -47,7 +47,7 @@ class VarintTest extends TestCase
      */
     public function testRead(
         int $first,
-        ?int $second = null,
+        ?int $second,
         string $bytes,
         int $expect
     ) : void {
