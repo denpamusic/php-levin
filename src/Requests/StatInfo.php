@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Requests;
 
 use Denpa\Levin;

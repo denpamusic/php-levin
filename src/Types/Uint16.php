@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Types;
 
 class Uint16 extends Type implements BoostSerializable

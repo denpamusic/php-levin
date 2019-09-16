@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Tests\Types;
 
 use Denpa\Levin\Connection;
@@ -45,7 +47,7 @@ class VarintTest extends TestCase
      */
     public function testRead(
         int $first,
-        ?int $second = null,
+        ?int $second,
         string $bytes,
         int $expect
     ) : void {

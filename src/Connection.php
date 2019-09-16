@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin;
 
 use Denpa\Levin\Exceptions\ConnectionException;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Tests\Types;
 
 use Denpa\Levin\Tests\TestCase;
@@ -35,7 +37,7 @@ class SignedIntTest extends TestCase
 
         $signedint->expects($this->exactly(2))
             ->method('machineEndianness')
-            ->willReturnOnConsecutiveCalls(false, true);
+            ->willReturnOnConsecutiveCalls(SignedInt::LE, SignedInt::BE);
 
         $this->assertEquals($result1, $signedint->toHex());
         $this->assertEquals($result2, $signedint->toHex());

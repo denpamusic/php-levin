@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Exceptions;
 
 use Denpa\Levin\Types\TypeInterface;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Denpa\Levin\Types;
 
 class Int16 extends SignedInt implements BoostSerializable
