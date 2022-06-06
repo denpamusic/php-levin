@@ -47,7 +47,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function getCommand(int $command) : CommandInterface
+    public function getCommand(int $command): CommandInterface
     {
         if (!isset($this->commands[$command])) {
             throw new UnknownCommandException("Unknown command [$command]");
@@ -59,7 +59,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function handshake(array $vars = []) : CommandInterface
+    public function handshake(array $vars = []): CommandInterface
     {
         return new Requests\Handshake($vars);
     }
@@ -67,7 +67,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function timedsync(array $vars = []) : CommandInterface
+    public function timedsync(array $vars = []): CommandInterface
     {
         return new Requests\TimedSync($vars);
     }
@@ -75,7 +75,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function ping(array $vars = []) : CommandInterface
+    public function ping(array $vars = []): CommandInterface
     {
         return new Requests\Ping($vars);
     }
@@ -83,7 +83,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function statinfo(array $vars = []) : CommandInterface
+    public function statinfo(array $vars = []): CommandInterface
     {
         return new Requests\StatInfo($vars);
     }
@@ -91,7 +91,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function networkstate(array $vars = []) : CommandInterface
+    public function networkstate(array $vars = []): CommandInterface
     {
         return new Requests\NetworkState($vars);
     }
@@ -99,7 +99,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function peerid(array $vars = []) : CommandInterface
+    public function peerid(array $vars = []): CommandInterface
     {
         return new Requests\PeerId($vars);
     }
@@ -107,7 +107,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function supportflags(array $vars = []) : CommandInterface
+    public function supportflags(array $vars = []): CommandInterface
     {
         return new Requests\SupportFlags($vars);
     }
@@ -115,7 +115,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function newblock(array $vars = []) : CommandInterface
+    public function newblock(array $vars = []): CommandInterface
     {
         return new Notifications\NewBlock($vars);
     }
@@ -123,7 +123,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function newtransactions(array $vars = []) : CommandInterface
+    public function newtransactions(array $vars = []): CommandInterface
     {
         return new Notifications\NewTransactions($vars);
     }
@@ -131,7 +131,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function requestgetobjects(array $vars = []) : CommandInterface
+    public function requestgetobjects(array $vars = []): CommandInterface
     {
         return new Notifications\RequestGetObjects($vars);
     }
@@ -139,7 +139,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function responsegetobjects(array $vars = []) : CommandInterface
+    public function responsegetobjects(array $vars = []): CommandInterface
     {
         return new Notifications\ResponseGetObjects($vars);
     }
@@ -147,7 +147,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function requestchain(array $vars = []) : CommandInterface
+    public function requestchain(array $vars = []): CommandInterface
     {
         return new Notifications\RequestChain($vars);
     }
@@ -155,7 +155,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function responsechainentry(array $vars = []) : CommandInterface
+    public function responsechainentry(array $vars = []): CommandInterface
     {
         return new Notifications\ResponseChainEntry($vars);
     }
@@ -163,7 +163,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function newfluffyblock(array $vars = []) : CommandInterface
+    public function newfluffyblock(array $vars = []): CommandInterface
     {
         return new Notifications\NewFluffyBlock($vars);
     }
@@ -171,7 +171,7 @@ class CommandFactory
     /**
      * @return \Denpa\Levin\CommandInterface
      */
-    public function requestfluffymissingtx(array $vars = []) : CommandInterface
+    public function requestfluffymissingtx(array $vars = []): CommandInterface
     {
         return new Notifications\RequestFluffyMissingTx($vars);
     }
@@ -179,7 +179,7 @@ class CommandFactory
     /**
      * @return void
      */
-    protected function registerCommands() : void
+    protected function registerCommands(): void
     {
         foreach ($this->handlers as $handler) {
             $this->commands[(new $handler())->getCommandCode()] = $handler;

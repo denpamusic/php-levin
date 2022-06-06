@@ -17,7 +17,7 @@ class HandshakeTest extends RequestTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap([
             'node_data'    => [
@@ -38,7 +38,7 @@ class HandshakeTest extends RequestTest
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $this->assertResponseMap([
             'node_data' => [
@@ -61,7 +61,7 @@ class HandshakeTest extends RequestTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(1);
     }
@@ -69,7 +69,7 @@ class HandshakeTest extends RequestTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'my_port'               => 0,

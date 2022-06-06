@@ -13,7 +13,7 @@ class Int16Test extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_INT16, (new Int16())->getSerializeType()->toInt());
     }
@@ -21,7 +21,7 @@ class Int16Test extends TestCase
     /**
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->assertEquals("\x00\x01", (new Int16(1))->toBinary());
     }

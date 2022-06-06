@@ -18,7 +18,7 @@ class SupportFlags extends Command implements RequestInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section
+    public function request(): Section
     {
         return Levin\section();
     }
@@ -26,7 +26,7 @@ class SupportFlags extends Command implements RequestInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function response() : Section
+    public function response(): Section
     {
         return Levin\section([
             'support_flags' => Levin\uint32le($this->support_flags),
@@ -36,7 +36,7 @@ class SupportFlags extends Command implements RequestInterface
     /**
      * @return array
      */
-    protected function defaultVars() : array
+    protected function defaultVars(): array
     {
         return [
             'support_flags' => self::P2P_SUPPORT_FLAG_FLUFFY_BLOCKS,
@@ -46,7 +46,7 @@ class SupportFlags extends Command implements RequestInterface
     /**
      * @return int
      */
-    public function getCommandCode() : int
+    public function getCommandCode(): int
     {
         return self::P2P_COMMANDS_POOL_BASE + 7;
     }

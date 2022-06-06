@@ -17,7 +17,7 @@ class PeerIdTest extends RequestTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap();
     }
@@ -25,7 +25,7 @@ class PeerIdTest extends RequestTest
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $this->assertResponseMap([
             'my_id' => Levin\uint64le(),
@@ -35,7 +35,7 @@ class PeerIdTest extends RequestTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(6);
     }
@@ -43,7 +43,7 @@ class PeerIdTest extends RequestTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'my_id' => Levin\peer_id(),

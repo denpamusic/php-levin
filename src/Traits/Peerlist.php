@@ -12,7 +12,7 @@ trait Peerlist
     /**
      * @return array
      */
-    protected function localPeerlist() : array
+    protected function localPeerlist(): array
     {
         $peerList = [];
         $peerListNew = [];
@@ -48,7 +48,7 @@ trait Peerlist
      *
      * @return void
      */
-    protected function peerDefaults(array &$peer) : void
+    protected function peerDefaults(array &$peer): void
     {
         $peer = [
             'ip'        => inet_pton($peer['ip'] ?? '127.0.0.1'),

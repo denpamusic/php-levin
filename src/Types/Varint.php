@@ -37,7 +37,7 @@ class Varint extends Type
     /**
      * @return string
      */
-    public function toBinary() : string
+    public function toBinary(): string
     {
         switch (true) {
             case $this->value <= 63:
@@ -63,7 +63,7 @@ class Varint extends Type
      *
      * @return \Levin\Types\Type
      */
-    public function read(Connection $connection) : Type
+    public function read(Connection $connection): Type
     {
         $first = $connection->read(new Uint8());
 
@@ -93,7 +93,7 @@ class Varint extends Type
     /**
      * @return string
      */
-    protected function getTypeCode() : string
+    protected function getTypeCode(): string
     {
         return '';
     }

@@ -11,7 +11,7 @@ interface ConnectionInterface
      *
      * @return void
      */
-    public function connect(callable $callback) : void;
+    public function connect(callable $callback): void;
 
     /**
      * @param mixed $object
@@ -32,22 +32,22 @@ interface ConnectionInterface
      *
      * @return void
      */
-    public function write($object) : void;
+    public function write($object): void;
 
     /**
      * @param string $bytes
      *
      * @return void
      */
-    public function writeBytes(string $bytes) : void;
+    public function writeBytes(string $bytes): void;
 
     /**
      * @return void
      */
-    public function isOpen() : bool;
+    public function isOpen(): bool;
 
     /**
      * @return void
      */
-    public function close() : void;
+    public function close(): void;
 }

@@ -94,7 +94,7 @@ class DummyNode extends Node
      *
      * @return void
      */
-    public function connect(string $address, $port, array $options = []) : void
+    public function connect(string $address, $port, array $options = []): void
     {
         $this->verbose = isset($options['v']);
 
@@ -112,7 +112,7 @@ class DummyNode extends Node
      *
      * @return void
      */
-    public function handleException(Throwable $exception) : void
+    public function handleException(Throwable $exception): void
     {
         $this
             ->console()->target(STDERR)
@@ -262,7 +262,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function newTransactionsHandler($bucket) : void
+    protected function newTransactionsHandler($bucket): void
     {
         $txs = $bucket->getPayload()['txs'] ?? [];
 
@@ -319,7 +319,7 @@ class DummyNode extends Node
      *
      * @return void
      */
-    protected function write(Bucket $bucket, Connection $connection) : void
+    protected function write(Bucket $bucket, Connection $connection): void
     {
         $this->printBucket($bucket, 'out');
 
@@ -334,7 +334,7 @@ class DummyNode extends Node
      *
      * @return void
      */
-    protected function printBucket(Bucket $bucket, string $direction = '') : void
+    protected function printBucket(Bucket $bucket, string $direction = ''): void
     {
         $this->printDirectionArrows($direction);
         $this->printBucketType($bucket);
@@ -357,7 +357,7 @@ class DummyNode extends Node
      *
      * @return void
      */
-    protected function printBucketType(Bucket $bucket) : void
+    protected function printBucketType(Bucket $bucket): void
     {
         $type = $bucket->isResponse() ? 'response' : 'request';
 
@@ -381,7 +381,7 @@ class DummyNode extends Node
      *
      * @return void
      */
-    protected function printDirectionArrows(string $direction = '') : void
+    protected function printDirectionArrows(string $direction = ''): void
     {
         switch ($direction) {
             case 'in':
@@ -403,7 +403,7 @@ class DummyNode extends Node
     /**
      * @return void
      */
-    protected function printPeerlist() : void
+    protected function printPeerlist(): void
     {
         $this->console()->info('Remote peers:'.PHP_EOL)->startBlock();
 
@@ -421,7 +421,8 @@ class DummyNode extends Node
         $this
             ->console()
             ->indent()
-            ->line('%sTotal: %d known peers%s%s',
+            ->line(
+                '%sTotal: %d known peers%s%s',
                 PHP_EOL,
                 count($this->peerlist),
                 PHP_EOL,

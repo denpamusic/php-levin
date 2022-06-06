@@ -16,7 +16,7 @@ class NetworkStateTest extends RequestTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap();
     }
@@ -24,7 +24,7 @@ class NetworkStateTest extends RequestTest
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $this->assertResponseMap();
     }
@@ -32,7 +32,7 @@ class NetworkStateTest extends RequestTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(5);
     }
@@ -40,7 +40,7 @@ class NetworkStateTest extends RequestTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars();
     }

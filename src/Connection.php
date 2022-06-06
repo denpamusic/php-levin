@@ -57,7 +57,7 @@ class Connection implements ConnectionInterface
      *
      * @return void
      */
-    public function connect(?callable $success, ?callable $failure = null) : void
+    public function connect(?callable $success, ?callable $failure = null): void
     {
         if (!$this->isOpen()) {
             return;
@@ -106,7 +106,7 @@ class Connection implements ConnectionInterface
      *
      * @return string
      */
-    public function readBytes(int $bytesize) : string
+    public function readBytes(int $bytesize): string
     {
         $buffer = '';
         $bytes = @socket_recv($this->socket, $buffer, $bytesize, MSG_WAITALL);
@@ -126,7 +126,7 @@ class Connection implements ConnectionInterface
      *
      * @return void
      */
-    public function write($object) : void
+    public function write($object): void
     {
         if (method_exists($object, 'write')) {
             $object->write($this);
@@ -142,7 +142,7 @@ class Connection implements ConnectionInterface
      *
      * @return void
      */
-    public function writeBytes(string $bytes) : void
+    public function writeBytes(string $bytes): void
     {
         @socket_send($this->socket, $bytes, strlen($bytes), 0);
     }
@@ -150,7 +150,7 @@ class Connection implements ConnectionInterface
     /**
      * @return bool
      */
-    public function isOpen() : bool
+    public function isOpen(): bool
     {
         return $this->open;
     }
@@ -158,7 +158,7 @@ class Connection implements ConnectionInterface
     /**
      * @return void
      */
-    public function close() : void
+    public function close(): void
     {
         if ($this->isOpen()) {
             socket_close($this->socket);
@@ -172,7 +172,7 @@ class Connection implements ConnectionInterface
      *
      * @return void
      */
-    protected function onFailure(?callable $failure, Throwable $exception) : void
+    protected function onFailure(?callable $failure, Throwable $exception): void
     {
         if (is_callable($failure)) {
             $failure($exception);

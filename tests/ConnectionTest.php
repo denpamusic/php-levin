@@ -17,7 +17,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -27,7 +27,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testConnect() : void
+    public function testConnect(): void
     {
         $connection = new Connection(...$this->socket);
         $connection->connect(function ($bucket, $connection) {
@@ -42,7 +42,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testConnectWithFailure() : void
+    public function testConnectWithFailure(): void
     {
         $socket = $this->createSocketMock(null, '127.0.0.2');
         $connection = new Connection(...$socket);
@@ -62,7 +62,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testConnectWithNullCallback() : void
+    public function testConnectWithNullCallback(): void
     {
         $connection = new Connection(...$this->socket);
         $connection->connect(null);
@@ -73,7 +73,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testConnectOnClosedConnection() : void
+    public function testConnectOnClosedConnection(): void
     {
         $connection = new Connection(...$this->socket);
         $connection->close();
@@ -89,7 +89,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testRead() : void
+    public function testRead(): void
     {
         $connection = new Connection(...$this->socket);
         $uint64 = $connection->read(new Uint64());
@@ -106,7 +106,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testReadWithConnectionException() : void
+    public function testReadWithConnectionException(): void
     {
         $this->expectException(ConnectionException::class);
         $this->expectExceptionMessage('Test error message');
@@ -117,7 +117,7 @@ class ConnectionTest extends TestCase
     /**
      * @return void
      */
-    public function testWrite() : void
+    public function testWrite(): void
     {
         $socket = $this->createSocketMock(null, '127.0.0.2');
 

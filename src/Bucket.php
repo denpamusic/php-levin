@@ -98,7 +98,7 @@ class Bucket implements BucketInterface
      *
      * @return bool
      */
-    public function isRequest(...$commands) : bool
+    public function isRequest(...$commands): bool
     {
         $isRequest = $this->flags->toInt() == self::LEVIN_PACKET_REQUEST;
 
@@ -111,7 +111,7 @@ class Bucket implements BucketInterface
      *
      * @return bool
      */
-    public function isResponse(...$commands) : bool
+    public function isResponse(...$commands): bool
     {
         $isResponse = $this->flags->toInt() == self::LEVIN_PACKET_RESPONSE;
 
@@ -126,7 +126,7 @@ class Bucket implements BucketInterface
      *
      * @return bool
      */
-    public function is(...$commands) : bool
+    public function is(...$commands): bool
     {
         foreach ($commands as $command) {
             $classname = classname(get_class($this->command));
@@ -146,7 +146,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setSignature($signature) : self
+    public function setSignature($signature): self
     {
         $this->signature = $signature instanceof Uint64 ?
             $signature : uint64le($signature);
@@ -165,7 +165,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setCb($cb) : self
+    public function setCb($cb): self
     {
         $this->cb = $cb instanceof Uint64 ? $cb : uint64le($cb);
 
@@ -183,7 +183,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setReturnData($returnData) : self
+    public function setReturnData($returnData): self
     {
         $this->returnData = $returnData instanceof Boolean ?
             $returnData : boolean($returnData);
@@ -196,7 +196,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setCommand($command) : self
+    public function setCommand($command): self
     {
         $command = $command instanceof Uint32 ?
             $command : uint32le($command);
@@ -213,7 +213,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function fill(?CommandInterface $command = null) : self
+    public function fill(?CommandInterface $command = null): self
     {
         $command = $command ?? $this->getCommand();
 
@@ -232,7 +232,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setReturnCode($returnCode = 0) : self
+    public function setReturnCode($returnCode = 0): self
     {
         $this->returnCode = $returnCode instanceof Int32 ?
             $returnCode : int32le($returnCode);
@@ -245,7 +245,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setFlags($flags) : self
+    public function setFlags($flags): self
     {
         $this->flags = $flags instanceof Uint32 ? $flags : uint32le($flags);
 
@@ -257,7 +257,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setProtocolVersion($protocolVersion) : self
+    public function setProtocolVersion($protocolVersion): self
     {
         $this->protocolVersion = $protocolVersion instanceof Uint32 ?
             $protocolVersion : uint32le($protocolVersion);
@@ -270,7 +270,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function setPayload(Section $section) : self
+    public function setPayload(Section $section): self
     {
         $this->setCb($section->getByteSize());
         $this->payload = $section;
@@ -285,7 +285,7 @@ class Bucket implements BucketInterface
      *
      * @return string
      */
-    public function getHead() : string
+    public function getHead(): string
     {
         $head = [
             'signature'        => $this->signature,
@@ -319,7 +319,7 @@ class Bucket implements BucketInterface
      *
      * @return void
      */
-    public function write(Connection $connection) : void
+    public function write(Connection $connection): void
     {
         $bucket = $this->getHead();
 
@@ -337,7 +337,7 @@ class Bucket implements BucketInterface
      *
      * @return self|null
      */
-    public function read(Connection $connection) : ?self
+    public function read(Connection $connection): ?self
     {
         try {
             $bucket = new static([
@@ -368,7 +368,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function request(?CommandInterface $command = null) : self
+    public function request(?CommandInterface $command = null): self
     {
         return $this
             ->setReturnData(true)
@@ -384,7 +384,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function response(?CommandInterface $command = null) : self
+    public function response(?CommandInterface $command = null): self
     {
         return $this
             ->setReturnData(false)
@@ -400,7 +400,7 @@ class Bucket implements BucketInterface
      *
      * @return self
      */
-    public function notification(?CommandInterface $command = null) : self
+    public function notification(?CommandInterface $command = null): self
     {
         return $this
             ->request($command)

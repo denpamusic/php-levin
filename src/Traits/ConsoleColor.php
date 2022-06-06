@@ -65,7 +65,7 @@ trait ConsoleColor
      *
      * @return self
      */
-    public function color(string $color) : self
+    public function color(string $color): self
     {
         list($color, $modifier) = $this->parseColorString($color);
 
@@ -83,7 +83,7 @@ trait ConsoleColor
      *
      * @return self
      */
-    public function background(string $background) : self
+    public function background(string $background): self
     {
         $color = $this->parseColorString($background)[0];
 
@@ -98,7 +98,7 @@ trait ConsoleColor
      *
      * @return self
      */
-    public function error($message, ...$args) : self
+    public function error($message, ...$args): self
     {
         return $this
             ->resetColors()
@@ -114,7 +114,7 @@ trait ConsoleColor
      *
      * @return self
      */
-    public function warning($message, ...$args) : self
+    public function warning($message, ...$args): self
     {
         return $this
             ->resetColors()
@@ -130,7 +130,7 @@ trait ConsoleColor
      *
      * @return self
      */
-    public function info($message, ...$args) : self
+    public function info($message, ...$args): self
     {
         return $this
             ->resetColors()
@@ -142,7 +142,7 @@ trait ConsoleColor
     /**
      * @return self
      */
-    public function resetColors() : self
+    public function resetColors(): self
     {
         unset($this->color);
         unset($this->background);
@@ -153,7 +153,7 @@ trait ConsoleColor
     /**
      * @return self
      */
-    public function disableColors() : self
+    public function disableColors(): self
     {
         $this->colorDisabled = true;
 
@@ -163,7 +163,7 @@ trait ConsoleColor
     /**
      * @return self
      */
-    public function enableColors() : self
+    public function enableColors(): self
     {
         $this->colorDisabled = false;
 
@@ -175,7 +175,7 @@ trait ConsoleColor
      *
      * @return self
      */
-    protected function colorize($message) : string
+    protected function colorize($message): string
     {
         if ($this->colorDisabled) {
             return $message;
@@ -201,7 +201,7 @@ trait ConsoleColor
      *
      * @return array
      */
-    protected function parseColorString(string $string) : array
+    protected function parseColorString(string $string): array
     {
         $parts = explode('-', $string, 2);
 

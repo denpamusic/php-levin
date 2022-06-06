@@ -11,7 +11,7 @@ class Bytestring extends Type implements BoostSerializable
     /**
      * @return string
      */
-    protected function getTypeCode() : string
+    protected function getTypeCode(): string
     {
         return 'a*';
     }
@@ -19,7 +19,7 @@ class Bytestring extends Type implements BoostSerializable
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Uint8
+    public function getSerializeType(): Uint8
     {
         return new Uint8(self::SERIALIZE_TYPE_STRING);
     }
@@ -29,7 +29,7 @@ class Bytestring extends Type implements BoostSerializable
      *
      * @return \Levin\Types\Type
      */
-    public function read(Connection $connection) : Type
+    public function read(Connection $connection): Type
     {
         $length = $connection->read(new Varint())->toInt();
 

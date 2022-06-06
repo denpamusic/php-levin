@@ -16,7 +16,7 @@ class Handshake extends Command implements RequestInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section
+    public function request(): Section
     {
         return Levin\section([
             'node_data' => Levin\section([
@@ -37,7 +37,7 @@ class Handshake extends Command implements RequestInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function response() : Section
+    public function response(): Section
     {
         list($localPeerlist, $localPeerlistNew) = $this->localPeerlist();
 
@@ -62,7 +62,7 @@ class Handshake extends Command implements RequestInterface
     /**
      * @return array
      */
-    protected function defaultVars() : array
+    protected function defaultVars(): array
     {
         return [
             'my_port'               => 0,
@@ -79,7 +79,7 @@ class Handshake extends Command implements RequestInterface
     /**
      * @return int
      */
-    public function getCommandCode() : int
+    public function getCommandCode(): int
     {
         return self::P2P_COMMANDS_POOL_BASE + 1;
     }

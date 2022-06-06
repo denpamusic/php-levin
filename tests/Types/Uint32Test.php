@@ -13,7 +13,7 @@ class Uint32Test extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_UINT32, (new Uint32())->getSerializeType()->toInt());
     }
@@ -21,7 +21,7 @@ class Uint32Test extends TestCase
     /**
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->assertEquals("\x00\x00\x00\x01", (new Uint32(1))->toBinary());
     }

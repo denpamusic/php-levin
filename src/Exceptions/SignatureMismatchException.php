@@ -29,7 +29,7 @@ class SignatureMismatchException extends Exception
     /**
      * @return \Denpa\Levin\Type\TypeInterface
      */
-    public function getSignature() : TypeInterface
+    public function getSignature(): TypeInterface
     {
         return $this->signature;
     }

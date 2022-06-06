@@ -14,7 +14,7 @@ class NodeTest extends TestCase
     /**
      * @return void
      */
-    public function testRegisterRequestHandler() : void
+    public function testRegisterRequestHandler(): void
     {
         $node = $this->getMockForAbstractClass(Node::class);
         $node->registerRequestHandler('requestHandler', 'request');
@@ -29,7 +29,7 @@ class NodeTest extends TestCase
     /**
      * @return void
      */
-    public function testRegisterResponseHandler() : void
+    public function testRegisterResponseHandler(): void
     {
         $node = $this->getMockForAbstractClass(Node::class);
         $node->registerResponseHandler('responseHandler', 'response');
@@ -48,7 +48,7 @@ class NodeTest extends TestCase
      *
      * @dataProvider handlerProvider
      */
-    public function testHandle(string $type) : void
+    public function testHandle(string $type): void
     {
         $node = $this->getMockBuilder(Node::class)
             ->disableOriginalConstructor()
@@ -78,7 +78,7 @@ class NodeTest extends TestCase
     /**
      * @return array
      */
-    public function handlerProvider() : array
+    public function handlerProvider(): array
     {
         return [
             ['request'],
@@ -89,7 +89,7 @@ class NodeTest extends TestCase
     /**
      * @return void
      */
-    public function testConnect() : void
+    public function testConnect(): void
     {
         $socket = $this->createSocketMock(null, '127.0.0.1');
 

@@ -15,7 +15,7 @@ class BytestringTest extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_STRING, (new Bytestring())->getSerializeType()->toInt());
     }
@@ -23,7 +23,7 @@ class BytestringTest extends TestCase
     /**
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->assertEquals('foo', (new Bytestring('foo'))->toBinary());
     }
@@ -31,7 +31,7 @@ class BytestringTest extends TestCase
     /**
      * @return void
      */
-    public function testGetRead() : void
+    public function testGetRead(): void
     {
         $connection = $this->createMock(Connection::class);
 

@@ -40,7 +40,7 @@ abstract class Command implements CommandInterface
      *
      * @return \Denpa\Levin\Types\Uint32
      */
-    public function getCommand() : Uint32
+    public function getCommand(): Uint32
     {
         return new Uint32($this->getCommandCode(), Uint32::LE);
     }
@@ -50,7 +50,7 @@ abstract class Command implements CommandInterface
      *
      * @return array
      */
-    protected function defaultVars() : array
+    protected function defaultVars(): array
     {
         return [];
     }

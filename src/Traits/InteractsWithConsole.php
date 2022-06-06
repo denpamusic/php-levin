@@ -19,7 +19,7 @@ trait InteractsWithConsole
      *
      * @return \Denpa\Levin\Console
      */
-    protected function console($message = '', ...$args) : Console
+    protected function console($message = '', ...$args): Console
     {
         if (!$this->console instanceof Console) {
             $this->console = new Console();

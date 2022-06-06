@@ -18,7 +18,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         global $fs;
         parent::setUp();
@@ -37,7 +37,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         ?string $command,
         string $address = '127.0.0.1',
         int $port = 1000
-    ) : array {
+    ): array {
         $response = '';
 
         if (!is_null($command)) {
@@ -78,7 +78,7 @@ function socket_create(int $domain, int $type, int $protocol)
  *
  * @return bool
  */
-function socket_set_option($socket, int $level, int $optname, $optval) : bool
+function socket_set_option($socket, int $level, int $optname, $optval): bool
 {
     return true;
 }
@@ -90,7 +90,7 @@ function socket_set_option($socket, int $level, int $optname, $optval) : bool
  *
  * @return bool
  */
-function socket_connect(&$socket, string $address, int $port = 0) : bool
+function socket_connect(&$socket, string $address, int $port = 0): bool
 {
     global $fs;
 
@@ -138,7 +138,7 @@ function socket_send($socket, string $buf, int $len, int $flags = 0)
  *
  * @return void
  */
-function socket_close($socket) : void
+function socket_close($socket): void
 {
     fclose($socket);
 }
@@ -150,7 +150,7 @@ namespace Denpa\Levin\Exceptions;
  *
  * @return int
  */
-function socket_last_error($socket) : int
+function socket_last_error($socket): int
 {
     return 101;
 }
@@ -160,7 +160,7 @@ function socket_last_error($socket) : int
  *
  * @return void
  */
-function socket_clear_error($socket) : void
+function socket_clear_error($socket): void
 {
     //
 }
@@ -170,7 +170,7 @@ function socket_clear_error($socket) : void
  *
  * @return void
  */
-function socket_strerror(int $errno) : string
+function socket_strerror(int $errno): string
 {
     if ($errno == 101) {
         return 'Test error message';

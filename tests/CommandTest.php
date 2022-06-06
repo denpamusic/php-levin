@@ -18,7 +18,7 @@ class CommandTest extends TestCase
     /**
      * @return void
      */
-    public function testGetCommand() : void
+    public function testGetCommand(): void
     {
         $command = $this->getMockForAbstractClass(Command::class);
 
@@ -36,7 +36,7 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    protected function assertRequestMap(array $map = []) : void
+    protected function assertRequestMap(array $map = []): void
     {
         $this->assertDataMap((new $this->classname())->request(), $map);
     }
@@ -46,7 +46,7 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    protected function assertResponseMap(array $map = []) : void
+    protected function assertResponseMap(array $map = []): void
     {
         $this->assertDataMap((new $this->classname())->response(), $map);
     }
@@ -57,7 +57,7 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    protected function assertDataMap($response, array $map = []) : void
+    protected function assertDataMap($response, array $map = []): void
     {
         if (empty($map)) {
             $this->assertEmpty($response);
@@ -80,7 +80,7 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    protected function assertCommandCode(int $code) : void
+    protected function assertCommandCode(int $code): void
     {
         $command = new $this->classname();
         $this->assertSame($this->commandBase + $code, $command->getCommandCode());
@@ -91,7 +91,7 @@ class CommandTest extends TestCase
      *
      * @return void
      */
-    protected function assertVars(array $vars = []) : void
+    protected function assertVars(array $vars = []): void
     {
         $classVars = (array) (new $this->classname($vars));
         $this->assertEquals($classVars["\0*\0vars"], $vars);

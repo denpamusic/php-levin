@@ -63,7 +63,7 @@ class Console
      *
      * @return self
      */
-    public function line($message = '', ...$args) : self
+    public function line($message = '', ...$args): self
     {
         fwrite(
             $this->target,
@@ -79,7 +79,7 @@ class Console
      *
      * @return self
      */
-    public function dump($object) : self
+    public function dump($object): self
     {
         foreach ($this->dumpers as $dumper => $method) {
             $args = explode('.', $dumper);
@@ -96,7 +96,7 @@ class Console
     /**
      * @return self
      */
-    public function startBlock() : self
+    public function startBlock(): self
     {
         $this->level++;
 
@@ -106,7 +106,7 @@ class Console
     /**
      * @return self
      */
-    public function endBlock() : self
+    public function endBlock(): self
     {
         $this->level--;
 
@@ -116,7 +116,7 @@ class Console
     /**
      * @return self
      */
-    public function indent() : self
+    public function indent(): self
     {
         if ($this->level > 0) {
             $this->line(str_repeat('  ', $this->level));
@@ -130,7 +130,7 @@ class Console
      *
      * @return self
      */
-    public function eol() : self
+    public function eol(): self
     {
         return $this->line();
     }
@@ -140,7 +140,7 @@ class Console
      *
      * @return self
      */
-    public function target($target = STDOUT) : self
+    public function target($target = STDOUT): self
     {
         $this->target = $target;
 
@@ -152,7 +152,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpBucket(Bucket $bucket) : self
+    protected function dumpBucket(Bucket $bucket): self
     {
         return $this
             ->resetColors()
@@ -172,7 +172,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpBucketHead(Bucket $bucket) : self
+    protected function dumpBucketHead(Bucket $bucket): self
     {
         return $this->line('[head]    =>')
             ->eol()
@@ -195,7 +195,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpBucketPayload(Bucket $bucket) : self
+    protected function dumpBucketPayload(Bucket $bucket): self
     {
         return $this
             ->line('[payload] => ')
@@ -210,7 +210,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpCommand(CommandInterface $command) : self
+    protected function dumpCommand(CommandInterface $command): self
     {
         $type = $command instanceof NotificationInterface
             ? 'notification' : 'request';
@@ -233,7 +233,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpArrayable($arrayable) : self
+    protected function dumpArrayable($arrayable): self
     {
         $keyLength = $this->normalizeKeyLength($arrayable);
 
@@ -262,7 +262,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpType(TypeInterface $type) : self
+    protected function dumpType(TypeInterface $type): self
     {
         $name = strtolower(classname(get_class($type)));
 
@@ -283,7 +283,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpBytestring(Bytestring $bytestring) : self
+    protected function dumpBytestring(Bytestring $bytestring): self
     {
         $this
             ->resetColors()
@@ -314,7 +314,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpBytearray(Bytearray $bytearray) : self
+    protected function dumpBytearray(Bytearray $bytearray): self
     {
         $type = $bytearray->getType()->toInt();
         $type = $this->types[$type] ?? $type;
@@ -340,7 +340,7 @@ class Console
      *
      * @return self
      */
-    protected function dumpSection(Section $section) : self
+    protected function dumpSection(Section $section): self
     {
         return $this
             ->eol()
@@ -355,7 +355,7 @@ class Console
     /**
      * @return void
      */
-    protected function loadTypes() : void
+    protected function loadTypes(): void
     {
         $serializable = new ReflectionClass(BoostSerializable::class);
 
@@ -375,7 +375,7 @@ class Console
      *
      * @return int
      */
-    protected function normalizeKeyLength($arrayable) : int
+    protected function normalizeKeyLength($arrayable): int
     {
         $keys = method_exists($arrayable, 'keys') ?
             $arrayable->keys() : array_keys($arrayable);
@@ -389,7 +389,7 @@ class Console
      *
      * @return string
      */
-    protected function splitHex(TypeInterface $type, int $length = 2) : string
+    protected function splitHex(TypeInterface $type, int $length = 2): string
     {
         $arr = str_split($type->toHex(), $length);
 

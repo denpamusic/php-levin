@@ -46,5 +46,5 @@ interface NodeInterface
      *
      * @return void
      */
-    public function connect(string $address, $port, array $options = []) : void;
+    public function connect(string $address, $port, array $options = []): void;
 }

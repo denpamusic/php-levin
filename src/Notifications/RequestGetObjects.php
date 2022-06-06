@@ -13,7 +13,7 @@ class RequestGetObjects extends Command implements NotificationInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section
+    public function request(): Section
     {
         return Levin\section();
     }
@@ -21,7 +21,7 @@ class RequestGetObjects extends Command implements NotificationInterface
     /**
      * @return int
      */
-    public function getCommandCode() : int
+    public function getCommandCode(): int
     {
         return self::BC_COMMANDS_POOL_BASE + 3;
     }

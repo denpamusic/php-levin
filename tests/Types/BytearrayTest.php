@@ -16,7 +16,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -27,7 +27,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testCreateWithIllegalType() : void
+    public function testCreateWithIllegalType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be serializable');
@@ -37,7 +37,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testCreateWithMultipleTypes() : void
+    public function testCreateWithMultipleTypes(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be of the same type');
@@ -51,7 +51,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function offsetSet() : void
+    public function offsetSet(): void
     {
         $this->bytearray->offsetSet(null, new Bytestring('test'));
         $this->assertEquals('test', $this->bytearray[1]->getValue());
@@ -60,7 +60,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testOffsetSetWithIllegalType() : void
+    public function testOffsetSetWithIllegalType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be serializable');
@@ -70,7 +70,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testOffsetSetWithMultipleTypes() : void
+    public function testOffsetSetWithMultipleTypes(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Array entries must be of the same type');
@@ -81,7 +81,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testIsBigEndian() : void
+    public function testIsBigEndian(): void
     {
         $this->assertFalse($this->bytearray->isBigEndian());
     }
@@ -89,7 +89,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testGetByteSize() : void
+    public function testGetByteSize(): void
     {
         $this->assertEquals(strlen($this->bytearray->toBinary()), $this->bytearray->getByteSize());
     }
@@ -97,7 +97,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testToHex() : void
+    public function testToHex(): void
     {
         $this->assertEquals(bin2hex($this->bytearray->toBinary()), $this->bytearray->toHex());
     }
@@ -105,7 +105,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->assertEquals("\x04\x0c\x62\x61\x72", $this->bytearray->toBinary());
     }
@@ -113,7 +113,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testToString() : void
+    public function testToString(): void
     {
         $this->assertEquals($this->bytearray->toBinary(), (string) $this->bytearray);
     }
@@ -121,7 +121,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $type = $this
             ->bytearray
@@ -134,7 +134,7 @@ class BytearrayTest extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeTypeWithEmptyArray() : void
+    public function testGetSerializeTypeWithEmptyArray(): void
     {
         $type = (new Bytearray([]))->getSerializeType();
 

@@ -13,7 +13,7 @@ if (!function_exists('bytestring')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function bytestring(string $bytes = '') : TypeInterface
+    function bytestring(string $bytes = ''): TypeInterface
     {
         return new Types\Bytestring($bytes);
     }
@@ -25,7 +25,7 @@ if (!function_exists('bytearray')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function bytearray(array $entries = [], $type = null) : TypeInterface
+    function bytearray(array $entries = [], $type = null): TypeInterface
     {
         return new Types\Bytearray($entries, $type);
     }
@@ -37,7 +37,7 @@ if (!function_exists('boolean')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function boolean(bool $bool = false) : TypeInterface
+    function boolean(bool $bool = false): TypeInterface
     {
         return new Types\Boolean($bool);
     }
@@ -49,7 +49,7 @@ if (!function_exists('varint')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function varint($int = 0) : TypeInterface
+    function varint($int = 0): TypeInterface
     {
         return new Types\Varint($int);
     }
@@ -61,7 +61,7 @@ if (!function_exists('uint8')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint8($int = 0) : TypeInterface
+    function uint8($int = 0): TypeInterface
     {
         return new Types\Uint8($int, TypeInterface::BE);
     }
@@ -73,7 +73,7 @@ if (!function_exists('uint8le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint8le($int = 0) : TypeInterface
+    function uint8le($int = 0): TypeInterface
     {
         return new Types\Uint8($int, TypeInterface::LE);
     }
@@ -85,7 +85,7 @@ if (!function_exists('int8')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int8($int = 0) : TypeInterface
+    function int8($int = 0): TypeInterface
     {
         return new Types\Int8($int, TypeInterface::BE);
     }
@@ -97,7 +97,7 @@ if (!function_exists('int8le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int8le($int = 0) : TypeInterface
+    function int8le($int = 0): TypeInterface
     {
         return new Types\Int8($int, TypeInterface::LE);
     }
@@ -109,7 +109,7 @@ if (!function_exists('uint16')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint16($int = 0) : TypeInterface
+    function uint16($int = 0): TypeInterface
     {
         return new Types\Uint16($int, TypeInterface::BE);
     }
@@ -121,7 +121,7 @@ if (!function_exists('uint16le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint16le($int = 0) : TypeInterface
+    function uint16le($int = 0): TypeInterface
     {
         return new Types\Uint16($int, TypeInterface::LE);
     }
@@ -133,7 +133,7 @@ if (!function_exists('int16')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int16($int = 0) : TypeInterface
+    function int16($int = 0): TypeInterface
     {
         return new Types\Int16($int, TypeInterface::BE);
     }
@@ -145,7 +145,7 @@ if (!function_exists('int16le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int16le($int = 0) : TypeInterface
+    function int16le($int = 0): TypeInterface
     {
         return new Types\Int16($int, TypeInterface::LE);
     }
@@ -157,7 +157,7 @@ if (!function_exists('uint32')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint32($int = 0) : TypeInterface
+    function uint32($int = 0): TypeInterface
     {
         return new Types\Uint32($int, TypeInterface::BE);
     }
@@ -169,7 +169,7 @@ if (!function_exists('uint32le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint32le($int = 0) : TypeInterface
+    function uint32le($int = 0): TypeInterface
     {
         return new Types\Uint32($int, TypeInterface::LE);
     }
@@ -181,7 +181,7 @@ if (!function_exists('int32')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int32($int = 0) : TypeInterface
+    function int32($int = 0): TypeInterface
     {
         return new Types\Int32($int, TypeInterface::BE);
     }
@@ -193,7 +193,7 @@ if (!function_exists('int32le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int32le($int = 0) : TypeInterface
+    function int32le($int = 0): TypeInterface
     {
         return new Types\Int32($int, TypeInterface::LE);
     }
@@ -205,7 +205,7 @@ if (!function_exists('uint64')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint64($int = 0) : TypeInterface
+    function uint64($int = 0): TypeInterface
     {
         return new Types\Uint64($int, TypeInterface::BE);
     }
@@ -217,7 +217,7 @@ if (!function_exists('uint64le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function uint64le($int = 0) : TypeInterface
+    function uint64le($int = 0): TypeInterface
     {
         return new Types\Uint64($int, TypeInterface::LE);
     }
@@ -229,7 +229,7 @@ if (!function_exists('int64')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int64($int = 0) : TypeInterface
+    function int64($int = 0): TypeInterface
     {
         return new Types\Int64($int, TypeInterface::BE);
     }
@@ -241,7 +241,7 @@ if (!function_exists('int64le')) {
      *
      * @return \Denpa\Levin\Types\TypeInterface
      */
-    function int64le($int = 0) : TypeInterface
+    function int64le($int = 0): TypeInterface
     {
         return new Types\Int64($int, TypeInterface::LE);
     }
@@ -253,7 +253,7 @@ if (!function_exists('section')) {
      *
      * @return \Denpa\Levin\Section\Section
      */
-    function section(array $section = []) : Section
+    function section(array $section = []): Section
     {
         return new Section($section);
     }
@@ -268,7 +268,7 @@ if (!function_exists('request')) {
      *
      * @return \Denpa\Levin\Bucket
      */
-    function request(string $command, array $args = []) : Bucket
+    function request(string $command, array $args = []): Bucket
     {
         return (new Bucket())->request((new CommandFactory())->$command($args));
     }
@@ -283,7 +283,7 @@ if (!function_exists('response')) {
      *
      * @return \Denpa\Levin\Bucket
      */
-    function response(string $command, array $args = []) : Bucket
+    function response(string $command, array $args = []): Bucket
     {
         return (new Bucket())->response((new CommandFactory())->$command($args));
     }
@@ -298,7 +298,7 @@ if (!function_exists('notification')) {
      *
      * @return \Denpa\Levin\Bucket
      */
-    function notification(string $command, array $args = []) : Bucket
+    function notification(string $command, array $args = []): Bucket
     {
         return (new Bucket())->notification((new CommandFactory())->$command($args));
     }
@@ -314,7 +314,7 @@ if (!function_exists('connection')) {
      *
      * @return \Denpa\Levin\ConnectionInterface
      */
-    function connection(string $address, $port, array $vars = []) : ConnectionInterface
+    function connection(string $address, $port, array $vars = []): ConnectionInterface
     {
         $connection = new Connection($address, $port);
         $connection->write(request('handshake', $vars));
@@ -329,7 +329,7 @@ if (!function_exists('camel_case')) {
      *
      * @return string
      */
-    function camel_case(string $string) : string
+    function camel_case(string $string): string
     {
         $string = str_replace('_', ' ', ltrim(snake_case($string), '_'));
 
@@ -347,7 +347,7 @@ if (!function_exists('snake_case')) {
      *
      * @link https://stackoverflow.com/a/35719689/10405250 Answer on StackOverflow.
      */
-    function snake_case(string $string) : string
+    function snake_case(string $string): string
     {
         $string = preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string);
 
@@ -363,7 +363,7 @@ if (!function_exists('classname')) {
      *
      * @return string
      */
-    function classname(string $class) : string
+    function classname(string $class): string
     {
         return basename(str_replace('\\', DIRECTORY_SEPARATOR, trim($class)));
     }
@@ -377,7 +377,7 @@ if (!function_exists('peer_id')) {
      *
      * @return \Denpa\Levin\Types\Uint64
      */
-    function peer_id(string $prefix = '') : Types\Uint64
+    function peer_id(string $prefix = ''): Types\Uint64
     {
         static $peerId = [];
 

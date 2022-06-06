@@ -17,7 +17,7 @@ class TimedSyncTest extends RequestTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap([
             'payload_data' => [
@@ -32,7 +32,7 @@ class TimedSyncTest extends RequestTest
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $this->assertResponseMap([
             'local_time'   => Levin\uint64le(),
@@ -50,7 +50,7 @@ class TimedSyncTest extends RequestTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(2);
     }
@@ -58,7 +58,7 @@ class TimedSyncTest extends RequestTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'cumulative_difficulty' => 1,

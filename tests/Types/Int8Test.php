@@ -13,7 +13,7 @@ class Int8Test extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_INT8, (new Int8())->getSerializeType()->toInt());
     }
@@ -21,7 +21,7 @@ class Int8Test extends TestCase
     /**
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->assertEquals("\x01", (new Int8(1))->toBinary());
     }

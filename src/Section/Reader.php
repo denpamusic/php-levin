@@ -57,7 +57,7 @@ class Reader
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function read() : Section
+    public function read(): Section
     {
         $signatures = [
             $this->connection->read(new Uint32()),
@@ -77,7 +77,7 @@ class Reader
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    protected function readSection() : Section
+    protected function readSection(): Section
     {
         $section = Levin\section();
 
@@ -94,7 +94,7 @@ class Reader
     /**
      * @return string
      */
-    protected function readName() : string
+    protected function readName(): string
     {
         $length = $this->connection->read(new Uint8());
 
@@ -104,7 +104,7 @@ class Reader
     /**
      * @return \Denpa\Levin\Types\BoostSerializable
      */
-    protected function loadEntries() : BoostSerializable
+    protected function loadEntries(): BoostSerializable
     {
         $type = $this->connection->read(new Uint8())->toInt();
 
@@ -122,7 +122,7 @@ class Reader
     /**
      * @return \Denpa\Levin\Types\Bytearray
      */
-    protected function readEntryArrayEntry() : Bytearray
+    protected function readEntryArrayEntry(): Bytearray
     {
         $type = $this->connection->read(new Uint8())->toInt();
 
@@ -138,7 +138,7 @@ class Reader
      *
      * @return \Denpa\Levin\Types\Bytearray
      */
-    protected function readArrayEntry(int $type) : Bytearray
+    protected function readArrayEntry(int $type): Bytearray
     {
         $result = [];
         $type &= ~Section::SERIALIZE_FLAG_ARRAY;
@@ -157,7 +157,7 @@ class Reader
      *
      * @return \Denpa\Levin\Types\BoostSerializable
      */
-    protected function readValue(int $type) : BoostSerializable
+    protected function readValue(int $type): BoostSerializable
     {
         if (!array_key_exists($type, $this->types)) {
             throw new UnexpectedTypeException(

@@ -17,7 +17,7 @@ class ConsoleTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class ConsoleTest extends TestCase
     /**
      * @return void
      */
-    public function tearDown() : void
+    public function tearDown(): void
     {
         parent::tearDown();
 
@@ -49,7 +49,7 @@ class ConsoleTest extends TestCase
         string $expect,
         string $message,
         ...$args
-    ) : void {
+    ): void {
         $this->console->line($message, ...$args);
 
         $this->assertConsoleTargetContains('STDOUT', $expect);
@@ -63,7 +63,7 @@ class ConsoleTest extends TestCase
      *
      * @dataProvider objectProvider
      */
-    public function testDump($expect, $object) : void
+    public function testDump($expect, $object): void
     {
         $this->console->dump($object);
 
@@ -73,7 +73,7 @@ class ConsoleTest extends TestCase
     /**
      * @return array
      */
-    public function objectProvider() : array
+    public function objectProvider(): array
     {
         return [
             [1, 1],
@@ -92,7 +92,7 @@ class ConsoleTest extends TestCase
     /**
      * @return void
      */
-    public function testStartBlock() : void
+    public function testStartBlock(): void
     {
         $this->console->startBlock()->indent()->line('foo');
         $this->assertConsoleTargetEquals('STDOUT', '  foo');
@@ -101,7 +101,7 @@ class ConsoleTest extends TestCase
     /**
      * @return void
      */
-    public function testEndBlock() : void
+    public function testEndBlock(): void
     {
         $this->console->startBlock()->endBlock()->indent()->line('foo');
         $this->assertConsoleTargetEquals('STDOUT', 'foo');
@@ -110,7 +110,7 @@ class ConsoleTest extends TestCase
     /**
      * @return void
      */
-    public function testEol() : void
+    public function testEol(): void
     {
         $this->console->eol();
         $this->assertConsoleTargetEquals('STDOUT', PHP_EOL);
@@ -119,7 +119,7 @@ class ConsoleTest extends TestCase
     /**
      * @return array
      */
-    public function messageProvider() : array
+    public function messageProvider(): array
     {
         return [
             ['foo', 'foo'],
@@ -151,7 +151,7 @@ class ConsoleTest extends TestCase
      *
      * @return string
      */
-    protected function getConsoleTargetContents(string $target) : string
+    protected function getConsoleTargetContents(string $target): string
     {
         $buffer = '';
         $mock = $this->getMockForConsoleTarget(strtoupper($target));
@@ -171,7 +171,7 @@ class ConsoleTest extends TestCase
      *
      * @return void
      */
-    protected function assertConsoleTargetEquals(string $target, $expect) : void
+    protected function assertConsoleTargetEquals(string $target, $expect): void
     {
         $this->assertEquals($expect, $this->getConsoleTargetContents($target));
     }
@@ -182,7 +182,7 @@ class ConsoleTest extends TestCase
      *
      * @return void
      */
-    protected function assertConsoleTargetContains(string $target, $expect) : void
+    protected function assertConsoleTargetContains(string $target, $expect): void
     {
         $contents = $this->getConsoleTargetContents($target);
 

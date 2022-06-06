@@ -13,7 +13,7 @@ class NewBlock extends Command implements NotificationInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section
+    public function request(): Section
     {
         return Levin\section([
             'b'                         => Levin\bytestring($this->block),
@@ -24,7 +24,7 @@ class NewBlock extends Command implements NotificationInterface
     /**
      * @return array
      */
-    protected function defaultVars() : array
+    protected function defaultVars(): array
     {
         return [
             'block'                     => '',
@@ -35,7 +35,7 @@ class NewBlock extends Command implements NotificationInterface
     /**
      * @return int
      */
-    public function getCommandCode() : int
+    public function getCommandCode(): int
     {
         return self::BC_COMMANDS_POOL_BASE + 1;
     }

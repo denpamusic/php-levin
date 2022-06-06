@@ -15,7 +15,7 @@ class InteractsWithConsoleTest extends ConsoleTest
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class InteractsWithConsoleTest extends ConsoleTest
     /**
      * @return void
      */
-    public function testConsole() : void
+    public function testConsole(): void
     {
         $this->console = null;
 
@@ -48,7 +48,7 @@ class InteractsWithConsoleTest extends ConsoleTest
         string $expect,
         string $message,
         ...$args
-    ) : void {
+    ): void {
         $this->console($message, ...$args);
 
         $this->assertConsoleTargetContains('STDOUT', $expect);

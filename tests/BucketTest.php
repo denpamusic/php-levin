@@ -29,7 +29,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -49,7 +49,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testIsRequest() : void
+    public function testIsRequest(): void
     {
         $handshake = new Handshake();
         $request = (new Bucket())->request($handshake);
@@ -65,7 +65,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testIsResponse() : void
+    public function testIsResponse(): void
     {
         $handshake = new Handshake();
         $response = (new Bucket())->response($handshake);
@@ -81,7 +81,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testIs() : void
+    public function testIs(): void
     {
         $handshake = new Handshake();
         $bucket = (new Bucket())->fill($handshake);
@@ -92,7 +92,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testIsWithMultipleArgs() : void
+    public function testIsWithMultipleArgs(): void
     {
         $handshake = new Handshake();
         $bucket = (new Bucket())->fill($handshake);
@@ -104,7 +104,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetSignature() : void
+    public function testSetSignature(): void
     {
         $this->bucket->setSignature(Bucket::LEVIN_SIGNATURE);
         $this->assertInstanceOf(Uint64::class, $this->bucket->getSignature());
@@ -114,7 +114,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetSignatureWithUint() : void
+    public function testSetSignatureWithUint(): void
     {
         $uint64 = new Uint64(Bucket::LEVIN_SIGNATURE, Uint64::LE);
         $this->bucket->setSignature($uint64);
@@ -125,7 +125,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetSignatureWithMismatch() : void
+    public function testSetSignatureWithMismatch(): void
     {
         $this->expectException(SignatureMismatchException::class);
         $this->expectExceptionMessage('Packet signature mismatch');
@@ -135,7 +135,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetCb() : void
+    public function testSetCb(): void
     {
         $this->bucket->setCb(100);
         $this->assertInstanceOf(Uint64::class, $this->bucket->getCb());
@@ -145,7 +145,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetCbWithUint() : void
+    public function testSetCbWithUint(): void
     {
         $uint64 = new Uint64(100, Uint64::LE);
         $this->bucket->setCb($uint64);
@@ -156,7 +156,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetCbMaxSize() : void
+    public function testSetCbMaxSize(): void
     {
         $maxsize = Bucket::LEVIN_DEFAULT_MAX_PACKET_SIZE;
         $this->expectException(EntryTooLargeException::class);
@@ -167,7 +167,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetReturnData() : void
+    public function testSetReturnData(): void
     {
         $this->bucket->setReturnData(false);
         $this->assertInstanceOf(Boolean::class, $this->bucket->getReturnData());
@@ -177,7 +177,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetReturnDataWithUint() : void
+    public function testSetReturnDataWithUint(): void
     {
         $boolean = new Boolean(false);
         $this->bucket->setReturnData($boolean);
@@ -188,7 +188,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetCommand() : void
+    public function testSetCommand(): void
     {
         $this->bucket->setCommand(RequestInterface::P2P_COMMANDS_POOL_BASE + 1);
         $this->assertInstanceOf(RequestInterface::class, $this->bucket->getCommand());
@@ -209,7 +209,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testGetCommand() : void
+    public function testGetCommand(): void
     {
         $this->assertNull($this->bucket->getCommand());
         $this->bucket->setCommand(RequestInterface::P2P_COMMANDS_POOL_BASE + 1);
@@ -219,7 +219,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testFill() : void
+    public function testFill(): void
     {
         $handshake = new Handshake();
         $this->bucket->fill($handshake);
@@ -230,7 +230,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetReturnCode() : void
+    public function testSetReturnCode(): void
     {
         $this->bucket->setReturnCode(0);
         $this->assertInstanceOf(Int32::class, $this->bucket->getReturnCode());
@@ -240,7 +240,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetReturnCodeWithInt() : void
+    public function testSetReturnCodeWithInt(): void
     {
         $int32 = new Int32(0, Int32::LE);
         $this->bucket->setReturnCode($int32);
@@ -251,7 +251,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetFlags() : void
+    public function testSetFlags(): void
     {
         $this->bucket->setFlags(Bucket::LEVIN_PACKET_REQUEST);
         $this->assertInstanceOf(Uint32::class, $this->bucket->getFlags());
@@ -261,7 +261,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetFlagsWithUint() : void
+    public function testSetFlagsWithUint(): void
     {
         $uint32 = new Uint32(Bucket::LEVIN_PACKET_REQUEST, Uint32::LE);
         $this->bucket->setFlags($uint32);
@@ -272,7 +272,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetProtocolVersion() : void
+    public function testSetProtocolVersion(): void
     {
         $this->bucket->setProtocolVersion(Bucket::LEVIN_PROTOCOL_VER_1);
         $this->assertInstanceOf(Uint32::class, $this->bucket->getProtocolVersion());
@@ -282,7 +282,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetProtocolVersionWithUint() : void
+    public function testSetProtocolVersionWithUint(): void
     {
         $uint32 = new Uint32(Bucket::LEVIN_PROTOCOL_VER_1, Uint32::LE);
         $this->bucket->setProtocolVersion($uint32);
@@ -293,7 +293,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testSetPayload() : void
+    public function testSetPayload(): void
     {
         $section = new Section(['foo' => new Uint32(0, Uint32::LE)]);
         $this->bucket->setPayload($section);
@@ -303,7 +303,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testGetHead() : void
+    public function testGetHead(): void
     {
         $handshake = new Handshake();
         $this->bucket->fill($handshake);
@@ -323,7 +323,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testHeadWithNotAllValuesSet() : void
+    public function testHeadWithNotAllValuesSet(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Value for [command] must be set');
@@ -333,7 +333,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testPayload() : void
+    public function testPayload(): void
     {
         $handshake = new Handshake();
         $this->bucket->fill($handshake);
@@ -343,7 +343,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $handshake = new Handshake();
         $request = (new Bucket())->request($handshake);
@@ -355,7 +355,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $handshake = new Handshake();
         $response = (new Bucket())->response($handshake);
@@ -367,7 +367,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testNotification() : void
+    public function testNotification(): void
     {
         $requestChain = new RequestChain();
         $notification = (new Bucket())->notification($requestChain);
@@ -380,7 +380,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testWrite() : void
+    public function testWrite(): void
     {
         $handshake = new Handshake();
         $this->bucket->fill($handshake);
@@ -399,7 +399,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testRead() : void
+    public function testRead(): void
     {
         $section = Levin\section();
         $signatures = $section->getSignatures();
@@ -452,7 +452,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testReadWithConnectionTerminated() : void
+    public function testReadWithConnectionTerminated(): void
     {
         $connection = $this->createMock(Connection::class);
 
@@ -468,7 +468,7 @@ class BucketTest extends TestCase
     /**
      * @return void
      */
-    public function testMagicWithUnknownMethod() : void
+    public function testMagicWithUnknownMethod(): void
     {
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Method [nonExistent] does not exist');
