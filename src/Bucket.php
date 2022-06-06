@@ -417,7 +417,7 @@ class Bucket implements BucketInterface
      *
      * @return mixed
      */
-    public function __call(string $method, array $args = [])
+    public function __call(string $method, array $args = []): mixed
     {
         if (substr($method, 0, 3) == 'get') {
             $variable = camel_case(substr($method, 3));

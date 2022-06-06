@@ -68,7 +68,7 @@ class Console
         fwrite(
             $this->target,
             $message === '' ?
-                PHP_EOL : $this->colorize(sprintf($message, ...$args))
+                PHP_EOL : $this->colorize(sprintf((string) $message, ...$args))
         );
 
         return $this;
@@ -377,7 +377,7 @@ class Console
      */
     protected function normalizeKeyLength($arrayable): int
     {
-        $keys = method_exists($arrayable, 'keys') ?
+        $keys = (is_object($arrayable) && method_exists($arrayable, 'keys')) ?
             $arrayable->keys() : array_keys($arrayable);
 
         return count($keys) == 0 ? 0 : max(array_map('strlen', $keys)) + 2;

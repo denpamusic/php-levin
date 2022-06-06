@@ -102,7 +102,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }

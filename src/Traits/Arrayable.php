@@ -44,7 +44,7 @@ trait Arrayable
      *
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->entries[$offset] ?? null;
     }

@@ -30,7 +30,7 @@ abstract class Command implements CommandInterface
      *
      * @return mixed
      */
-    public function __get(string $name)
+    public function __get(string $name): mixed
     {
         return $this->vars[$name] ?? null;
     }

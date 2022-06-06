@@ -84,13 +84,13 @@ class Connection implements ConnectionInterface
      *
      * @return mixed
      */
-    public function read($object = null)
+    public function read($object = null): mixed
     {
         if (is_null($object)) {
             $object = new Bucket();
         }
 
-        if (method_exists($object, 'read')) {
+        if (is_object($object) && method_exists($object, 'read')) {
             return $object->read($this);
         }
 
@@ -183,7 +183,7 @@ class Connection implements ConnectionInterface
      * @param callable|null            $success
      * @param \Denpa\Levin\Bucket|null $bucket
      *
-     * @return mixed
+     * @return mixed|void
      */
     protected function onSuccess(?callable $success, ?Bucket $bucket)
     {

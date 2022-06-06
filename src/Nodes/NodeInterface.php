@@ -35,7 +35,7 @@ interface NodeInterface
      * @param \Denpa\Levin\Bucket     $bucket
      * @param \Denpa\Levin\Connection $connection
      *
-     * @return mixed
+     * @return mixed|void
      */
     public function handle(Bucket $bucket, Connection $connection);
 

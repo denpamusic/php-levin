@@ -47,7 +47,7 @@ interface BucketInterface
      *
      * @return mixed
      */
-    public function read(Connection $connection);
+    public function read(Connection $connection): mixed;
 
     /**
      * Creates request bucket.

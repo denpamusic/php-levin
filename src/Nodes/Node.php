@@ -56,7 +56,7 @@ abstract class Node implements NodeInterface
      * @param \Denpa\Levin\Bucket     $bucket
      * @param \Denpa\Levin\Connection $connection
      *
-     * @return mixed
+     * @return mixed|void
      */
     public function handle(Bucket $bucket, Connection $connection)
     {
@@ -80,7 +80,7 @@ abstract class Node implements NodeInterface
      *
      * @return mixed
      */
-    public function __invoke(Bucket $bucket, Connection $connection)
+    public function __invoke(Bucket $bucket, Connection $connection): mixed
     {
         return $this->handle($bucket, $connection);
     }

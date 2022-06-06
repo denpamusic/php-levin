@@ -78,7 +78,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    public function handle(Bucket $bucket, Connection $connection)
+    public function handle(Bucket $bucket, Connection $connection): mixed
     {
         $this->printBucket($bucket, 'in');
 
@@ -126,7 +126,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function peerlistHandler($bucket)
+    protected function peerlistHandler(Bucket $bucket): mixed
     {
         $peers = $bucket->getPayload()['local_peerlist_new'] ?? [];
 
@@ -156,7 +156,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function payloadDataHandler($bucket)
+    protected function payloadDataHandler(Bucket $bucket): mixed
     {
         $payloadData = $bucket->getPayload()['payload_data'];
 
@@ -186,7 +186,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function requestChainHandler($bucket, $connection)
+    protected function requestChainHandler(Bucket $bucket, Connection $connection): mixed
     {
         $responsechainentry = Levin\notification('responsechainentry', [
             'start_height'          => $this->height - 1,
@@ -207,7 +207,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function responseHandler($bucket, $connection)
+    protected function responseHandler(Bucket $bucket, Connection $connection): mixed
     {
         $this->write($bucket->response(), $connection);
     }
@@ -220,7 +220,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function timedSyncHandler($bucket, $connection)
+    protected function timedSyncHandler(Bucket $bucket, Connection $connection): mixed
     {
         $payloadData = $bucket->getPayload()['payload_data'];
 
@@ -241,7 +241,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function newBlockHandler($bucket)
+    protected function newBlockHandler(Bucket $bucket): mixed
     {
         $payload = $bucket->getPayload();
 
@@ -262,7 +262,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function newTransactionsHandler($bucket): void
+    protected function newTransactionsHandler(Bucket $bucket): void
     {
         $txs = $bucket->getPayload()['txs'] ?? [];
 
@@ -286,7 +286,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function sendPingHandler($bucket, $connection)
+    protected function sendPingHandler(Bucket $bucket, $connection)
     {
         $this->write(Levin\request('ping'), $connection);
     }
@@ -298,7 +298,7 @@ class DummyNode extends Node
      *
      * @return mixed
      */
-    protected function recvPingHandler($bucket)
+    protected function recvPingHandler(Bucket $bucket): mixed
     {
         $status = $bucket->getPayload()['status'] ?? 'FAIL';
 
