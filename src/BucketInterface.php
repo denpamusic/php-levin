@@ -38,7 +38,7 @@ interface BucketInterface
      *
      * @return void
      */
-    public function write(Connection $connection) : void;
+    public function write(Connection $connection): void;
 
     /**
      * Read bucket from the connection.

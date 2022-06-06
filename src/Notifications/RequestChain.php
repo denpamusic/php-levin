@@ -13,7 +13,7 @@ class RequestChain extends Command implements NotificationInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section
+    public function request(): Section
     {
         return Levin\section([
             'block_ids' => Levin\bytestring($this->block_ids),
@@ -23,7 +23,7 @@ class RequestChain extends Command implements NotificationInterface
     /**
      * @return array
      */
-    protected function defaultVars() : array
+    protected function defaultVars(): array
     {
         return [
             'block_ids' => '',
@@ -33,7 +33,7 @@ class RequestChain extends Command implements NotificationInterface
     /**
      * @return int
      */
-    public function getCommandCode() : int
+    public function getCommandCode(): int
     {
         return self::BC_COMMANDS_POOL_BASE + 6;
     }

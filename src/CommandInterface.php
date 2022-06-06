@@ -13,12 +13,12 @@ interface CommandInterface
      *
      * @return \Denpa\Levin\Types\Uint32
      */
-    public function getCommand() : Uint32;
+    public function getCommand(): Uint32;
 
     /**
      * Gets command as an interger.
      *
      * @return int
      */
-    public function getCommandCode() : int;
+    public function getCommandCode(): int;
 }

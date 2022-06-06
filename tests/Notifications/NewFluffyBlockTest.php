@@ -17,7 +17,7 @@ class NewFluffyBlockTest extends NotificationTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap([
             'b'                         => Levin\bytestring(),
@@ -28,7 +28,7 @@ class NewFluffyBlockTest extends NotificationTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(8);
     }
@@ -36,7 +36,7 @@ class NewFluffyBlockTest extends NotificationTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'block'                     => '',

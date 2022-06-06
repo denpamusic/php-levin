@@ -20,7 +20,7 @@ class VarintTest extends TestCase
      *
      * @dataProvider intProvider
      */
-    public function testToBinary(int $int, string $expect) : void
+    public function testToBinary(int $int, string $expect): void
     {
         $this->assertEquals($expect, (new Varint($int))->toHex());
     }
@@ -28,7 +28,7 @@ class VarintTest extends TestCase
     /**
      * @return void
      */
-    public function testToBinaryTooLarge() : void
+    public function testToBinaryTooLarge(): void
     {
         $this->expectException(EntryTooLargeException::class);
         $this->expectExceptionMessage('VarInt is too large [> 4611686018427387903]');
@@ -50,7 +50,7 @@ class VarintTest extends TestCase
         ?int $second,
         string $bytes,
         int $expect
-    ) : void {
+    ): void {
         $connection = $this->createMock(Connection::class);
 
         $connection->expects($this->once())
@@ -72,7 +72,7 @@ class VarintTest extends TestCase
     /**
      * @return void
      */
-    public function testGetTypeCode() : void
+    public function testGetTypeCode(): void
     {
         $this->assertEquals((new FakeVarInt())->getTypeCode(), '');
     }
@@ -80,7 +80,7 @@ class VarintTest extends TestCase
     /**
      * @return array
      */
-    public function bytesProvider() : array
+    public function bytesProvider(): array
     {
         return [
             [0x00, null, '', 0],
@@ -93,7 +93,7 @@ class VarintTest extends TestCase
     /**
      * @return array
      */
-    public function intProvider() : array
+    public function intProvider(): array
     {
         return [
             [62, 'f8'],
@@ -106,7 +106,7 @@ class VarintTest extends TestCase
 
 class FakeVarInt extends Varint
 {
-    public function getTypeCode() : string
+    public function getTypeCode(): string
     {
         return parent::getTypeCode();
     }

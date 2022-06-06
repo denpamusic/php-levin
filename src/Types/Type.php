@@ -46,7 +46,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return bool
      */
-    public function isBigEndian() : bool
+    public function isBigEndian(): bool
     {
         return (bool) $this->endianness;
     }
@@ -54,7 +54,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return string
      */
-    public function toBinary() : string
+    public function toBinary(): string
     {
         return pack($this->getTypeCode(), $this->value);
     }
@@ -62,7 +62,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return string
      */
-    public function toHex() : string
+    public function toHex(): string
     {
         return bin2hex($this->toBinary());
     }
@@ -70,7 +70,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return int
      */
-    public function toInt() : int
+    public function toInt(): int
     {
         return (int) $this->value;
     }
@@ -78,7 +78,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->toBinary();
     }
@@ -86,7 +86,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return int
      */
-    public function getByteSize() : int
+    public function getByteSize(): int
     {
         return strlen($this->toBinary());
     }
@@ -94,7 +94,7 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return int
      */
-    public function count() : int
+    public function count(): int
     {
         return $this->getByteSize();
     }
@@ -112,7 +112,7 @@ abstract class Type implements TypeInterface, Countable
      *
      * @return self
      */
-    public function or($value) : self
+    public function or($value): self
     {
         $type = clone $this;
         $type->value |= $value instanceof self ? $value->toInt() : $value;
@@ -125,7 +125,7 @@ abstract class Type implements TypeInterface, Countable
      *
      * @return self
      */
-    public function and($value) : self
+    public function and($value): self
     {
         $type = clone $this;
         $type->value &= $value instanceof self ? $value->toInt() : $value;
@@ -136,5 +136,5 @@ abstract class Type implements TypeInterface, Countable
     /**
      * @return string
      */
-    abstract protected function getTypeCode() : string;
+    abstract protected function getTypeCode(): string;
 }

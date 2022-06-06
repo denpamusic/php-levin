@@ -57,7 +57,7 @@ class Section implements
      *
      * @return self
      */
-    public function add(string $key, BoostSerializable $value) : self
+    public function add(string $key, BoostSerializable $value): self
     {
         $this->entries[$key] = $value;
 
@@ -67,7 +67,7 @@ class Section implements
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Uint8
+    public function getSerializeType(): Uint8
     {
         return new Uint8(self::SERIALIZE_TYPE_OBJECT);
     }
@@ -75,7 +75,7 @@ class Section implements
     /**
      * @return array
      */
-    public function getSignatures() : array
+    public function getSignatures(): array
     {
         return $this->signatures;
     }
@@ -83,7 +83,7 @@ class Section implements
     /**
      * @return string
      */
-    public function toBinary() : string
+    public function toBinary(): string
     {
         $result = implode('', $this->signatures);
         $result .= Levin\varint(count($this));
@@ -95,7 +95,7 @@ class Section implements
     /**
      * @return string
      */
-    public function toHex() : string
+    public function toHex(): string
     {
         return bin2hex($this->toBinary());
     }
@@ -103,7 +103,7 @@ class Section implements
     /**
      * @return int
      */
-    public function getByteSize() : int
+    public function getByteSize(): int
     {
         return strlen($this->toBinary());
     }
@@ -111,7 +111,7 @@ class Section implements
     /**
      * @return int
      */
-    public function getInternalByteSize() : int
+    public function getInternalByteSize(): int
     {
         return strlen($this->serialize());
     }
@@ -119,7 +119,7 @@ class Section implements
     /**
      * @return array
      */
-    public function getEntries() : array
+    public function getEntries(): array
     {
         return $this->entries;
     }
@@ -127,7 +127,7 @@ class Section implements
     /**
      * @return string
      */
-    public function serialize() : string
+    public function serialize(): string
     {
         $result = '';
 
@@ -155,7 +155,7 @@ class Section implements
     /**
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->serialize();
     }

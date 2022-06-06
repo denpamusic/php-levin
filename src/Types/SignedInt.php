@@ -9,7 +9,7 @@ abstract class SignedInt extends Type
     /**
      * @return int
      */
-    public function machineEndianness() : int
+    public function machineEndianness(): int
     {
         return (int) (!unpack('S', "\x01\x00")[1] === 1);
     }
@@ -17,7 +17,7 @@ abstract class SignedInt extends Type
     /**
      * @return string
      */
-    public function toBinary() : string
+    public function toBinary(): string
     {
         $endian = $this->machineEndianness() == self::BE ?
             $this->isBigEndian() : !$this->isBigEndian();

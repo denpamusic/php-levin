@@ -54,7 +54,7 @@ class Bytearray implements
      *
      * @return void
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         $this->validate($value);
         $this->entries[] = $value;
@@ -63,7 +63,7 @@ class Bytearray implements
     /**
      * @return bool
      */
-    public function isBigEndian() : bool
+    public function isBigEndian(): bool
     {
         return false;
     }
@@ -71,7 +71,7 @@ class Bytearray implements
     /**
      * @return int
      */
-    public function getByteSize() : int
+    public function getByteSize(): int
     {
         return strlen($this->toBinary());
     }
@@ -79,7 +79,7 @@ class Bytearray implements
     /**
      * @return string
      */
-    public function toHex() : string
+    public function toHex(): string
     {
         return bin2hex($this->toBinary());
     }
@@ -87,7 +87,7 @@ class Bytearray implements
     /**
      * @return string
      */
-    public function toBinary() : string
+    public function toBinary(): string
     {
         $result = '';
 
@@ -107,7 +107,7 @@ class Bytearray implements
     /**
      * @return string
      */
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->toBinary();
     }
@@ -115,7 +115,7 @@ class Bytearray implements
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
-    public function getType() : Uint8
+    public function getType(): Uint8
     {
         return $this->type;
     }
@@ -123,7 +123,7 @@ class Bytearray implements
     /**
      * @return \Denpa\Levin\Types\Uint8
      */
-    public function getSerializeType() : Uint8
+    public function getSerializeType(): Uint8
     {
         if (is_null($this->type)) {
             return new Uint8(BoostSerializable::SERIALIZE_TYPE_ARRAY);
@@ -137,7 +137,7 @@ class Bytearray implements
      *
      * @return void
      */
-    protected function validate($value) : void
+    protected function validate($value): void
     {
         if (!$value instanceof BoostSerializable) {
             throw new UnexpectedTypeException(

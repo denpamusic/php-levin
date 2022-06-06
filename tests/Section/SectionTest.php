@@ -17,7 +17,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -33,7 +33,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testAdd() : void
+    public function testAdd(): void
     {
         $this->section->add('test', new Uint32(1));
         $this->assertEquals(1, $this->section['test']->toInt());
@@ -42,7 +42,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $this->assertEquals($this->section->getSerializeType()->toInt(), Section::SERIALIZE_TYPE_OBJECT);
     }
@@ -50,7 +50,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testGetSignatures() : void
+    public function testGetSignatures(): void
     {
         $signatures = $this->section->getSignatures();
 
@@ -62,7 +62,7 @@ class SectionTest extends TestCase
      *
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->section->add('test', new Bytestring('foo'));
         $binary = $this->section->toBinary();
@@ -100,7 +100,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testToBinaryWithInvalidData() : void
+    public function testToBinaryWithInvalidData(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Cannot serialize unserializable item [test]');
@@ -111,7 +111,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testToHex() : void
+    public function testToHex(): void
     {
         $this->assertEquals(bin2hex($this->section->toBinary()), $this->section->toHex());
     }
@@ -119,7 +119,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testGetByteSize() : void
+    public function testGetByteSize(): void
     {
         $this->assertEquals(strlen($this->section->toBinary()), $this->section->getByteSize());
     }
@@ -127,7 +127,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testGetInternalByteSize() : void
+    public function testGetInternalByteSize(): void
     {
         $this->assertEquals(strlen($this->section->serialize()), $this->section->getInternalByteSize());
     }
@@ -135,7 +135,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testGetEntries() : void
+    public function testGetEntries(): void
     {
         $uint32 = new Uint32(1);
         $this->section->add('test', $uint32);
@@ -146,7 +146,7 @@ class SectionTest extends TestCase
     /**
      * @return void
      */
-    public function testToString() : void
+    public function testToString(): void
     {
         $this->assertEquals($this->section->serialize(), (string) $this->section);
     }

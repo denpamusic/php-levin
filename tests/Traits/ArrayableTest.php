@@ -13,7 +13,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->array = $this->getMockForTrait(Arrayable::class);
         $this->array->offsetSet('foo', 'bar');
@@ -22,7 +22,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function testOffsetSetGet() : void
+    public function testOffsetSetGet(): void
     {
         $this->assertEquals('bar', $this->array->offsetGet('foo'));
     }
@@ -30,7 +30,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function testOffsetExists() : void
+    public function testOffsetExists(): void
     {
         $this->assertTrue($this->array->offsetExists('foo'));
         $this->assertFalse($this->array->offsetExists('nonexistent'));
@@ -39,7 +39,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function testOffsetUnset() : void
+    public function testOffsetUnset(): void
     {
         $this->array->offsetUnset('foo');
         $this->assertFalse($this->array->offsetExists('foo'));
@@ -48,7 +48,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function testCount() : void
+    public function testCount(): void
     {
         $this->assertEquals(1, $this->array->count());
         $this->array->offsetSet('bar', 'baz');
@@ -58,7 +58,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function testKeys() : void
+    public function testKeys(): void
     {
         $this->array->offsetSet('bar', 'baz');
         $this->assertEquals(['foo', 'bar'], $this->array->keys());
@@ -67,7 +67,7 @@ class ArrayableTest extends TestCase
     /**
      * @return void
      */
-    public function testGetIterator() : void
+    public function testGetIterator(): void
     {
         $this->assertInstanceOf(ArrayIterator::class, $this->array->getIterator());
         $this->assertEquals('bar', $this->array->getIterator()->current());

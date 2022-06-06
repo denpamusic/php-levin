@@ -13,7 +13,7 @@ class BooleanTest extends TestCase
     /**
      * @return void
      */
-    public function testGetSerializeType() : void
+    public function testGetSerializeType(): void
     {
         $this->assertEquals(BoostSerializable::SERIALIZE_TYPE_BOOL, (new Boolean())->getSerializeType()->toInt());
     }
@@ -21,7 +21,7 @@ class BooleanTest extends TestCase
     /**
      * @return void
      */
-    public function testToBinary() : void
+    public function testToBinary(): void
     {
         $this->assertEquals("\x00", (new Boolean(false))->toBinary());
         $this->assertEquals("\x01", (new Boolean(true))->toBinary());

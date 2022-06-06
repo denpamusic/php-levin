@@ -16,5 +16,5 @@ interface NotificationInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section;
+    public function request(): Section;
 }

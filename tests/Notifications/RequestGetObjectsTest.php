@@ -16,7 +16,7 @@ class RequestGetObjectsTest extends NotificationTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap();
     }
@@ -24,7 +24,7 @@ class RequestGetObjectsTest extends NotificationTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(3);
     }
@@ -32,7 +32,7 @@ class RequestGetObjectsTest extends NotificationTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars();
     }

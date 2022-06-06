@@ -29,7 +29,7 @@ class CommandFactoryTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->bucket = $this->createMock(Bucket::class);
@@ -44,7 +44,7 @@ class CommandFactoryTest extends TestCase
      *
      * @dataProvider handlerProvider
      */
-    public function testGetCommand(int $command, string $handler) : void
+    public function testGetCommand(int $command, string $handler): void
     {
         $this->assertInstanceOf($handler, $this->commandFactory->getCommand($command));
     }
@@ -52,7 +52,7 @@ class CommandFactoryTest extends TestCase
     /**
      * @return void
      */
-    public function testGetCommandWithUnknown() : void
+    public function testGetCommandWithUnknown(): void
     {
         $this->expectException(UnknownCommandException::class);
         $this->expectExceptionMessage('Unknown command [9999]');
@@ -64,7 +64,7 @@ class CommandFactoryTest extends TestCase
      *
      * @dataProvider helperProvider
      */
-    public function testCommandHelpers(string $helper, string $handler) : void
+    public function testCommandHelpers(string $helper, string $handler): void
     {
         $this->assertInstanceOf($handler, $this->commandFactory->$helper());
     }
@@ -72,7 +72,7 @@ class CommandFactoryTest extends TestCase
     /**
      * @return array
      */
-    public function handlerProvider() : array
+    public function handlerProvider(): array
     {
         return [
             [RequestInterface::P2P_COMMANDS_POOL_BASE + 1, Handshake::class],
@@ -84,7 +84,7 @@ class CommandFactoryTest extends TestCase
     /**
      * @return array
      */
-    public function helperProvider() : array
+    public function helperProvider(): array
     {
         return [
             ['handshake',              Handshake::class],

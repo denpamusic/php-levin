@@ -22,7 +22,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testRead() : void
+    public function testRead(): void
     {
         $this->connection
             ->expects($this->exactly(4))
@@ -58,7 +58,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testReadWithSignatureMismatch() : void
+    public function testReadWithSignatureMismatch(): void
     {
         $this->connection
             ->expects($this->exactly(3))
@@ -83,7 +83,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testGetName() : void
+    public function testGetName(): void
     {
         $this->connection
             ->expects($this->once())
@@ -104,7 +104,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testLoadEntries() : void
+    public function testLoadEntries(): void
     {
         $this->connection
             ->expects($this->exactly(3))
@@ -129,7 +129,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testLoadEntriesWithIncorrectArrayTypeSequence() : void
+    public function testLoadEntriesWithIncorrectArrayTypeSequence(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Incorrect type sequence');
@@ -152,7 +152,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testReadArrayEntry() : void
+    public function testReadArrayEntry(): void
     {
         $this->connection
             ->expects($this->exactly(3))
@@ -179,7 +179,7 @@ class ReaderTest extends TestCase
     /**
      * @return void
      */
-    public function testReadValueWithUnknownType() : void
+    public function testReadValueWithUnknownType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage('Cannot unserialize unknown type [999]');
@@ -190,27 +190,27 @@ class ReaderTest extends TestCase
 
 class FakeReader extends Reader
 {
-    public function readSection() : Section
+    public function readSection(): Section
     {
         return parent::readSection();
     }
 
-    public function readName() : string
+    public function readName(): string
     {
         return parent::readName();
     }
 
-    public function loadEntries() : BoostSerializable
+    public function loadEntries(): BoostSerializable
     {
         return parent::loadEntries();
     }
 
-    public function readArrayEntry(int $type) : Bytearray
+    public function readArrayEntry(int $type): Bytearray
     {
         return parent::readArrayEntry($type);
     }
 
-    public function readValue(int $type) : BoostSerializable
+    public function readValue(int $type): BoostSerializable
     {
         return parent::readValue($type);
     }

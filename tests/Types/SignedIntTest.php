@@ -12,7 +12,7 @@ class SignedIntTest extends TestCase
     /**
      * @return void
      */
-    public function testMachineEndianness() : void
+    public function testMachineEndianness(): void
     {
         $signedint = $this->getMockForAbstractClass(SignedInt::class);
 
@@ -24,7 +24,7 @@ class SignedIntTest extends TestCase
      *
      * @dataProvider binaryProvider
      */
-    public function testToBinary($endianness, $result1, $result2) : void
+    public function testToBinary($endianness, $result1, $result2): void
     {
         $signedint = $this->getMockBuilder(SignedInt::class)
             ->setConstructorArgs([1, $endianness])
@@ -46,7 +46,7 @@ class SignedIntTest extends TestCase
     /**
      * @return array
      */
-    public function binaryProvider() : array
+    public function binaryProvider(): array
     {
         return [
             [SignedInt::LE, '0100', '0001'],

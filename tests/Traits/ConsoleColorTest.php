@@ -15,7 +15,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -25,7 +25,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testColor() : void
+    public function testColor(): void
     {
         $this->color('regular-black');
 
@@ -35,7 +35,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testBackground() : void
+    public function testBackground(): void
     {
         $this->background('black');
 
@@ -55,7 +55,7 @@ class ConsoleColorTest extends TestCase
         string $method,
         string $color = '',
         string $background = ''
-    ) : void {
+    ): void {
         $mock = $this->getMockBuilder(ConsoleColor::class)
             ->disableOriginalConstructor()
             ->setMethods(['line', 'resetColors', 'color', 'background'])
@@ -94,7 +94,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return array
      */
-    public function templateMethodsProvider() : array
+    public function templateMethodsProvider(): array
     {
         return [
             ['error', 'white', 'red'],
@@ -106,7 +106,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testResetColors() : void
+    public function testResetColors(): void
     {
         $this->color('regular-black')->background('black');
         $this->resetColors();
@@ -118,7 +118,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testDisableColors() : void
+    public function testDisableColors(): void
     {
         $this->disableColors();
 
@@ -128,7 +128,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testEnableColors() : void
+    public function testEnableColors(): void
     {
         $this->enableColors();
 
@@ -138,7 +138,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testColorize() : void
+    public function testColorize(): void
     {
         $this->color('regular-black')->background('black');
 
@@ -150,7 +150,7 @@ class ConsoleColorTest extends TestCase
     /**
      * @return void
      */
-    public function testParseColorString() : void
+    public function testParseColorString(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid color [foo]');

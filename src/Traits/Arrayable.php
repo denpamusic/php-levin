@@ -14,7 +14,7 @@ trait Arrayable
      *
      * @return void
      */
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         $this->entries[$offset] = $value;
     }
@@ -24,7 +24,7 @@ trait Arrayable
      *
      * @return bool
      */
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return isset($this->entries[$offset]);
     }
@@ -34,7 +34,7 @@ trait Arrayable
      *
      * @return void
      */
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         unset($this->entries[$offset]);
     }
@@ -52,7 +52,7 @@ trait Arrayable
     /**
      * @return int
      */
-    public function count() : int
+    public function count(): int
     {
         return count($this->entries);
     }
@@ -60,7 +60,7 @@ trait Arrayable
     /**
      * @return array
      */
-    public function keys() : array
+    public function keys(): array
     {
         return array_keys($this->entries);
     }
@@ -68,7 +68,7 @@ trait Arrayable
     /**
      * @return \ArrayIterator
      */
-    public function getIterator() : ArrayIterator
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->entries);
     }

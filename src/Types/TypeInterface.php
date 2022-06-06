@@ -19,20 +19,20 @@ interface TypeInterface
     /**
      * @return string
      */
-    public function toBinary() : string;
+    public function toBinary(): string;
 
     /**
      * @return string
      */
-    public function toHex() : string;
+    public function toHex(): string;
 
     /**
      * @return bool
      */
-    public function isBigEndian() : bool;
+    public function isBigEndian(): bool;
 
     /**
      * @return int
      */
-    public function getByteSize() : int;
+    public function getByteSize(): int;
 }

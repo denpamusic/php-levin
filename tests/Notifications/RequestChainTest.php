@@ -17,7 +17,7 @@ class RequestChainTest extends NotificationTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap([
             'block_ids' => Levin\bytestring(),
@@ -27,7 +27,7 @@ class RequestChainTest extends NotificationTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(6);
     }
@@ -35,7 +35,7 @@ class RequestChainTest extends NotificationTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'block_ids' => '',

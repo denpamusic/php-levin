@@ -17,7 +17,7 @@ class ResponseChainEntryTest extends NotificationTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap([
             'start_height'          => Levin\uint64le(),
@@ -30,7 +30,7 @@ class ResponseChainEntryTest extends NotificationTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(7);
     }
@@ -38,7 +38,7 @@ class ResponseChainEntryTest extends NotificationTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'start_height'          => 0,

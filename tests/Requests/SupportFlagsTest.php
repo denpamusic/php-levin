@@ -17,7 +17,7 @@ class SupportFlagsTest extends RequestTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap();
     }
@@ -25,7 +25,7 @@ class SupportFlagsTest extends RequestTest
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $this->assertResponseMap([
             'support_flags' => Levin\uint32le(),
@@ -35,7 +35,7 @@ class SupportFlagsTest extends RequestTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(7);
     }
@@ -43,7 +43,7 @@ class SupportFlagsTest extends RequestTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'support_flags' => SupportFlags::P2P_SUPPORT_FLAG_FLUFFY_BLOCKS,

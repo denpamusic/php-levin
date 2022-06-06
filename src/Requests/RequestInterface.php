@@ -16,10 +16,10 @@ interface RequestInterface
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function request() : Section;
+    public function request(): Section;
 
     /**
      * @return \Denpa\Levin\Section\Section
      */
-    public function response() : Section;
+    public function response(): Section;
 }

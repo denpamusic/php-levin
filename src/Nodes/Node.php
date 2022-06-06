@@ -27,7 +27,7 @@ abstract class Node implements NodeInterface
     public function registerRequestHandler(
         string $handler,
         string ...$commands
-    ) : self {
+    ): self {
         $this->handlers['request.'.$handler] = $commands;
 
         return $this;
@@ -44,7 +44,7 @@ abstract class Node implements NodeInterface
     public function registerResponseHandler(
         string $handler,
         string ...$commands
-    ) : self {
+    ): self {
         $this->handlers['response.'.$handler] = $commands;
 
         return $this;
@@ -94,7 +94,7 @@ abstract class Node implements NodeInterface
      *
      * @return void
      */
-    public function connect(string $address, $port, array $options = []) : void
+    public function connect(string $address, $port, array $options = []): void
     {
         $vars = [
             'network_id' => hex2bin(
@@ -113,5 +113,5 @@ abstract class Node implements NodeInterface
      *
      * @return void
      */
-    abstract public function handleException(Throwable $exception) : void;
+    abstract public function handleException(Throwable $exception): void;
 }

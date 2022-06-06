@@ -14,7 +14,7 @@ class PeerlistTest extends TestCase
     /**
      * @return void
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->fake = new FakePeerlist();
         $this->fake->peerlist = [
@@ -36,7 +36,7 @@ class PeerlistTest extends TestCase
     /**
      * @return void
      */
-    public function testLocalPeerlist() : void
+    public function testLocalPeerlist(): void
     {
         list($localPeerlist, $localPeerlistNew) = $this->fake->fakeLocalPeerlist();
 
@@ -57,7 +57,7 @@ class PeerlistTest extends TestCase
      *
      * @dataProvider peerProvider
      */
-    public function testPeerDefaults(array $peer, array $result) : void
+    public function testPeerDefaults(array $peer, array $result): void
     {
         $this->fake->fakePeerDefaults($peer);
 
@@ -71,7 +71,7 @@ class PeerlistTest extends TestCase
     /**
      * @return array
      */
-    public function peerProvider() : array
+    public function peerProvider(): array
     {
         $now = time();
 
@@ -96,7 +96,7 @@ class FakePeerlist
         return $this->localPeerlist();
     }
 
-    public function fakePeerDefaults(array &$peer) : void
+    public function fakePeerDefaults(array &$peer): void
     {
         $this->peerDefaults($peer);
     }

@@ -17,7 +17,7 @@ class PingTest extends RequestTest
     /**
      * @return void
      */
-    public function testRequest() : void
+    public function testRequest(): void
     {
         $this->assertRequestMap();
     }
@@ -25,7 +25,7 @@ class PingTest extends RequestTest
     /**
      * @return void
      */
-    public function testResponse() : void
+    public function testResponse(): void
     {
         $this->assertResponseMap([
             'status'  => Levin\bytestring(),
@@ -36,7 +36,7 @@ class PingTest extends RequestTest
     /**
      * @return void
      */
-    public function testGetCommandCode() : void
+    public function testGetCommandCode(): void
     {
         $this->assertCommandCode(3);
     }
@@ -44,7 +44,7 @@ class PingTest extends RequestTest
     /**
      * @return void
      */
-    public function testVars() : void
+    public function testVars(): void
     {
         $this->assertVars([
             'peer_id' => Levin\peer_id(),
